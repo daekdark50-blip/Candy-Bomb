@@ -1,126 +1,171 @@
--- [[ DARK HUB | CREATED BY DARK BY HUB ]] --
+-- [[ DARK HUB | STABLE V7 ]] --
 local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
 local lp = Players.LocalPlayer
 
-if CoreGui:FindFirstChild("DarkHubV6") then CoreGui.DarkHubV6:Destroy() end
+-- Удаление старого
+if CoreGui:FindFirstChild("DarkHub7") then CoreGui.DarkHub7:Destroy() end
 
 local Gui = Instance.new("ScreenGui", CoreGui)
-Gui.Name = "DarkHubV6"
+Gui.Name = "DarkHub7"
 Gui.ResetOnSpawn = false
 
--- [[ КНОПКА ОТКРЫТИЯ [DH] ]] --
-local Toggle = Instance.new("TextButton", Gui)
-Toggle.Size = UDim2.new(0, 50, 0, 50)
-Toggle.Position = UDim2.new(0, 15, 0.4, 0)
-Toggle.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-Toggle.Text = "DH"
-Toggle.TextColor3 = Color3.fromRGB(255, 0, 0)
-Toggle.Font = Enum.Font.GothamBold
-Instance.new("UICorner", Toggle).CornerRadius = UDim.new(1, 0)
+-- КНОПКА ОТКРЫТИЯ
+local Tog = Instance.new("TextButton", Gui)
+Tog.Size = UDim2.new(0, 45, 0, 45)
+Tog.Position = UDim2.new(0, 10, 0.5, 0)
+Tog.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+Tog.Text = "DH"
+Tog.TextColor3 = Color3.fromRGB(255, 0, 0)
+Instance.new("UICorner", Tog).CornerRadius = UDim.new(1, 0)
 
--- [[ ГЛАВНОЕ МЕНЮ ]] --
+-- ГЛАВНОЕ ОКНО
 local Main = Instance.new("Frame", Gui)
-Main.Size = UDim2.new(0, 450, 0, 320)
-Main.Position = UDim2.new(0.5, -225, 0.5, -160)
+Main.Size = UDim2.new(0, 380, 0, 280)
+Main.Position = UDim2.new(0.5, -190, 0.5, -140)
 Main.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 Main.Visible = false
 Main.Active = true
 Main.Draggable = true
 Instance.new("UICorner", Main)
 
--- HEADER
-local Head = Instance.new("Frame", Main)
-Head.Size = UDim2.new(1, 0, 0, 40)
-Head.BackgroundColor3 = Color3.fromRGB(30, 0, 0)
+-- Заголовок
+local Head = Instance.new("TextLabel", Main)
+Head.Size = UDim2.new(1, 0, 0, 35)
+Head.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+Head.Text = "Dark Hub | By Dark By Hub"
+Head.TextColor3 = Color3.fromRGB(255, 255, 255)
+Head.Font = Enum.Font.GothamBold
 Instance.new("UICorner", Head)
 
-local Title = Instance.new("TextLabel", Head)
-Title.Size = UDim2.with(1, -20, 1, 0)
-Title.Position = UDim2.new(0, 15, 0, 0)
-Title.Text = "Dark Hub | Created by Dark By Hub"
-Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-Title.Font = Enum.Font.GothamBold
-Title.TextXAlignment = Enum.TextXAlignment.Left
-Title.BackgroundTransparency = 1
+-- Контейнеры (Меню выбора)
+local Bar = Instance.new("Frame", Main)
+Bar.Size = UDim2.new(0, 100, 1, -40)
+Bar.Position = UDim2.new(0, 5, 0, 40)
+Bar.BackgroundTransparency = 1
+Instance.new("UIListLayout", Bar).Padding = UDim.new(0, 5)
 
--- SIDEBAR (ВКЛАДКИ)
-local Sidebar = Instance.new("Frame", Main)
-Sidebar.Size = UDim2.new(0, 120, 1, -50)
-Sidebar.Position = UDim2.new(0, 10, 0, 45)
-Sidebar.BackgroundTransparency = 1
-Instance.new("UIListLayout", Sidebar).Padding = UDim.new(0, 5)
+local Container = Instance.new("Frame", Main)
+Container.Size = UDim2.new(1, -115, 1, -45)
+Container.Position = UDim2.new(0, 110, 0, 40)
+Container.BackgroundTransparency = 1
 
--- CONTENT AREA
-local Pages = Instance.new("Frame", Main)
-Pages.Size = UDim2.new(1, -150, 1, -55)
-Pages.Position = UDim2.new(0, 140, 0, 50)
-Pages.BackgroundTransparency = 1
-
-local function CreatePage(name)
-    local p = Instance.new("ScrollingFrame", Pages)
+local function NewPage(name)
+    local p = Instance.new("ScrollingFrame", Container)
     p.Size = UDim2.new(1, 0, 1, 0)
     p.BackgroundTransparency = 1
     p.Visible = false
     p.ScrollBarThickness = 0
     Instance.new("UIListLayout", p).Padding = UDim.new(0, 5)
-    
-    local btn = Instance.new("TextButton", Sidebar)
-    btn.Size = UDim2.new(1, 0, 0, 35)
-    btn.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-    btn.Text = name
-    btn.TextColor3 = Color3.fromRGB(200, 200, 200)
-    btn.Font = Enum.Font.GothamBold
-    Instance.new("UICorner", btn)
-    
-    btn.MouseButton1Click:Connect(function()
-        for _, v in pairs(Pages:GetChildren()) do v.Visible = false end
+
+    local b = Instance.new("TextButton", Bar)
+    b.Size = UDim2.new(1, 0, 0, 30)
+    b.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    b.Text = name
+    b.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Instance.new("UICorner", b)
+    b.MouseButton1Click:Connect(function()
+        for _, v in pairs(Container:GetChildren()) do v.Visible = false end
         p.Visible = true
     end)
     return p
 end
 
-local PageMain = CreatePage("MAIN")
-local PageSpec = CreatePage("SPECTATE")
-local PageScripts = CreatePage("SCRIPTS")
+local P1 = NewPage("MAIN")
+local P2 = NewPage("SPECTATE")
+local P3 = NewPage("SCRIPTS")
 
-Toggle.MouseButton1Click:Connect(function() Main.Visible = not Main.Visible end)
+Tog.MouseButton1Click:Connect(function() Main.Visible = not Main.Visible end)
 
--- ФУНКЦИЯ ДЛЯ КНОПОК (ON/OFF)
-local function AddToggle(txt, parent, func)
-    local active = false
+-- ФУНКЦИЯ КНОПОК
+local function AddT(txt, parent, func)
+    local act = false
     local b = Instance.new("TextButton", parent)
     b.Size = UDim2.new(1, 0, 0, 35)
-    b.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    b.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
     b.Text = txt .. ": OFF"
-    b.TextColor3 = Color3.fromRGB(180, 180, 180)
+    b.TextColor3 = Color3.fromRGB(200, 200, 200)
     Instance.new("UICorner", b)
     b.MouseButton1Click:Connect(function()
-        active = not active
-        b.Text = txt .. (active and ": ON" or ": OFF")
-        b.TextColor3 = active and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(180, 180, 180)
-        func(active)
+        act = not act
+        b.Text = txt .. (act and ": ON" or ": OFF")
+        b.TextColor3 = act and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(200, 200, 200)
+        func(act)
     end)
 end
 
--- [[ 1. РАЗДЕЛ MAIN ]] --
-AddToggle("Full Invisible", PageMain, function(s)
-    if lp.Character then
-        for _, v in pairs(lp.Character:GetDescendants()) do
-            if v:IsA("BasePart") or v:IsA("Decal") then v.Transparency = s and 1 or 0 end
-        end
-    end
+-- [[ MAIN ]]
+AddT("Fly", P1, function(s)
+    local hrp = lp.Character:FindFirstChild("HumanoidRootPart")
+    if s then
+        local bv = Instance.new("BodyVelocity", hrp)
+        bv.Name = "Fly7"
+        bv.MaxForce = Vector3.new(1,1,1) * 10^7
+        task.spawn(function()
+            while hrp:FindFirstChild("Fly7") do
+                bv.Velocity = workspace.CurrentCamera.CFrame.LookVector * 80
+                task.wait()
+            end
+        end)
+    else if hrp:FindFirstChild("Fly7") then hrp.Fly7:Destroy() end end
 end)
 
-AddToggle("Wallhack (ESP)", PageMain, function(s)
+AddT("Wallhack", P1, function(s)
     for _, p in pairs(Players:GetPlayers()) do
         if p ~= lp and p.Character then
-            if s then Instance.new("Highlight", p.Character).Name = "DH_ESP"
-            else if p.Character:FindFirstChild("DH_ESP") then p.Character.DH_ESP:Destroy() end end
+            if s then Instance.new("Highlight", p.Character).Name = "ESP7"
+            else if p.Character:FindFirstChild("ESP7") then p.Character.ESP7:Destroy() end end
         end
     end
 end)
 
-AddToggle("Fly Mode", PageMain, function(s)
-    local hrp = lp.Character:FindFirstChild("HumanoidRootPart")
-        
+-- [[ SPECTATE (КАК НА ВИДЕО) ]]
+local function RefreshSpec()
+    for _, v in pairs(P2:GetChildren()) do if v:IsA("Frame") then v:Destroy() end end
+    for _, p in pairs(Players:GetPlayers()) do
+        if p ~= lp then
+            local f = Instance.new("Frame", P2)
+            f.Size = UDim2.new(1, 0, 0, 45)
+            f.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+            Instance.new("UICorner", f)
+
+            local img = Instance.new("ImageLabel", f)
+            img.Size = UDim2.new(0, 35, 0, 35)
+            img.Position = UDim2.new(0, 5, 0.5, -17)
+            img.Image = Players:GetUserThumbnailAsync(p.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
+            Instance.new("UICorner", img).CornerRadius = UDim.new(1,0)
+
+            local t = Instance.new("TextButton", f)
+            t.Size = UDim2.new(1, -45, 1, 0)
+            t.Position = UDim2.new(0, 45, 0, 0)
+            t.BackgroundTransparency = 1
+            t.Text = p.DisplayName
+            t.TextColor3 = Color3.fromRGB(255, 255, 255)
+            t.TextXAlignment = Enum.TextXAlignment.Left
+            t.MouseButton1Click:Connect(function()
+                workspace.CurrentCamera.CameraSubject = p.Character.Humanoid
+            end)
+        end
+    end
+end
+
+local rb = Instance.new("TextButton", P2)
+rb.Size = UDim2.new(1, 0, 0, 30)
+rb.Text = "Refresh Players"
+rb.BackgroundColor3 = Color3.fromRGB(60, 0, 0)
+rb.TextColor3 = Color3.fromRGB(255, 255, 255)
+rb.MouseButton1Click:Connect(RefreshSpec)
+
+-- [[ SCRIPTS (LUCKY BLOCK) ]]
+local lb = Instance.new("TextButton", P3)
+lb.Size = UDim2.new(1, 0, 0, 40)
+lb.Text = "Lucky Block Script"
+lb.BackgroundColor3 = Color3.fromRGB(0, 50, 150)
+lb.TextColor3 = Color3.fromRGB(255, 255, 255)
+Instance.new("UICorner", lb)
+lb.MouseButton1Click:Connect(function()
+    print("Lucky Block Loaded!")
+    -- Тут будет твой лоад, который ты дашь
+end)
+
+P1.Visible = true
