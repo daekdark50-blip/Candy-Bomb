@@ -1,21 +1,21 @@
--- [[ OMNI-X PRO V5 | DUAL WINDOWS ]] --
+-- [[ OMNI-X HUB V6 | CUSTOM PLACES EDITION ]] --
 local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
 local lp = Players.LocalPlayer
 
 -- Cleanup
-if CoreGui:FindFirstChild("OmniProV5") then CoreGui.OmniProV5:Destroy() end
+if CoreGui:FindFirstChild("OmniHubV6") then CoreGui.OmniHubV6:Destroy() end
 
 local Gui = Instance.new("ScreenGui")
-Gui.Name = "OmniProV5"
+Gui.Name = "OmniHubV6"
 Gui.Parent = CoreGui
 Gui.ResetOnSpawn = false
 Gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
--- [[ TOGGLE BUTTON (+) ]] --
+-- [[ КНОПКА ПЛЮСИК [+] ]] --
 local Toggle = Instance.new("TextButton")
 Toggle.Parent = Gui
-Toggle.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+Toggle.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 Toggle.Position = UDim2.new(0, 15, 0.4, 0)
 Toggle.Size = UDim2.new(0, 50, 0, 50)
 Toggle.Text = "+"
@@ -25,7 +25,7 @@ Toggle.Font = Enum.Font.GothamBold
 Toggle.ZIndex = 100
 Instance.new("UICorner", Toggle).CornerRadius = UDim.new(1, 0)
 
--- [[ MAIN FRAME ]] --
+-- [[ ГЛАВНАЯ ПАНЕЛЬ ]] --
 local Main = Instance.new("Frame")
 Main.Parent = Gui
 Main.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
@@ -36,7 +36,7 @@ Main.Active = true
 Main.Draggable = true
 Instance.new("UICorner", Main)
 
--- [[ NAVIGATION (TABS) ]] --
+-- [[ НАВИГАЦИЯ (ВКЛАДКИ) ]] --
 local Nav = Instance.new("Frame")
 Nav.Size = UDim2.new(1, 0, 0, 35)
 Nav.BackgroundColor3 = Color3.fromRGB(25, 0, 0)
@@ -59,13 +59,13 @@ end
 local MainTabBtn = CreateTabBtn("MAIN", UDim2.new(0, 0, 0, 0))
 local ScriptTabBtn = CreateTabBtn("SCRIPTS", UDim2.new(0.5, 0, 0, 0))
 
--- [[ CONTENT CONTAINERS ]] --
+-- [[ КОНТЕЙНЕРЫ ]] --
 local MainContent = Instance.new("ScrollingFrame")
 MainContent.Size = UDim2.new(1, -20, 1, -50)
 MainContent.Position = UDim2.new(0, 10, 0, 45)
 MainContent.BackgroundTransparency = 1
 MainContent.Visible = true
-MainContent.CanvasSize = UDim2.new(0, 0, 0, 300)
+MainContent.CanvasSize = UDim2.new(0, 0, 0, 350)
 MainContent.ScrollBarThickness = 0
 MainContent.Parent = Main
 
@@ -85,7 +85,7 @@ end
 SetLayout(MainContent)
 SetLayout(ScriptContent)
 
--- [[ LOGIC: TABS & TOGGLE ]] --
+-- [[ ЛОГИКА ВКЛАДОК ]] --
 Toggle.MouseButton1Click:Connect(function()
     Main.Visible = not Main.Visible
     Toggle.Text = Main.Visible and "-" or "+"
@@ -101,8 +101,8 @@ ScriptTabBtn.MouseButton1Click:Connect(function()
     ScriptContent.Visible = true
 end)
 
--- [[ BUTTON CREATOR WITH ON/OFF ]] --
-local function AddToggleBtn(text, parent, callback)
+-- [[ ФУНКЦИЯ СОЗДАНИЯ КНОПОК ]] --
+local function AddBtn(text, parent, callback)
     local active = false
     local b = Instance.new("TextButton")
     b.Size = UDim2.new(1, 0, 0, 38)
@@ -122,8 +122,8 @@ local function AddToggleBtn(text, parent, callback)
     end)
 end
 
--- [[ BUTTONS: MAIN ]] --
-AddToggleBtn("Invis Mode", MainContent, function(state)
+-- [[ ВКЛАДКА: MAIN ]] --
+AddBtn("Invisible Mode", MainContent, function(state)
     if lp.Character then
         for _, v in pairs(lp.Character:GetDescendants()) do
             if v:IsA("BasePart") or v:IsA("Decal") then
@@ -133,37 +133,43 @@ AddToggleBtn("Invis Mode", MainContent, function(state)
     end
 end)
 
-AddToggleBtn("ESP (Wallhack)", MainContent, function(state)
+AddBtn("ESP (Wallhack)", MainContent, function(state)
     for _, p in pairs(Players:GetPlayers()) do
         if p ~= lp and p.Character then
             if state then
                 local h = Instance.new("Highlight", p.Character)
-                h.Name = "ESP"
+                h.Name = "ESP_Target"
                 h.FillColor = Color3.fromRGB(255, 0, 0)
             else
-                if p.Character:FindFirstChild("ESP") then p.Character.ESP:Destroy() end
+                if p.Character:FindFirstChild("ESP_Target") then p.Character.ESP_Target:Destroy() end
             end
         end
     end
 end)
 
-AddToggleBtn("Spectate", MainContent, function(state)
+AddBtn("Spectate", MainContent, function(state)
     if state then
         local plrs = Players:GetPlayers()
-        local target = plrs[math.random(1, #plrs)]
-        if target and target.Character then
-            workspace.CurrentCamera.CameraSubject = target.Character:FindFirstChild("Humanoid")
+        local t = plrs[math.random(1, #plrs)]
+        if t and t.Character and t.Character:FindFirstChild("Humanoid") then
+            workspace.CurrentCamera.CameraSubject = t.Character.Humanoid
         end
     else
-        workspace.CurrentCamera.CameraSubject = lp.Character:FindFirstChild("Humanoid")
+        workspace.CurrentCamera.CameraSubject = lp.Character.Humanoid
     end
 end)
 
--- [[ BUTTONS: SCRIPTS ]] --
-AddToggleBtn("Empty Script 1", ScriptContent, function(state)
-    print("Script 1 toggled: ", state)
+-- [[ ВКЛАДКА: SCRIPTS (ПУСТО - ДЛЯ ТВОИХ СКРИПТОВ) ]] --
+
+AddBtn("Place Script 1", ScriptContent, function(state)
+    if state then
+        -- Сюда вставь код для первого плейса
+        print("Script for Place 1 is ON")
+    else
+        print("Script for Place 1 is OFF")
+    end
 end)
 
-AddToggleBtn("Close Entire Hub", ScriptContent, function()
+AddBtn("Reset Full UI", ScriptContent, function()
     Gui:Destroy()
 end)
