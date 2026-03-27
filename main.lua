@@ -1,34 +1,49 @@
-local Kavo = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
-local Window = Kavo.CreateLib("Dark creator Candy esp", "DarkTheme")
+-- ПОДКЛЮЧАЕМ КОМПАКТНУЮ БИБЛИОТЕКУ
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
-local ESPTab = Window:NewTab("Candy ESP")
-local ESPSection = ESPTab:NewSection("Visuals")
+-- СОЗДАЕМ МАЛЕНЬКОЕ ОКНО
+local Window = OrionLib:MakeWindow({
+    Name = "Dark Creator", 
+    HidePremium = true, 
+    SaveConfig = false, 
+    IntroText = "Dark Hub Loading...",
+    ConfigFolder = "DarkConfig"
+})
 
-local function applyESP()
-    for _, obj in pairs(workspace:GetDescendants()) do
-        if obj:IsA("BasePart") and (obj.Name:lower():find("candy") or obj.Name:lower():find("bomb")) then
-            if not obj:FindFirstChild("DarkESP") then
-                local h = Instance.new("Highlight", obj)
-                h.Name = "DarkESP"
+-- ВКЛАДКА (Сделаем её короткой)
+local Tab = Window:MakeTab({
+	Name = "ESP",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+-- ФУНКЦИЯ ВХ
+local function doESP()
+    for _, v in pairs(workspace:GetDescendants()) do
+        if v:IsA("BasePart") and (v.Name:lower():find("candy") or v.Name:lower():find("bomb")) then
+            if not v:FindFirstChild("DarkHighlight") then
+                local h = Instance.new("Highlight", v)
+                h.Name = "DarkHighlight"
                 h.FillColor = Color3.fromRGB(255, 0, 0)
-                h.FillOpacity = 0.5
+                h.OutlineColor = Color3.fromRGB(255, 255, 255)
             end
         end
     end
 end
 
-ESPSection:NewButton("Включить ESP", "Подсветить конфеты", function()
-    applyESP()
-    task.spawn(function()
-        while task.wait(3) do applyESP() end
-    end)
-end)
+-- КНОПКА
+Tab:AddButton({
+	Name = "Включить Candy ESP",
+	Callback = function()
+        doESP()
+        -- Авто-обновление каждые 5 секунд
+        task.spawn(function()
+            while true do
+                task.wait(5)
+                doESP()
+            end
+        end)
+  	end    
+})
 
-local SettingsTab = Window:NewTab("Settings")
-local SettingsSection = SettingsTab:NewSection("UI")
-
-SettingsSection:NewButton("Удалить Меню", "Закрыть чит", function()
-    game:GetService("CoreGui"):FindFirstChild("Dark creator Candy esp"):Destroy()
-end)
-
-game.StarterGui:SetCore("SendNotification", {Title="Dark Creator", Text="Скрипт готов!", Duration=5})
+OrionLib:Init()
