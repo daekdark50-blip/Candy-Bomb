@@ -1,4 +1,4 @@
--- DARKHUB: ANTI-GRAVITY & FAST COLLECT
+-- DARKHUB: POWER SCANNER VERSION
 local Player = game.Players.LocalPlayer
 local CoreGui = game:GetService("CoreGui")
 
@@ -38,8 +38,24 @@ local function CreateButton(name, y, key)
     end)
 end
 
-CreateButton("Auto OG (TP+STAY)", 0.18, "og")
+-- Кнопки как на скриншоте
+CreateButton("Auto OG", 0.18, "og")
 CreateButton("Auto Divine", 0.30, "divine")
 CreateButton("Collect Cash", 0.42, "cash")
 CreateButton("Upgrade All", 0.54, "upg")
-CreateButton
+CreateButton("Buy Speed +10", 0.66, "speed")
+CreateButton("Auto Rebirth", 0.78, "reb")
+
+local Footer = Instance.new("TextLabel", Main)
+Footer.Size = UDim2.new(1, 0, 0.1, 0)
+Footer.Position = UDim2.new(0, 0, 0.9, 0)
+Footer.Text = "DarkHub"
+Footer.TextColor3 = Color3.fromRGB(200, 0, 0)
+Footer.Font = Enum.Font.GothamBold
+Footer.BackgroundTransparency = 1
+
+-- ЛОГИКА ПОИСКА
+task.spawn(function()
+    while task.wait(0.3) do
+        pcall(function()
+                    
