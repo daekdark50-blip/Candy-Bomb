@@ -1,33 +1,44 @@
--- DARKHUB V10: FINAL STABLE (TORA STYLE)
-repeat task.wait() until game:IsLoaded()
-
-local Player = game.Players.LocalPlayer
+-- [[ OMNI-X HUB: ПРЯМОЙ ЗАПУСК ]] --
+local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
-local RS = game:GetService("ReplicatedStorage")
+local lp = Players.LocalPlayer
 
-if CoreGui:FindFirstChild("DarkHub") then CoreGui.DarkHub:Destroy() end
+-- Очистка старых меню
+if CoreGui:FindFirstChild("SimpleHub") then CoreGui.SimpleHub:Destroy() end
 
-local ScreenGui = Instance.new("ScreenGui", CoreGui)
-ScreenGui.Name = "DarkHub"
+local Gui = Instance.new("ScreenGui")
+Gui.Name = "SimpleHub"
+Gui.Parent = CoreGui
 
-local Main = Instance.new("Frame", ScreenGui)
-Main.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-Main.Size = UDim2.new(0, 200, 0, 310)
-Main.Position = UDim2.new(0.5, -100, 0.3, 0)
+-- ГЛАВНОЕ ОКНО (Мрачное)
+local Main = Instance.new("Frame")
+Main.Name = "Main"
+Main.Parent = Gui
+Main.BackgroundColor3 = Color3.fromRGB(10, 10, 10) -- Черный
+Main.BorderSizePixel = 2
+Main.BorderColor3 = Color3.fromRGB(200, 0, 0) -- Красная обводка
+Main.Position = UDim2.new(0.5, -125, 0.5, -150)
+Main.Size = UDim2.new(0, 250, 0, 300)
 Main.Active = true
-Main.Draggable = true
-Instance.new("UICorner", Main)
+Main.Draggable = true -- Можно двигать на телефоне
 
-local Flags = {ancient=false, og=false, divine=false, cash=false, upg=false, speed=false, reb=false}
-local BasePos = nil
-local IsFarming = false
+local Corner = Instance.new("UICorner")
+Corner.CornerRadius = UDim.new(0, 8)
+Corner.Parent = Main
 
--- Поиск папки эвентов
-local Events = RS:FindFirstChild("Events") or RS:FindFirstChild("Remotes") or RS
+-- ЗАГОЛОВОК
+local Title = Instance.new("TextLabel")
+Title.Parent = Main
+Title.Size = UDim2.new(1, 0, 0, 35)
+Title.BackgroundColor3 = Color3.fromRGB(30, 0, 0)
+Title.Text = "OMNI-X | ТЕЛЕФОН"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.Font = Enum.Font.GothamBold
+Title.TextSize = 14
 
-local function AddToggle(name, y, key)
-    local Btn = Instance.new("TextButton", Main)
-    Btn.Size = UDim2.new(0.9, 0, 0, 28)
-    Btn.Position = UDim2.new(0.05, 0, 0, y)
-    Btn
-    
+-- СПИСОК КНОПОК
+local List = Instance.new("ScrollingFrame")
+List.Parent = Main
+List.Position = UDim2.new(0, 10, 0, 45)
+List.Size = UDim2.new(1, -20, 1, -55)
+List.Background
