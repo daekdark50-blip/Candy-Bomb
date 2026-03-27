@@ -1,39 +1,64 @@
--- [[ OMNI-X PRO | ENGLISH MOBILE EDITION ]] --
+-- [[ OMNI-X STABLE MOBILE ]] --
 local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
 local lp = Players.LocalPlayer
 
--- Clean up
-if CoreGui:FindFirstChild("OmniPro") then CoreGui.OmniPro:Destroy() end
+-- Удаление старой версии, чтобы не копились
+if CoreGui:FindFirstChild("OmniMobile") then
+    CoreGui.OmniMobile:Destroy()
+end
 
+-- Основной GUI
 local Gui = Instance.new("ScreenGui")
-Gui.Name = "OmniPro"
+Gui.Name = "OmniMobile"
 Gui.Parent = CoreGui
-Gui.ResetOnSpawn = false
+Gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
--- [[ TOGGLE BUTTON (PLUS) ]] --
-local OpenBtn = Instance.new("TextButton")
-OpenBtn.Name = "OpenBtn"
-OpenBtn.Parent = Gui
-OpenBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
-OpenBtn.Position = UDim2.new(0, 10, 0.5, -20)
-OpenBtn.Size = UDim2.new(0, 40, 0, 40)
-OpenBtn.Font = Enum.Font.GothamBold
-OpenBtn.Text = "+"
-OpenBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-OpenBtn.TextSize = 30
-Instance.new("UICorner", OpenBtn).CornerRadius = UDim.new(1, 0)
+-- [[ КНОПКА ОТКРЫТИЯ (ПЛЮСИК) ]] --
+local Toggle = Instance.new("TextButton")
+Toggle.Parent = Gui
+Toggle.Name = "ToggleButton"
+Toggle.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+Toggle.Position = UDim2.new(0, 10, 0.4, 0)
+Toggle.Size = UDim2.new(0, 45, 0, 45)
+Toggle.Text = "+"
+Toggle.TextColor3 = Color3.fromRGB(255, 255, 255)
+Toggle.TextSize = 30
+Toggle.Font = Enum.Font.GothamBold
+Toggle.ZIndex = 100
 
--- [[ MAIN PANEL ]] --
+local ToggleCorner = Instance.new("UICorner", Toggle)
+ToggleCorner.CornerRadius = UDim.new(1, 0)
+
+-- [[ ГЛАВНОЕ ОКНО ]] --
 local Main = Instance.new("Frame")
-Main.Name = "Main"
 Main.Parent = Gui
+Main.Name = "MainFrame"
+Main.Visible = false
 Main.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 Main.BorderSizePixel = 0
-Main.Position = UDim2.new(0.5, -125, 0.5, -140)
-Main.Size = UDim2.new(0, 250, 0, 280)
-Main.Visible = false
+Main.Position = UDim2.new(0.5, -110, 0.5, -130)
+Main.Size = UDim2.new(0, 220, 0, 260)
+Main.Draggable = true -- Можно двигать пальцем
 Main.Active = true
-Main.Draggable = true -- Mobile friendly drag
 
-local Corner = Instance.new("UICorner", Main)
+local MainCorner = Instance.new("UICorner", Main)
+MainCorner.CornerRadius = UDim.new(0, 10)
+
+-- Заголовок
+local Title = Instance.new("TextLabel")
+Title.Parent = Main
+Title.Size = UDim2.new(1, 0, 0, 40)
+Title.BackgroundColor3 = Color3.fromRGB(30, 0, 0)
+Title.Text = "OMNI-X PRO"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.Font = Enum.Font.GothamBold
+Title.TextSize = 16
+Instance.new("UICorner", Title)
+
+-- Список кнопок
+local List = Instance.new("ScrollingFrame")
+List.Parent = Main
+List.Position = UDim2.new(0, 10, 0, 50)
+List.Size = UDim2.new(1, -20,
+  
