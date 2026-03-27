@@ -1,65 +1,51 @@
--- ПОЛНАЯ ОЧИСТКА ГЛЮКОВ
-if game:GetService("CoreGui"):FindFirstChild("DarkCreatorGui") then
-    game:GetService("CoreGui").DarkCreatorGui:Destroy()
+-- ПОЛНАЯ ЧИСТКА СТАРОГО МУСОРА
+for _, gui in pairs(game:GetService("CoreGui"):GetChildren()) do
+    if gui:IsA("ScreenGui") and (gui.Name == "BlackSpyGui" or gui:FindFirstChild("Main")) then
+        gui:Destroy()
+    end
 end
 
 local ScreenGui = Instance.new("ScreenGui", game:GetService("CoreGui"))
-ScreenGui.Name = "DarkCreatorGui"
+ScreenGui.Name = "BlackSpyGui"
 
 local Main = Instance.new("Frame", ScreenGui)
-Main.BackgroundColor3 = Color3.fromRGB(15, 15, 15) -- Черный фон меню
-Main.Size = UDim2.new(0, 150, 0, 90)
-Main.Position = UDim2.new(0.5, -75, 0.2, 0) -- По центру
+Main.BackgroundColor3 = Color3.fromRGB(5, 5, 5)
+Main.Size = UDim2.new(0, 160, 0, 100)
+Main.Position = UDim2.new(0.5, -80, 0.2, 0)
 Main.Active = true
-Main.Draggable = true -- Двигать пальцем
+Main.Draggable = true
 Instance.new("UICorner", Main)
 
 local Button = Instance.new("TextButton", Main)
-Button.Size = UDim2.new(0.9, 0, 0.6, 0)
-Button.Position = UDim2.new(0.05, 0, 0.2, 0)
-Button.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- КРУТОЙ ЧЕРНЫЙ ЦВЕТ КНОПКИ
+Button.Size = UDim2.new(0.9, 0, 0.7, 0)
+Button.Position = UDim2.new(0.05, 0, 0.15, 0)
+Button.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 Button.Text = "ВКЛЮЧИТЬ ЧЕРНЫЙ ВХ"
-Button.TextColor3 = Color3.new(1, 1, 1) -- Белый текст
-Button.Font = Enum.Font.GothamBold -- Крутой шрифт
-Button.TextSize = 14
+Button.TextColor3 = Color3.new(1, 1, 1)
+Button.Font = Enum.Font.GothamBold
 Instance.new("UICorner", Button)
 
--- ФУНКЦИЯ "ЧЕРНЫЙ РЕНТГЕН"
 Button.MouseButton1Click:Connect(function()
-    local lp = game.Players.LocalPlayer
-    local char = lp.Character or lp.CharacterAdded:Wait()
-    local root = char:WaitForChild("HumanoidRootPart")
-    local minesCount = 0
-
-    -- Ищем по всей карте
+    local found = 0
+    -- Сканируем всё на высоте стола (выше пола)
     for _, v in pairs(workspace:GetDescendants()) do
-        -- Проверяем: мелкий объект, на чужом столе (дальше 15м)
-        if v:IsA("BasePart") and v.Size.X < 5 then
-            local dist = (v.Position - root.Position).Magnitude
-            if dist > 15 and dist < 100 then
-                
-                -- ГЛАВНАЯ ПРОВЕРКА: Если это невидимая деталь внутри модели (так прячут мины)
-                if not v:FindFirstChild("BlackHighlight") then
-                    local h = Instance.new("Highlight", v)
-                    h.Name = "BlackHighlight"
-                    h.FillColor = Color3.fromRGB(0, 0, 0) -- КРУТОЙ ЧЕРНЫЙ ГЛЯНЕЦ
-                    h.OutlineColor = Color3.fromRGB(255, 255, 255) -- Белый контур, чтобы видеть в темноте
-                    h.FillOpacity = 0.9 -- Почти не прозрачный
-                    h.OutlineOpacity = 0.6
-                    minesCount = minesCount + 1
+        if v:IsA("BasePart") and v.Position.Y > 3 and v.Position.Y < 10 then
+            -- Ищем объекты, которые находятся внутри столов противников (дистанция)
+            local dist = (v.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+            if dist > 10 and dist < 100 then
+                -- Если это не простая пустая плитка (имеет узор, меш или другие вложения)
+                if #v:GetChildren() > 0 or v:IsA("MeshPart") then
+                    if not v:FindFirstChild("GhostBlack") then
+                        local h = Instance.new("Highlight", v)
+                        h.Name = "GhostBlack"
+                        h.FillColor = Color3.fromRGB(0, 0, 0) -- ЧЕРНЫЙ
+                        h.OutlineColor = Color3.fromRGB(255, 255, 255) -- БЕЛЫЙ КОНТУР
+                        h.FillOpacity = 0.8
+                        found = found + 1
+                    end
                 end
             end
         end
     end
-    
-    Button.Text = "НАШЕЛ: " .. minesCount
+    Button.Text = "ВИЖУ ЦЕЛЕЙ: " .. found
 end)
-
-local Close = Instance.new("TextButton", Main)
-Close.Size = UDim2.new(0, 22, 0, 22)
-Close.Position = UDim2.new(0.85, -5, 0, 5)
-Close.Text = "X"
-Close.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-Close.TextColor3 = Color3.new(1, 1, 1)
-Instance.new("UICorner", Close).CornerRadius = UDim.new(1, 0) -- Круглая
-Close.MouseButton1Click:Connect(function() ScreenGui:Destroy() end)
