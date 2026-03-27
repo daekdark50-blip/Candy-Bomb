@@ -1,47 +1,70 @@
--- [[ DARK HUB | DEMON EDITION V26 ]] --
--- [[ UNDER-MAP FARM | 800 SPEED | ALL EVENTS ]] --
+-- [[ DARK HUB V34 | CLEAN EDITION ]] --
+-- [[ ONLY MAIN & SCRIPTS | AK ADMIN HEADER ]] --
 
 local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
-local UserInputService = game:GetService("UserInputService")
 local lp = Players.LocalPlayer
 
-if CoreGui:FindFirstChild("DarkHubV26") then CoreGui.DarkHubV26:Destroy() end
+if CoreGui:FindFirstChild("DarkHubV34") then CoreGui.DarkHubV34:Destroy() end
 
 local Gui = Instance.new("ScreenGui", CoreGui)
-Gui.Name = "DarkHubV26"
+Gui.Name = "DarkHubV34"
 
--- [[ Вспомогательные функции для Демон-Фарма ]] --
-local function UnderMapFly(targetPos)
-    local char = lp.Character
-    if char and char:FindFirstChild("HumanoidRootPart") then
-        local hrp = char.HumanoidRootPart
-        -- Уходим под карту на -20 блоков
-        local underPos = Vector3.new(targetPos.X, -20, targetPos.Z)
-        hrp.CFrame = CFrame.new(underPos)
-    end
+-- [[ 1. ЧЕРНОЕ ОКНО ЗАГРУЗКИ ]] --
+local function StartLoader()
+    local L = Instance.new("Frame", Gui)
+    L.Size = UDim2.new(1, 0, 1, 0)
+    L.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    L.ZIndex = 10
+
+    local T = Instance.new("TextLabel", L)
+    T.Size = UDim2.new(1, 0, 1, 0)
+    T.Text = "loading dark hub v34..."
+    T.TextColor3 = Color3.fromRGB(255, 255, 255)
+    T.Font = Enum.Font.GothamBold
+    T.TextSize = 30
+    T.BackgroundTransparency = 1
+
+    task.wait(2)
+    L:Destroy()
 end
 
--- [[ ИНТЕРФЕЙС ]] --
+-- [[ 2. ОСНОВНОЕ МЕНЮ ]] --
 local Main = Instance.new("Frame", Gui)
-Main.Size = UDim2.new(0, 620, 0, 480)
-Main.Position = UDim2.new(0.5, -310, 0.5, -240)
-Main.BackgroundColor3 = Color3.fromRGB(5, 5, 5) -- Еще чернее
+Main.Size = UDim2.new(0, 500, 0, 350)
+Main.Position = UDim2.new(0.5, -250, 0.5, -175)
+Main.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 Main.BorderSizePixel = 0
+Main.Visible = false
 Main.Active = true
 Main.Draggable = true
 Instance.new("UICorner", Main)
 
-local Side = Instance.new("ScrollingFrame", Main)
-Side.Size = UDim2.new(0, 160, 1, -10)
-Side.Position = UDim2.new(0, 5, 0, 5)
+-- ВЕРХНЯЯ ПАНЕЛЬ (AK ADMIN)
+local Header = Instance.new("Frame", Main)
+Header.Size = UDim2.new(1, 0, 0, 40)
+Header.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+Instance.new("UICorner", Header)
+
+local Title = Instance.new("TextLabel", Header)
+Title.Size = UDim2.new(1, -20, 1, 0)
+Title.Position = UDim2.new(0, 15, 0, 0)
+Title.Text = "AK ADMIN | DARK HUB V34"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextXAlignment = "Left"
+Title.Font = Enum.Font.GothamBold
+Title.BackgroundTransparency = 1
+
+-- НАВИГАЦИЯ (2 ВКЛАДКИ)
+local Side = Instance.new("Frame", Main)
+Side.Size = UDim2.new(0, 140, 1, -50)
+Side.Position = UDim2.new(0, 5, 0, 45)
 Side.BackgroundTransparency = 1
-Side.ScrollBarThickness = 0
-Instance.new("UIListLayout", Side).Padding = UDim.new(0, 2)
+Instance.new("UIListLayout", Side).Padding = UDim.new(0, 5)
 
 local Container = Instance.new("Frame", Main)
-Container.Size = UDim2.new(1, -175, 1, -10)
-Container.Position = UDim2.new(0, 170, 0, 5)
+Container.Size = UDim2.new(1, -160, 1, -55)
+Container.Position = UDim2.new(0, 150, 0, 45)
 Container.BackgroundTransparency = 1
 
 local function CreateTab(name)
@@ -49,14 +72,17 @@ local function CreateTab(name)
     p.Size = UDim2.new(1, 0, 1, 0)
     p.BackgroundTransparency = 1
     p.Visible = false
+    p.ScrollBarThickness = 0
     Instance.new("UIListLayout", p).Padding = UDim.new(0, 8)
+
     local b = Instance.new("TextButton", Side)
-    b.Size = UDim2.new(1, -10, 0, 32)
-    b.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    b.Text = " " .. name
+    b.Size = UDim2.new(1, 0, 0, 40)
+    b.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    b.Text = name
     b.TextColor3 = Color3.fromRGB(255, 255, 255)
-    b.TextXAlignment = "Left"
+    b.Font = Enum.Font.GothamBold
     Instance.new("UICorner", b)
+    
     b.MouseButton1Click:Connect(function()
         for _, v in pairs(Container:GetChildren()) do v.Visible = false end
         p.Visible = true
@@ -64,60 +90,39 @@ local function CreateTab(name)
     return p
 end
 
--- ВКЛАДКИ
-local TabMain = CreateTab("Main")
-local TabEvents = CreateTab("Demon Events")
-local TabOthers = CreateTab("Others")
-local TabScripts = CreateTab("Scripts") -- Добавил как просил!
-local TabConfig = CreateTab("Config")
+local TabMain = CreateTab("MAIN")
+local TabScripts = CreateTab("SCRIPTS")
 
-local function AddToggle(parent, name, func)
-    local b = Instance.new("TextButton", parent)
-    b.Size = UDim2.new(1, -15, 0, 38)
-    b.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    b.Text = "  " .. name .. ": OFF"
-    b.TextColor3 = Color3.fromRGB(200, 200, 200)
-    b.TextXAlignment = "Left"
-    Instance.new("UICorner", b)
-    local active = false
-    b.MouseButton1Click:Connect(function()
-        active = not active
-        b.Text = "  " .. name .. (active and ": ON" or ": OFF")
-        b.TextColor3 = active and Color3.fromRGB(255, 0, 0) or Color3.fromRGB(200, 200, 200)
-        if func then func(active) end
-    end)
+-- [[ ФУНКЦИИ MAIN (SPECTOR) ]] --
+local function AddSpector()
+    local reset = Instance.new("TextButton", TabMain)
+    reset.Size = UDim2.new(1, 0, 0, 35)
+    reset.Text = "Reset Camera"
+    reset.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
+    reset.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Instance.new("UICorner", reset)
+    reset.MouseButton1Click:Connect(function() workspace.CurrentCamera.CameraSubject = lp.Character.Humanoid end)
+
+    for _, p in pairs(Players:GetPlayers()) do
+        if p ~= lp then
+            local b = Instance.new("TextButton", TabMain)
+            b.Size = UDim2.new(1, 0, 0, 35)
+            b.Text = "Spectate: " .. p.DisplayName
+            b.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+            b.TextColor3 = Color3.fromRGB(255, 255, 255)
+            Instance.new("UICorner", b)
+            b.MouseButton1Click:Connect(function() workspace.CurrentCamera.CameraSubject = p.Character.Humanoid end)
+        end
+    end
 end
+AddSpector()
 
--- [[ ДЕМОНИЧЕСКИЙ ФАРМ ИВЕНТОВ ]] --
-AddToggle(TabEvents, "Arcade: Auto Collect Joypads", function(v)
-    _G.ArcadeFarm = v
-    while _G.ArcadeFarm do task.wait(0.1)
-        -- Тут логика поиска джойстиков на карте
-        print("Collecting Arcade items...")
-    end
-end)
-
-AddToggle(TabEvents, "Fire vs Water: Under-Map (800 Speed)", function(v)
-    _G.FvW_Demon = v
-    if v then
-        local humanoid = lp.Character.Humanoid
-        humanoid.WalkSpeed = 800
-        -- Включаем полет под картой
-    else
-        lp.Character.Humanoid.WalkSpeed = 16
-    end
-end)
-
-AddToggle(TabEvents, "Phantom & Valentine: Auto Machine", function(v)
-    _G.AutoMachineUnder = v
-end)
-
--- [[ РАЗДЕЛ SCRIPTS (ТВОИ ЛЮБИМЫЕ) ]] --
+-- [[ ФУНКЦИИ SCRIPTS ]] --
 local function AddScript(name, url)
     local b = Instance.new("TextButton", TabScripts)
-    b.Size = UDim2.new(1, -15, 0, 40)
+    b.Size = UDim2.new(1, 0, 0, 40)
     b.Text = name
-    b.BackgroundColor3 = Color3.fromRGB(45, 0, 0) -- Демонический красный
+    b.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
     b.TextColor3 = Color3.fromRGB(255, 255, 255)
     Instance.new("UICorner", b)
     b.MouseButton1Click:Connect(function()
@@ -129,27 +134,19 @@ AddScript("Escape Tsunami (Dark Hub)", "https://github.com/OxyCoder32/Crackers/r
 AddScript("Be a Lucky Block", "https://raw.githubusercontent.com/gumanba/Scripts/main/BeaLuckyBlock")
 AddScript("Fly for Brainrots", "https://raw.githubusercontent.com/gumanba/Scripts/main/FlyforBrainrots")
 
--- [[ OTHERS ]] --
-AddToggle(TabOthers, "Anti-Ragdoll", function(v)
-    lp.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, not v)
-end)
-AddToggle(TabOthers, "Infinite Jump", function(v) _G.InfJ = v end)
-
--- Прыжок
-UserInputService.JumpRequest:Connect(function()
-    if _G.InfJ then lp.Character.Humanoid:ChangeState("Jumping") end
-end)
-
--- Кнопка открытия
+-- КНОПКА DH
 local Tog = Instance.new("TextButton", Gui)
-Tog.Size = UDim2.new(0, 50, 0, 50)
+Tog.Size = UDim2.new(0, 45, 0, 45)
 Tog.Position = UDim2.new(0, 10, 0.5, 0)
 Tog.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-Tog.Text = "DEMON"
-Tog.TextColor3 = Color3.fromRGB(255, 0, 0)
+Tog.Text = "DH"
+Tog.TextColor3 = Color3.fromRGB(255, 255, 255)
 Instance.new("UICorner", Tog).CornerRadius = UDim.new(1, 0)
 Tog.MouseButton1Click:Connect(function() Main.Visible = not Main.Visible end)
 
 -- ЗАПУСК
-Main.Visible = true
-TabMain.Visible = true
+task.spawn(function()
+    StartLoader()
+    Main.Visible = true
+    TabMain.Visible = true
+end)
