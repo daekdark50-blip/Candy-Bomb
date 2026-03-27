@@ -1,8 +1,9 @@
--- [[ DARK HUB V34 | CLEAN EDITION ]] --
--- [[ ONLY MAIN & SCRIPTS | AK ADMIN HEADER ]] --
+-- [[ DARK HUB V34 | FINAL LOADER EDITION ]] --
+-- [[ AK ADMIN | TSUNAMI LOAD FIXED ]] --
 
 local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
+local TweenService = game:GetService("TweenService")
 local lp = Players.LocalPlayer
 
 if CoreGui:FindFirstChild("DarkHubV34") then CoreGui.DarkHubV34:Destroy() end
@@ -10,40 +11,68 @@ if CoreGui:FindFirstChild("DarkHubV34") then CoreGui.DarkHubV34:Destroy() end
 local Gui = Instance.new("ScreenGui", CoreGui)
 Gui.Name = "DarkHubV34"
 
--- [[ 1. ЧЕРНОЕ ОКНО ЗАГРУЗКИ ]] --
+-- [[ 1. ПОЛНОЭКРАННАЯ ЗАГРУЗКА ]] --
 local function StartLoader()
-    local L = Instance.new("Frame", Gui)
-    L.Size = UDim2.new(1, 0, 1, 0)
-    L.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-    L.ZIndex = 10
+    local LoaderFrame = Instance.new("Frame", Gui)
+    LoaderFrame.Size = UDim2.new(1, 0, 1, 0)
+    LoaderFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    LoaderFrame.ZIndex = 100
 
-    local T = Instance.new("TextLabel", L)
-    T.Size = UDim2.new(1, 0, 1, 0)
-    T.Text = "loading dark hub v34..."
-    T.TextColor3 = Color3.fromRGB(255, 255, 255)
-    T.Font = Enum.Font.GothamBold
-    T.TextSize = 30
-    T.BackgroundTransparency = 1
+    local Text = Instance.new("TextLabel", LoaderFrame)
+    Text.Size = UDim2.new(1, 0, 0, 50)
+    Text.Position = UDim2.new(0, 0, 0.45, 0)
+    Text.Text = "loading dark hub v34..."
+    Text.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Text.Font = Enum.Font.GothamBold
+    Text.TextSize = 28
+    Text.BackgroundTransparency = 1
+    Text.TextTransparency = 1
 
-    task.wait(2)
-    L:Destroy()
+    local BarBack = Instance.new("Frame", LoaderFrame)
+    BarBack.Size = UDim2.new(0, 300, 0, 4)
+    BarBack.Position = UDim2.new(0.5, -150, 0.55, 0)
+    BarBack.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    BarBack.BorderSizePixel = 0
+    BarBack.BackgroundTransparency = 1
+
+    local BarFill = Instance.new("Frame", BarBack)
+    BarFill.Size = UDim2.new(0, 0, 1, 0)
+    BarFill.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    BarFill.BorderSizePixel = 0
+
+    -- Анимация появления
+    TweenService:Create(Text, TweenInfo.new(1), {TextTransparency = 0}):Play()
+    TweenService:Create(BarBack, TweenInfo.new(1), {BackgroundTransparency = 0}):Play()
+    task.wait(1)
+
+    -- Анимация загрузки
+    BarFill:TweenSize(UDim2.new(1, 0, 1, 0), "Out", "Quad", 2)
+    task.wait(2.2)
+
+    -- Исчезновение
+    TweenService:Create(LoaderFrame, TweenInfo.new(0.5), {BackgroundTransparency = 1}):Play()
+    TweenService:Create(Text, TweenInfo.new(0.5), {TextTransparency = 1}):Play()
+    TweenService:Create(BarBack, TweenInfo.new(0.5), {BackgroundTransparency = 1}):Play()
+    TweenService:Create(BarFill, TweenInfo.new(0.5), {BackgroundTransparency = 1}):Play()
+    
+    task.wait(0.5)
+    LoaderFrame:Destroy()
 end
 
--- [[ 2. ОСНОВНОЕ МЕНЮ ]] --
+-- [[ 2. ГЛАВНОЕ МЕНЮ (AK ADMIN) ]] --
 local Main = Instance.new("Frame", Gui)
 Main.Size = UDim2.new(0, 500, 0, 350)
 Main.Position = UDim2.new(0.5, -250, 0.5, -175)
-Main.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-Main.BorderSizePixel = 0
+Main.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
 Main.Visible = false
 Main.Active = true
 Main.Draggable = true
 Instance.new("UICorner", Main)
 
--- ВЕРХНЯЯ ПАНЕЛЬ (AK ADMIN)
+-- Заголовок
 local Header = Instance.new("Frame", Main)
 Header.Size = UDim2.new(1, 0, 0, 40)
-Header.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+Header.BackgroundColor3 = Color3.fromRGB(8, 8, 8)
 Instance.new("UICorner", Header)
 
 local Title = Instance.new("TextLabel", Header)
@@ -55,16 +84,16 @@ Title.TextXAlignment = "Left"
 Title.Font = Enum.Font.GothamBold
 Title.BackgroundTransparency = 1
 
--- НАВИГАЦИЯ (2 ВКЛАДКИ)
+-- Контейнер для вкладок
 local Side = Instance.new("Frame", Main)
-Side.Size = UDim2.new(0, 140, 1, -50)
-Side.Position = UDim2.new(0, 5, 0, 45)
+Side.Size = UDim2.new(0, 130, 1, -50)
+Side.Position = UDim2.new(0, 10, 0, 45)
 Side.BackgroundTransparency = 1
 Instance.new("UIListLayout", Side).Padding = UDim.new(0, 5)
 
 local Container = Instance.new("Frame", Main)
-Container.Size = UDim2.new(1, -160, 1, -55)
-Container.Position = UDim2.new(0, 150, 0, 45)
+Container.Size = UDim2.new(1, -160, 1, -60)
+Container.Position = UDim2.new(0, 150, 0, 50)
 Container.BackgroundTransparency = 1
 
 local function CreateTab(name)
@@ -76,10 +105,10 @@ local function CreateTab(name)
     Instance.new("UIListLayout", p).Padding = UDim.new(0, 8)
 
     local b = Instance.new("TextButton", Side)
-    b.Size = UDim2.new(1, 0, 0, 40)
+    b.Size = UDim2.new(1, 0, 0, 35)
     b.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
     b.Text = name
-    b.TextColor3 = Color3.fromRGB(255, 255, 255)
+    b.TextColor3 = Color3.fromRGB(200, 200, 200)
     b.Font = Enum.Font.GothamBold
     Instance.new("UICorner", b)
     
@@ -93,15 +122,18 @@ end
 local TabMain = CreateTab("MAIN")
 local TabScripts = CreateTab("SCRIPTS")
 
--- [[ ФУНКЦИИ MAIN (SPECTOR) ]] --
-local function AddSpector()
-    local reset = Instance.new("TextButton", TabMain)
-    reset.Size = UDim2.new(1, 0, 0, 35)
-    reset.Text = "Reset Camera"
-    reset.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
-    reset.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Instance.new("UICorner", reset)
-    reset.MouseButton1Click:Connect(function() workspace.CurrentCamera.CameraSubject = lp.Character.Humanoid end)
+-- [[ MAIN: SPECTRATE ]] --
+local function UpdateSpectate()
+    TabMain:ClearAllChildren()
+    Instance.new("UIListLayout", TabMain).Padding = UDim.new(0, 8)
+
+    local res = Instance.new("TextButton", TabMain)
+    res.Size = UDim2.new(1, 0, 0, 35)
+    res.Text = "Reset Camera"
+    res.BackgroundColor3 = Color3.fromRGB(80, 0, 0)
+    res.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Instance.new("UICorner", res)
+    res.MouseButton1Click:Connect(function() workspace.CurrentCamera.CameraSubject = lp.Character.Humanoid end)
 
     for _, p in pairs(Players:GetPlayers()) do
         if p ~= lp then
@@ -115,9 +147,9 @@ local function AddSpector()
         end
     end
 end
-AddSpector()
+UpdateSpectate()
 
--- [[ ФУНКЦИИ SCRIPTS ]] --
+-- [[ SCRIPTS ]] --
 local function AddScript(name, url)
     local b = Instance.new("TextButton", TabScripts)
     b.Size = UDim2.new(1, 0, 0, 40)
@@ -130,11 +162,11 @@ local function AddScript(name, url)
     end)
 end
 
-AddScript("Escape Tsunami (Dark Hub)", "https://github.com/OxyCoder32/Crackers/raw/refs/heads/main/Mystrix%20Hub")
+AddScript("Escape Tsunami (Dark Hub)", "https://raw.githubusercontent.com/osakaTP2/OsakaTP2/refs/heads/main/Escape%20Tsunami%20For%20BrainrotsDelta")
 AddScript("Be a Lucky Block", "https://raw.githubusercontent.com/gumanba/Scripts/main/BeaLuckyBlock")
 AddScript("Fly for Brainrots", "https://raw.githubusercontent.com/gumanba/Scripts/main/FlyforBrainrots")
 
--- КНОПКА DH
+-- Кнопка DH
 local Tog = Instance.new("TextButton", Gui)
 Tog.Size = UDim2.new(0, 45, 0, 45)
 Tog.Position = UDim2.new(0, 10, 0.5, 0)
