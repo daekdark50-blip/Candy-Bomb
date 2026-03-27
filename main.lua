@@ -1,44 +1,39 @@
--- [[ OMNI-X HUB: ПРЯМОЙ ЗАПУСК ]] --
+-- [[ OMNI-X PRO | ENGLISH MOBILE EDITION ]] --
 local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
 local lp = Players.LocalPlayer
 
--- Очистка старых меню
-if CoreGui:FindFirstChild("SimpleHub") then CoreGui.SimpleHub:Destroy() end
+-- Clean up
+if CoreGui:FindFirstChild("OmniPro") then CoreGui.OmniPro:Destroy() end
 
 local Gui = Instance.new("ScreenGui")
-Gui.Name = "SimpleHub"
+Gui.Name = "OmniPro"
 Gui.Parent = CoreGui
+Gui.ResetOnSpawn = false
 
--- ГЛАВНОЕ ОКНО (Мрачное)
+-- [[ TOGGLE BUTTON (PLUS) ]] --
+local OpenBtn = Instance.new("TextButton")
+OpenBtn.Name = "OpenBtn"
+OpenBtn.Parent = Gui
+OpenBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+OpenBtn.Position = UDim2.new(0, 10, 0.5, -20)
+OpenBtn.Size = UDim2.new(0, 40, 0, 40)
+OpenBtn.Font = Enum.Font.GothamBold
+OpenBtn.Text = "+"
+OpenBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+OpenBtn.TextSize = 30
+Instance.new("UICorner", OpenBtn).CornerRadius = UDim.new(1, 0)
+
+-- [[ MAIN PANEL ]] --
 local Main = Instance.new("Frame")
 Main.Name = "Main"
 Main.Parent = Gui
-Main.BackgroundColor3 = Color3.fromRGB(10, 10, 10) -- Черный
-Main.BorderSizePixel = 2
-Main.BorderColor3 = Color3.fromRGB(200, 0, 0) -- Красная обводка
-Main.Position = UDim2.new(0.5, -125, 0.5, -150)
-Main.Size = UDim2.new(0, 250, 0, 300)
+Main.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+Main.BorderSizePixel = 0
+Main.Position = UDim2.new(0.5, -125, 0.5, -140)
+Main.Size = UDim2.new(0, 250, 0, 280)
+Main.Visible = false
 Main.Active = true
-Main.Draggable = true -- Можно двигать на телефоне
+Main.Draggable = true -- Mobile friendly drag
 
-local Corner = Instance.new("UICorner")
-Corner.CornerRadius = UDim.new(0, 8)
-Corner.Parent = Main
-
--- ЗАГОЛОВОК
-local Title = Instance.new("TextLabel")
-Title.Parent = Main
-Title.Size = UDim2.new(1, 0, 0, 35)
-Title.BackgroundColor3 = Color3.fromRGB(30, 0, 0)
-Title.Text = "OMNI-X | ТЕЛЕФОН"
-Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-Title.Font = Enum.Font.GothamBold
-Title.TextSize = 14
-
--- СПИСОК КНОПОК
-local List = Instance.new("ScrollingFrame")
-List.Parent = Main
-List.Position = UDim2.new(0, 10, 0, 45)
-List.Size = UDim2.new(1, -20, 1, -55)
-List.Background
+local Corner = Instance.new("UICorner", Main)
