@@ -1,18 +1,18 @@
--- [[ OMNI-X HUB V6 | CUSTOM PLACES EDITION ]] --
+-- [[ OMNI-X HUB V7 | FLY & FULL INVIS ]] --
 local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
+local RunService = game:GetService("RunService")
 local lp = Players.LocalPlayer
 
 -- Cleanup
-if CoreGui:FindFirstChild("OmniHubV6") then CoreGui.OmniHubV6:Destroy() end
+if CoreGui:FindFirstChild("OmniHubV7") then CoreGui.OmniHubV7:Destroy() end
 
 local Gui = Instance.new("ScreenGui")
-Gui.Name = "OmniHubV6"
+Gui.Name = "OmniHubV7"
 Gui.Parent = CoreGui
 Gui.ResetOnSpawn = false
-Gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
--- [[ КНОПКА ПЛЮСИК [+] ]] --
+-- [[ КНОПКА [+] ]] --
 local Toggle = Instance.new("TextButton")
 Toggle.Parent = Gui
 Toggle.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
@@ -36,7 +36,7 @@ Main.Active = true
 Main.Draggable = true
 Instance.new("UICorner", Main)
 
--- [[ НАВИГАЦИЯ (ВКЛАДКИ) ]] --
+-- [[ НАВИГАЦИЯ ]] --
 local Nav = Instance.new("Frame")
 Nav.Size = UDim2.new(1, 0, 0, 35)
 Nav.BackgroundColor3 = Color3.fromRGB(25, 0, 0)
@@ -51,7 +51,6 @@ local function CreateTabBtn(name, pos)
     b.Text = name
     b.TextColor3 = Color3.fromRGB(255, 255, 255)
     b.Font = Enum.Font.GothamBold
-    b.TextSize = 14
     b.Parent = Nav
     return b
 end
@@ -59,13 +58,11 @@ end
 local MainTabBtn = CreateTabBtn("MAIN", UDim2.new(0, 0, 0, 0))
 local ScriptTabBtn = CreateTabBtn("SCRIPTS", UDim2.new(0.5, 0, 0, 0))
 
--- [[ КОНТЕЙНЕРЫ ]] --
 local MainContent = Instance.new("ScrollingFrame")
 MainContent.Size = UDim2.new(1, -20, 1, -50)
 MainContent.Position = UDim2.new(0, 10, 0, 45)
 MainContent.BackgroundTransparency = 1
-MainContent.Visible = true
-MainContent.CanvasSize = UDim2.new(0, 0, 0, 350)
+MainContent.CanvasSize = UDim2.new(0, 0, 0, 400)
 MainContent.ScrollBarThickness = 0
 MainContent.Parent = Main
 
@@ -85,7 +82,7 @@ end
 SetLayout(MainContent)
 SetLayout(ScriptContent)
 
--- [[ ЛОГИКА ВКЛАДОК ]] --
+-- [[ ЛОГИКА ]] --
 Toggle.MouseButton1Click:Connect(function()
     Main.Visible = not Main.Visible
     Toggle.Text = Main.Visible and "-" or "+"
@@ -101,7 +98,6 @@ ScriptTabBtn.MouseButton1Click:Connect(function()
     ScriptContent.Visible = true
 end)
 
--- [[ ФУНКЦИЯ СОЗДАНИЯ КНОПОК ]] --
 local function AddBtn(text, parent, callback)
     local active = false
     local b = Instance.new("TextButton")
@@ -110,7 +106,6 @@ local function AddBtn(text, parent, callback)
     b.Text = text .. ": [OFF]"
     b.TextColor3 = Color3.fromRGB(200, 200, 200)
     b.Font = Enum.Font.Gotham
-    b.TextSize = 13
     b.Parent = parent
     Instance.new("UICorner", b).CornerRadius = UDim.new(0, 6)
 
@@ -122,54 +117,6 @@ local function AddBtn(text, parent, callback)
     end)
 end
 
--- [[ ВКЛАДКА: MAIN ]] --
-AddBtn("Invisible Mode", MainContent, function(state)
-    if lp.Character then
-        for _, v in pairs(lp.Character:GetDescendants()) do
-            if v:IsA("BasePart") or v:IsA("Decal") then
-                v.Transparency = state and 0.5 or 0
-            end
-        end
-    end
-end)
+-- [[ ФУНКЦИИ ]] --
 
-AddBtn("ESP (Wallhack)", MainContent, function(state)
-    for _, p in pairs(Players:GetPlayers()) do
-        if p ~= lp and p.Character then
-            if state then
-                local h = Instance.new("Highlight", p.Character)
-                h.Name = "ESP_Target"
-                h.FillColor = Color3.fromRGB(255, 0, 0)
-            else
-                if p.Character:FindFirstChild("ESP_Target") then p.Character.ESP_Target:Destroy() end
-            end
-        end
-    end
-end)
-
-AddBtn("Spectate", MainContent, function(state)
-    if state then
-        local plrs = Players:GetPlayers()
-        local t = plrs[math.random(1, #plrs)]
-        if t and t.Character and t.Character:FindFirstChild("Humanoid") then
-            workspace.CurrentCamera.CameraSubject = t.Character.Humanoid
-        end
-    else
-        workspace.CurrentCamera.CameraSubject = lp.Character.Humanoid
-    end
-end)
-
--- [[ ВКЛАДКА: SCRIPTS (ПУСТО - ДЛЯ ТВОИХ СКРИПТОВ) ]] --
-
-AddBtn("Place Script 1", ScriptContent, function(state)
-    if state then
-        -- Сюда вставь код для первого плейса
-        print("Script for Place 1 is ON")
-    else
-        print("Script for Place 1 is OFF")
-    end
-end)
-
-AddBtn("Reset Full UI", ScriptContent, function()
-    Gui:Destroy()
-end)
+-- 1. ПОЛНЫЙ ИНВИ
