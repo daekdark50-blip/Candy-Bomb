@@ -1,41 +1,37 @@
 -- [[ DARK HUB | CREATED BY DARK BY HUB ]] --
 local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
-local TS = game:GetService("TweenService")
 local lp = Players.LocalPlayer
 
-if CoreGui:FindFirstChild("DarkHubV9") then CoreGui.DarkHubV9:Destroy() end
+if CoreGui:FindFirstChild("DarkHubV11") then CoreGui.DarkHubV11:Destroy() end
 
 local Gui = Instance.new("ScreenGui", CoreGui)
-Gui.Name = "DarkHubV9"
+Gui.Name = "DarkHubV11"
 Gui.ResetOnSpawn = false
 
--- [[ СТИЛЬНАЯ ЗАГРУЗКА ]] --
+-- [[ ЗАГРУЗКА ]] --
 local LFrame = Instance.new("Frame", Gui)
 LFrame.Size = UDim2.new(0, 300, 0, 100)
 LFrame.Position = UDim2.new(0.5, -150, 0.5, -50)
 LFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-LFrame.BorderSizePixel = 0
 Instance.new("UICorner", LFrame)
 
 local LTitle = Instance.new("TextLabel", LFrame)
 LTitle.Size = UDim2.new(1, 0, 0, 40)
-LTitle.Text = "DARK HUB | NEAREST WORK"
+LTitle.Text = "DARK HUB | NEAREST WORK READY"
 LTitle.TextColor3 = Color3.fromRGB(255, 0, 0)
 LTitle.Font = Enum.Font.GothamBold
-LTitle.TextSize = 16
+LTitle.TextSize = 14
 LTitle.BackgroundTransparency = 1
 
 local LBarBg = Instance.new("Frame", LFrame)
 LBarBg.Size = UDim2.new(0.8, 0, 0, 4)
 LBarBg.Position = UDim2.new(0.1, 0, 0.7, 0)
 LBarBg.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-LBarBg.BorderSizePixel = 0
 
 local LBarFill = Instance.new("Frame", LBarBg)
 LBarFill.Size = UDim2.new(0, 0, 1, 0)
 LBarFill.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-LBarFill.BorderSizePixel = 0
 
 task.spawn(function()
     LBarFill:TweenSize(UDim2.new(1, 0, 1, 0), "Out", "Quad", 2)
@@ -55,13 +51,12 @@ Tog.TextColor3 = Color3.fromRGB(255, 0, 0)
 Tog.Font = Enum.Font.GothamBold
 Tog.Visible = false
 Instance.new("UICorner", Tog).CornerRadius = UDim.new(1, 0)
-
 task.delay(2.5, function() Tog.Visible = true end)
 
--- [[ ГЛАВНОЕ ОКНО ]] --
+-- [[ ОКНО ]] --
 local Main = Instance.new("Frame", Gui)
-Main.Size = UDim2.new(0, 400, 0, 300)
-Main.Position = UDim2.new(0.5, -200, 0.5, -150)
+Main.Size = UDim2.new(0, 420, 0, 320)
+Main.Position = UDim2.new(0.5, -210, 0.5, -160)
 Main.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 Main.Visible = false
 Main.Active = true
@@ -70,25 +65,26 @@ Instance.new("UICorner", Main)
 
 local Head = Instance.new("Frame", Main)
 Head.Size = UDim2.new(1, 0, 0, 35)
-Head.BackgroundColor3 = Color3.fromRGB(30, 0, 0)
+Head.BackgroundColor3 = Color3.fromRGB(35, 0, 0)
 Instance.new("UICorner", Head)
 
 local Title = Instance.new("TextLabel", Head)
 Title.Size = UDim2.new(1, 0, 1, 0)
 Title.Text = "Dark Hub | By Dark By Hub"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-Title.BackgroundTransparency = 1
 Title.Font = Enum.Font.GothamBold
+Title.BackgroundTransparency = 1
 
+-- Навигация
 local Nav = Instance.new("Frame", Main)
-Nav.Size = UDim2.new(0, 110, 1, -45)
+Nav.Size = UDim2.new(0, 120, 1, -45)
 Nav.Position = UDim2.new(0, 5, 0, 40)
 Nav.BackgroundTransparency = 1
-Instance.new("UIListLayout", Nav).Padding = UDim.new(0, 5)
+Instance.new("UIListLayout", Nav).Padding = UDim.new(0, 4)
 
 local Pages = Instance.new("Frame", Main)
-Pages.Size = UDim2.new(1, -125, 1, -45)
-Pages.Position = UDim2.new(0, 120, 0, 40)
+Pages.Size = UDim2.new(1, -135, 1, -45)
+Pages.Position = UDim2.new(0, 130, 0, 40)
 Pages.BackgroundTransparency = 1
 
 local function CreateTab(name)
@@ -103,7 +99,7 @@ local function CreateTab(name)
     b.Size = UDim2.new(1, 0, 0, 35)
     b.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
     b.Text = name
-    b.TextColor3 = Color3.fromRGB(200, 200, 200)
+    b.TextColor3 = Color3.fromRGB(220, 220, 220)
     b.Font = Enum.Font.GothamBold
     Instance.new("UICorner", b)
 
@@ -120,19 +116,19 @@ local TabScripts = CreateTab("SCRIPTS")
 
 Tog.MouseButton1Click:Connect(function() Main.Visible = not Main.Visible end)
 
--- Функции MAIN
+-- [ MAIN ]
 local function AddToggle(txt, parent, func)
     local act = false
     local b = Instance.new("TextButton", parent)
     b.Size = UDim2.new(1, 0, 0, 35)
     b.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     b.Text = txt .. ": OFF"
-    b.TextColor3 = Color3.fromRGB(180, 180, 180)
+    b.TextColor3 = Color3.fromRGB(200, 200, 200)
     Instance.new("UICorner", b)
     b.MouseButton1Click:Connect(function()
         act = not act
         b.Text = txt .. (act and ": ON" or ": OFF")
-        b.TextColor3 = act and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(180, 180, 180)
+        b.TextColor3 = act and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(200, 200, 200)
         func(act)
     end)
 end
@@ -161,9 +157,20 @@ AddToggle("Wallhack", TabMain, function(s)
     end
 end)
 
--- [[ SPECTATE ]] --
+-- [ SPECTATE ]
 local function Refresh()
     for _, v in pairs(TabSpec:GetChildren()) do if v:IsA("Frame") then v:Destroy() end end
+    
+    local stop = Instance.new("TextButton", TabSpec)
+    stop.Size = UDim2.new(1, 0, 0, 35)
+    stop.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
+    stop.Text = "🛑 STOP SPECTATE"
+    stop.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Instance.new("UICorner", stop)
+    stop.MouseButton1Click:Connect(function()
+        workspace.CurrentCamera.CameraSubject = lp.Character.Humanoid
+    end)
+
     for _, p in pairs(Players:GetPlayers()) do
         if p ~= lp then
             local f = Instance.new("Frame", TabSpec)
@@ -173,7 +180,7 @@ local function Refresh()
             local t = Instance.new("TextButton", f)
             t.Size = UDim2.new(1, 0, 1, 0)
             t.BackgroundTransparency = 1
-            t.Text = "Watch: " .. p.DisplayName
+            t.Text = "Spectate: " .. p.DisplayName
             t.TextColor3 = Color3.fromRGB(255, 255, 255)
             t.MouseButton1Click:Connect(function()
                 workspace.CurrentCamera.CameraSubject = p.Character.Humanoid
@@ -181,34 +188,25 @@ local function Refresh()
         end
     end
 end
-local rb = Instance.new("TextButton", TabSpec)
-rb.Size = UDim2.new(1, 0, 0, 30)
-rb.Text = "REFRESH LIST"
-rb.BackgroundColor3 = Color3.fromRGB(80, 0, 0)
-rb.TextColor3 = Color3.fromRGB(255, 255, 255)
-rb.MouseButton1Click:Connect(Refresh)
+Refresh()
 
--- [[ SCRIPTS TAB ]] --
--- 1. Скрипт на Lucky Block
-local lbBtn = Instance.new("TextButton", TabScripts)
-lbBtn.Size = UDim2.new(1, 0, 0, 40)
-lbBtn.BackgroundColor3 = Color3.fromRGB(0, 60, 150)
-lbBtn.Text = "Dark hub Be a Lucky blok script Only"
-lbBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-Instance.new("UICorner", lbBtn)
-lbBtn.MouseButton1Click:Connect(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/gumanba/Scripts/main/BeaLuckyBlock"))()
-end)
+-- [ SCRIPTS ]
+local function AddScript(name, color, code)
+    local b = Instance.new("TextButton", TabScripts)
+    b.Size = UDim2.new(1, 0, 0, 40)
+    b.BackgroundColor3 = color
+    b.Text = name
+    b.TextColor3 = Color3.fromRGB(255, 255, 255)
+    b.Font = Enum.Font.GothamBold
+    Instance.new("UICorner", b)
+    b.MouseButton1Click:Connect(function()
+        loadstring(game:HttpGet(code))()
+    end)
+end
 
--- 2. Скрипт Fly for Brainrots
-local flyBrBtn = Instance.new("TextButton", TabScripts)
-flyBrBtn.Size = UDim2.new(1, 0, 0, 40)
-flyBrBtn.BackgroundColor3 = Color3.fromRGB(50, 0, 0)
-flyBrBtn.Text = "Fly for Brainrots"
-flyBrBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-Instance.new("UICorner", flyBrBtn)
-flyBrBtn.MouseButton1Click:Connect(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/gumanba/Scripts/main/FlyforBrainrots"))()
-end)
+-- Переименовал всё под твой Dark Hub
+AddScript("Dark Hub | Be a Lucky Block", Color3.fromRGB(0, 50, 150), "https://raw.githubusercontent.com/gumanba/Scripts/main/BeaLuckyBlock")
+AddScript("Dark Hub | Fly for Brainrots", Color3.fromRGB(80, 0, 0), "https://raw.githubusercontent.com/gumanba/Scripts/main/FlyforBrainrots")
+AddScript("Dark Hub | Escape Tsunami", Color3.fromRGB(30, 30, 30), "https://script.vinzhub.com/loader")
 
 TabMain.Visible = true
