@@ -1,49 +1,57 @@
--- ПОДКЛЮЧАЕМ КОМПАКТНУЮ БИБЛИОТЕКУ
-local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
--- СОЗДАЕМ МАЛЕНЬКОЕ ОКНО
-local Window = OrionLib:MakeWindow({
-    Name = "Dark Creator", 
-    HidePremium = true, 
-    SaveConfig = false, 
-    IntroText = "Dark Hub Loading...",
-    ConfigFolder = "DarkConfig"
+local Window = Rayfield:CreateWindow({
+   Name = "Dark Creator | Candy ESP",
+   LoadingTitle = "Загрузка читов...",
+   LoadingSubtitle = "by Dark Creator",
+   ConfigurationSaving = {
+      Enabled = false
+   },
+   KeySystem = false -- Без ключей, сразу в бой!
 })
 
--- ВКЛАДКА (Сделаем её короткой)
-local Tab = Window:MakeTab({
-	Name = "ESP",
-	Icon = "rbxassetid://4483345998",
-	PremiumOnly = false
+local Tab = Window:CreateTab("Main", 4483362458) -- Красивая иконка
+
+local Section = Tab:CreateSection("Visual Functions")
+
+-- ПЕРЕМЕННАЯ ДЛЯ ПРОВЕРКИ
+local espEnabled = false
+
+Tab:CreateButton({
+   Name = "Включить Яркий ESP",
+   Callback = function()
+      espEnabled = true
+      Rayfield:Notify({
+         Title = "Dark Creator",
+         Content = "ESP Активирован! Ищи конфеты.",
+         Duration = 5,
+         Image = 4483345998,
+      })
+      
+      -- ЦИКЛ ПОДСВЕТКИ
+      task.spawn(function()
+          while espEnabled do
+              for _, v in pairs(workspace:GetDescendants()) do
+                  if v:IsA("BasePart") and (v.Name:lower():find("candy") or v.Name:lower():find("bomb")) then
+                      if not v:FindFirstChild("BrightESP") then
+                          local h = Instance.new("Highlight", v)
+                          h.Name = "BrightESP"
+                          h.FillColor = Color3.fromRGB(255, 0, 50) -- Ярко-красный
+                          h.OutlineColor = Color3.fromRGB(255, 255, 255) -- Белый контур
+                          h.FillOpacity = 0.5
+                      end
+                  end
+              end
+              task.wait(2) -- Обновляем каждые 2 секунды
+          end
+      end)
+   end,
 })
 
--- ФУНКЦИЯ ВХ
-local function doESP()
-    for _, v in pairs(workspace:GetDescendants()) do
-        if v:IsA("BasePart") and (v.Name:lower():find("candy") or v.Name:lower():find("bomb")) then
-            if not v:FindFirstChild("DarkHighlight") then
-                local h = Instance.new("Highlight", v)
-                h.Name = "DarkHighlight"
-                h.FillColor = Color3.fromRGB(255, 0, 0)
-                h.OutlineColor = Color3.fromRGB(255, 255, 255)
-            end
-        end
-    end
-end
-
--- КНОПКА
-Tab:AddButton({
-	Name = "Включить Candy ESP",
-	Callback = function()
-        doESP()
-        -- Авто-обновление каждые 5 секунд
-        task.spawn(function()
-            while true do
-                task.wait(5)
-                doESP()
-            end
-        end)
-  	end    
-})
-
-OrionLib:Init()
+Tab:CreateButton({
+   Name = "Выключить ESP",
+   Callback = function()
+      espEnabled = false
+      for _, v in pairs(workspace:GetDescendants()) do
+          if
+					
