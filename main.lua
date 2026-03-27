@@ -1,98 +1,100 @@
--- DARKHUB V4: ULTIMATE TORA CLONE (INSTANT EQUIP + DROP)
+-- DARKHUB V5: TORA IS ME CLONE (CHECKBOXES + ANCIENT)
 local Player = game.Players.LocalPlayer
 local CoreGui = game:GetService("CoreGui")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+-- Удаление старого меню
 if CoreGui:FindFirstChild("DarkHub") then CoreGui.DarkHub:Destroy() end
 
 local ScreenGui = Instance.new("ScreenGui", CoreGui)
 ScreenGui.Name = "DarkHub"
 
 local Main = Instance.new("Frame", ScreenGui)
-Main.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-Main.Size = UDim2.new(0, 190, 0, 280)
-Main.Position = UDim2.new(0.5, -95, 0.3, 0)
+Main.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+Main.Size = UDim2.new(0, 210, 0, 300)
+Main.Position = UDim2.new(0.5, -105, 0.3, 0)
 Main.Active = true
 Main.Draggable = true
-Instance.new("UICorner", Main)
+Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 8)
 
-local Flags = {ancient=false, og=false, divine=false, cash=false, upg=false, speed=false, reb=false}
+local Title = Instance.new("TextLabel", Main)
+Title.Size = UDim2.new(1, 0, 0, 30)
+Title.Text = "FLY FOR BRAINROTS"
+Title.TextColor3 = Color3.new(1, 1, 1)
+Title.Font = Enum.Font.GothamBold
+Title.TextSize = 14
+Title.BackgroundTransparency = 1
+
+local Flags = {ancient = false, og = false, divine = false, cash = false, upg = false, speed = false, reb = false}
 local BasePos = nil
 
+-- ФУНКЦИЯ СОЗДАНИЯ ГАЛОЧЕК (КАК У ТОРА)
 local function CreateToggle(name, y, key)
-    local Btn = Instance.new("TextButton", Main)
-    Btn.Size = UDim2.new(0.9, 0, 0.1, 0)
-    Btn.Position = UDim2.new(0.05, 0, y, 0)
-    Btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    Btn.Text = name
-    Btn.TextColor3 = Color3.new(1, 1, 1)
-    Btn.Font = Enum.Font.GothamBold
-    Btn.TextSize = 11
-    Instance.new("UICorner", Btn)
+    local Label = Instance.new("TextLabel", Main)
+    Label.Size = UDim2.new(0.7, 0, 0, 25)
+    Label.Position = UDim2.new(0.05, 0, 0, y)
+    Label.Text = name
+    Label.TextColor3 = Color3.new(0.8, 0.8, 0.8)
+    Label.Font = Enum.Font.Gotham
+    Label.TextSize = 13
+    Label.TextXAlignment = Enum.TextXAlignment.Left
+    Label.BackgroundTransparency = 1
 
-    Btn.MouseButton1Click:Connect(function()
+    local Box = Instance.new("TextButton", Main)
+    Box.Size = UDim2.new(0, 20, 0, 20)
+    Box.Position = UDim2.new(0.85, 0, 0, y + 2)
+    Box.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    Box.Text = ""
+    Instance.new("UICorner", Box).CornerRadius = UDim.new(0, 4)
+
+    local Check = Instance.new("TextLabel", Box)
+    Check.Size = UDim2.new(1, 0, 1, 0)
+    Check.Text = "✓"
+    Check.TextColor3 = Color3.new(1, 1, 1)
+    Check.Visible = false
+    Check.BackgroundTransparency = 1
+    Check.Font = Enum.Font.GothamBold
+
+    Box.MouseButton1Click:Connect(function()
         Flags[key] = not Flags[key]
-        Btn.BackgroundColor3 = Flags[key] and Color3.fromRGB(200, 0, 0) or Color3.fromRGB(30, 30, 30)
-        if Flags[key] then 
-            BasePos = Player.Character.HumanoidRootPart.CFrame 
+        Check.Visible = Flags[key]
+        Box.BackgroundColor3 = Flags[key] and Color3.fromRGB(200, 0, 0) or Color3.fromRGB(40, 40, 40)
+        
+        if Flags[key] and (key == "ancient" or key == "og" or key == "divine") then
+            BasePos = Player.Character.HumanoidRootPart.CFrame
         end
     end)
 end
 
--- Кнопки (Очередность как на видео)
-CreateToggle("AUTO ANCIENT", 0.08, "ancient")
-CreateToggle("AUTO OG", 0.20, "og")
-CreateToggle("AUTO DIVINE", 0.32, "divine")
-CreateToggle("COLLECT CASH", 0.44, "cash")
-CreateToggle("UPGRADE ALL", 0.56, "upg")
-CreateToggle("BUY SPEED +10", 0.68, "speed")
-CreateToggle("AUTO REBIRTH", 0.80, "reb")
+-- Список функций с галочками
+CreateToggle("Auto Ancient", 40, "ancient")
+CreateToggle("Auto OG", 70, "og")
+CreateToggle("Auto Divine", 100, "divine")
+CreateToggle("Collect Cash", 130, "cash")
+CreateToggle("Upgrade All", 160, "upg")
+CreateToggle("Buy Speed +10", 190, "speed")
+CreateToggle("Auto Rebirth", 220, "reb")
 
--- ГЛАВНЫЙ ФАРМЕР
+local Footer = Instance.new("TextLabel", Main)
+Footer.Size = UDim2.new(1, 0, 0, 25)
+Footer.Position = UDim2.new(0, 0, 1, -25)
+Footer.Text = "DarkHub: Tora IsMe"
+Footer.TextColor3 = Color3.fromRGB(200, 0, 0)
+Footer.Font = Enum.Font.GothamBold
+Footer.TextSize = 12
+Footer.BackgroundTransparency = 1
+
+-- ДВИЖОК ФАРМА
 task.spawn(function()
     while task.wait(0.01) do
         pcall(function()
-            local char = Player.Character
-            local root = char.HumanoidRootPart
-            local events = game:GetService("ReplicatedStorage"):FindFirstChild("Events")
-            
+            local root = Player.Character.HumanoidRootPart
+            local events = ReplicatedStorage:FindFirstChild("Events")
+
+            -- ФАРМ ТЕЛЕПОРТОМ (Ancient -> OG -> Divine)
             for _, v in pairs(workspace:GetDescendants()) do
                 if v:IsA("BasePart") and v.Transparency ~= 1 then
                     local n = v.Name:lower()
-                    
-                    -- Проверка флагов (Ancient, OG, Divine)
                     if (Flags.ancient and n:find("ancient")) or 
-                       (Flags.og and n:find("og")) or 
-                       (Flags.divine and n:find("divine")) then
-                        
-                        -- 1. МГНОВЕННЫЙ ТП К ОБЪЕКТУ
-                        root.CFrame = v.CFrame
-                        
-                        -- 2. ПРИНУДИТЕЛЬНОЕ КАСАНИЕ (Чтобы он взялся в руки)
-                        firetouchinterest(root, v, 0)
-                        firetouchinterest(root, v, 1)
-                        
-                        task.wait(0.05)
-                        
-                        -- 3. ТП НА БАЗУ И СБРОС
-                        if BasePos then
-                            root.CFrame = BasePos
-                            task.wait(0.05)
-                            -- Нажимаем "Drop" через сервер, как это делает Тора
-                            if events:FindFirstChild("Drop") then
-                                events.Drop:FireServer()
-                            end
-                        end
-                        break
-                    end
-                end
-            end
-            
-            -- Авто-кликеры и апгрейды
-            if events then
-                if Flags.upg then events.UpgradeAll:FireServer() end
-                if Flags.speed then events.BuySpeed:FireServer() end
-                if Flags.reb then events.Rebirth:FireServer() end
-            end
-        end)
-    end
-end)
+                       (
+                                    
