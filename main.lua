@@ -1,40 +1,35 @@
-local SolarisLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/steven9031/SolarisLib/main/source.lua"))()
+-- СОЗДАЕМ СВОЁ МЕНЮ (БЕЗ ВНЕШНИХ БИБЛИОТЕК)
+local ScreenGui = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local Title = Instance.new("TextLabel")
+local ESPButton = Instance.new("TextButton")
+local CloseButton = Instance.new("TextButton")
 
--- СОЗДАЕМ МАЛЕНЬКОЕ ОКНО (Оно в 2 раза меньше обычного)
-local Win = SolarisLib:New({
-  Name = "Dark Creator",
-  FolderToSave = "DarkStuff"
-})
+-- Настройки GUI
+ScreenGui.Name = "DarkCreatorUI"
+ScreenGui.Parent = game:GetService("CoreGui")
+ScreenGui.ResetOnSpawn = false
 
--- ВКЛАДКА
-local Tab = Win:Tab("Candy ESP")
+-- ГЛАВНОЕ ОКНО (Маленькое и стильное)
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+MainFrame.BorderSizePixel = 0
+MainFrame.Position = UDim2.new(0.5, -75, 0.5, -50)
+MainFrame.Size = UDim2.new(0, 150, 0, 100) -- В 2 раза меньше!
+MainFrame.Active = true
+MainFrame.Draggable = true -- МОЖНО ДВИГАТЬ ПАЛЬЦЕМ!
 
--- КНОПКА ВКЛЮЧЕНИЯ (Яркая и четкая)
-Tab:Button("Включить Яркий ESP", function()
-    SolarisLib:Notification("Dark Creator", "ESP Активирован! Ищи конфеты.")
-    
-    -- Цикл поиска конфет
-    task.spawn(function()
-        while true do
-            for _, v in pairs(workspace:GetDescendants()) do
-                if v:IsA("BasePart") and (v.Name:lower():find("candy") or v.Name:lower():find("bomb")) then
-                    if not v:FindFirstChild("BrightHighlight") then
-                        local h = Instance.new("Highlight", v)
-                        h.Name = "BrightHighlight"
-                        h.FillColor = Color3.fromRGB(255, 0, 50) -- Ярко-красный
-                        h.OutlineColor = Color3.fromRGB(255, 255, 255) -- Белый контур (чтобы сияло)
-                        h.FillOpacity = 0.5
-                    end
-                end
-            end
-            task.wait(3) -- Проверка каждые 3 секунды
-        end
-    end)
-end)
+-- ЗАГОЛОВОК
+Title.Name = "Title"
+Title.Parent = MainFrame
+Title.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+Title.Size = UDim2.new(1, 0, 0, 25)
+Title.Font = Enum.Font.GothamBold
+Title.Text = "Dark Creator"
+Title.TextColor3 = Color3.fromRGB(255, 0, 0)
+Title.TextSize = 14
 
--- КНОПКА ЗАКРЫТИЯ МЕНЮ
-Tab:Button("ЗАКРЫТЬ МЕНЮ", function()
-    game:GetService("CoreGui"):FindFirstChild("SolarisLib"):Destroy()
-end)
-
--- ИНСТРУКЦИЯ: Чтобы двигать меню, просто зажми верхнюю панель пальцем!
+-- КНОПКА ESP
+ESPButton.Name = "ESPButton"
+ESPButton.
