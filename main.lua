@@ -1,7 +1,5 @@
--- DARKHUB V3: TORAHUB ENGINE CLONE
+-- DARKHUB V4: ULTIMATE TORA CLONE (INSTANT EQUIP + DROP)
 local Player = game.Players.LocalPlayer
-local Character = Player.Character or Player.CharacterAdded:Wait()
-local Root = Character:WaitForChild("HumanoidRootPart")
 local CoreGui = game:GetService("CoreGui")
 
 if CoreGui:FindFirstChild("DarkHub") then CoreGui.DarkHub:Destroy() end
@@ -34,11 +32,13 @@ local function CreateToggle(name, y, key)
     Btn.MouseButton1Click:Connect(function()
         Flags[key] = not Flags[key]
         Btn.BackgroundColor3 = Flags[key] and Color3.fromRGB(200, 0, 0) or Color3.fromRGB(30, 30, 30)
-        if Flags[key] then BasePos = Root.CFrame end
+        if Flags[key] then 
+            BasePos = Player.Character.HumanoidRootPart.CFrame 
+        end
     end)
 end
 
--- Кнопки
+-- Кнопки (Очередность как на видео)
 CreateToggle("AUTO ANCIENT", 0.08, "ancient")
 CreateToggle("AUTO OG", 0.20, "og")
 CreateToggle("AUTO DIVINE", 0.32, "divine")
@@ -47,8 +47,52 @@ CreateToggle("UPGRADE ALL", 0.56, "upg")
 CreateToggle("BUY SPEED +10", 0.68, "speed")
 CreateToggle("AUTO REBIRTH", 0.80, "reb")
 
--- ГЛАВНЫЙ ФАРМ-ДВИЖОК
+-- ГЛАВНЫЙ ФАРМЕР
 task.spawn(function()
-    while task.wait(0.01) do -- Скорость как у Торы
+    while task.wait(0.01) do
         pcall(function()
+            local char = Player.Character
+            local root = char.HumanoidRootPart
+            local events = game:GetService("ReplicatedStorage"):FindFirstChild("Events")
+            
+            for _, v in pairs(workspace:GetDescendants()) do
+                if v:IsA("BasePart") and v.Transparency ~= 1 then
+                    local n = v.Name:lower()
                     
+                    -- Проверка флагов (Ancient, OG, Divine)
+                    if (Flags.ancient and n:find("ancient")) or 
+                       (Flags.og and n:find("og")) or 
+                       (Flags.divine and n:find("divine")) then
+                        
+                        -- 1. МГНОВЕННЫЙ ТП К ОБЪЕКТУ
+                        root.CFrame = v.CFrame
+                        
+                        -- 2. ПРИНУДИТЕЛЬНОЕ КАСАНИЕ (Чтобы он взялся в руки)
+                        firetouchinterest(root, v, 0)
+                        firetouchinterest(root, v, 1)
+                        
+                        task.wait(0.05)
+                        
+                        -- 3. ТП НА БАЗУ И СБРОС
+                        if BasePos then
+                            root.CFrame = BasePos
+                            task.wait(0.05)
+                            -- Нажимаем "Drop" через сервер, как это делает Тора
+                            if events:FindFirstChild("Drop") then
+                                events.Drop:FireServer()
+                            end
+                        end
+                        break
+                    end
+                end
+            end
+            
+            -- Авто-кликеры и апгрейды
+            if events then
+                if Flags.upg then events.UpgradeAll:FireServer() end
+                if Flags.speed then events.BuySpeed:FireServer() end
+                if Flags.reb then events.Rebirth:FireServer() end
+            end
+        end)
+    end
+end)
