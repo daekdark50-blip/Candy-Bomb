@@ -1,33 +1,34 @@
--- GEMINI CANDY-BOMB HUB
-local p = game.Players.LocalPlayer
-local function notify(t) 
-    game.StarterGui:SetCore("SendNotification", {Title="GEMINI HUB", Text=t, Duration=5}) 
-end
+local Kavo = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local Window = Kavo.CreateLib("Dark creator Candy esp", "DarkTheme")
 
-notify("ЗАГРУЗКА... ПОДГОТОВКА ВХ")
+local ESPTab = Window:NewTab("Candy ESP")
+local ESPSection = ESPTab:NewSection("Visuals")
 
--- 1. СКОРОСТЬ И ПРЫЖОК
-p.Character.Humanoid.WalkSpeed = 100
-p.Character.Humanoid.JumpPower = 150
-p.Character.Humanoid.UseJumpPower = true
-
--- 2. ВХ НА КОНФЕТЫ
-function applyWH()
-    for _, v in pairs(workspace:GetDescendants()) do
-        if v:IsA("BasePart") and (v.Name:lower():find("candy") or v.Name:lower():find("bomb")) then
-            if not v:FindFirstChild("GeminiESP") then
-                local h = Instance.new("Highlight", v)
-                h.Name = "GeminiESP"
-                h.FillColor = Color3.new(1, 0, 0) -- Красный цвет (бомба)
+local function applyESP()
+    for _, obj in pairs(workspace:GetDescendants()) do
+        if obj:IsA("BasePart") and (obj.Name:lower():find("candy") or obj.Name:lower():find("bomb")) then
+            if not obj:FindFirstChild("DarkESP") then
+                local h = Instance.new("Highlight", obj)
+                h.Name = "DarkESP"
+                h.FillColor = Color3.fromRGB(255, 0, 0)
                 h.FillOpacity = 0.5
             end
         end
     end
 end
 
--- Цикл обновления (чтобы ВХ не пропадало)
-task.spawn(function()
-    while task.wait(3) do pcall(applyWH) end
+ESPSection:NewButton("Включить ESP", "Подсветить конфеты", function()
+    applyESP()
+    task.spawn(function()
+        while task.wait(3) do applyESP() end
+    end)
 end)
 
-notify("ВСЁ ВКЛЮЧЕНО! ТЫ КОРОЛЬ СТОЛА")
+local SettingsTab = Window:NewTab("Settings")
+local SettingsSection = SettingsTab:NewSection("UI")
+
+SettingsSection:NewButton("Удалить Меню", "Закрыть чит", function()
+    game:GetService("CoreGui"):FindFirstChild("Dark creator Candy esp"):Destroy()
+end)
+
+game.StarterGui:SetCore("SendNotification", {Title="Dark Creator", Text="Скрипт готов!", Duration=5})
