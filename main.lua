@@ -1,51 +1,55 @@
--- 1. ЖЕСТКАЯ ОЧИСТКА ЭКРАНА
+-- ОЧИСТКА ЭКРАНА
 for _, v in pairs(game:GetService("CoreGui"):GetChildren()) do
-    if v:IsA("ScreenGui") and (v.Name == "BlackSpyGui" or v:FindFirstChild("Main")) then
-        v:Destroy()
-    end
+    if v:IsA("ScreenGui") and v.Name == "ClownStealerGui" then v:Destroy() end
 end
 
 local ScreenGui = Instance.new("ScreenGui", game:GetService("CoreGui"))
-ScreenGui.Name = "BlackSpyGui"
+ScreenGui.Name = "ClownStealerGui"
 
 local Main = Instance.new("Frame", ScreenGui)
-Main.BackgroundColor3 = Color3.fromRGB(5, 5, 5)
-Main.Size = UDim2.new(0, 160, 0, 90)
-Main.Position = UDim2.new(0.5, -80, 0.1, 0)
+Main.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+Main.Size = UDim2.new(0, 200, 0, 180)
+Main.Position = UDim2.new(0.5, -100, 0.3, 0)
 Main.Active = true
 Main.Draggable = true
 Instance.new("UICorner", Main)
 
-local Button = Instance.new("TextButton", Main)
-Button.Size = UDim2.new(0.9, 0, 0.6, 0)
-Button.Position = UDim2.new(0.05, 0, 0.2, 0)
-Button.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-Button.Text = "ФИНАЛЬНЫЙ ВЗЛОМ"
-Button.TextColor3 = Color3.new(1, 1, 1)
-Button.Font = Enum.Font.GothamBold
-Instance.new("UICorner", Button)
+local function createBtn(name, pos, color, callback)
+    local btn = Instance.new("TextButton", Main)
+    btn.Size = UDim2.new(0.9, 0, 0.25, 0)
+    btn.Position = pos
+    btn.BackgroundColor3 = color
+    btn.Text = name
+    btn.TextColor3 = Color3.new(1, 1, 1)
+    btn.Font = Enum.Font.GothamBold
+    Instance.new("UICorner", btn)
+    btn.MouseButton1Click:Connect(callback)
+    return btn
+end
 
--- ФУНКЦИЯ "ТОТАЛЬНЫЙ СКАН"
-Button.MouseButton1Click:Connect(function()
-    local count = 0
-    -- Сканируем ВООБЩЕ всё в игре (Workspace + папки)
-    for _, v in pairs(game:GetDescendants()) do
-        if v:IsA("BasePart") or v:IsA("MeshPart") then
-            -- Проверка высоты (уровень стола) и размера (конфета)
-            if v.Position.Y > 3 and v.Position.Y < 10 and v.Size.X < 6 then
-                -- Не красим себя
-                if not v:IsDescendantOf(game.Players.LocalPlayer.Character) then
-                    if not v:FindFirstChild("FinalBlack") then
-                        local h = Instance.new("Highlight", v)
-                        h.Name = "FinalBlack"
-                        h.FillColor = Color3.fromRGB(0, 0, 0) -- ЧЕРНЫЙ
-                        h.OutlineColor = Color3.fromRGB(255, 255, 255) -- БЕЛЫЙ КОНТУР
-                        h.FillOpacity = 0.8
-                        count = count + 1
-                    end
-                end
-            end
+-- 1. ТЕЛЕПОРТ К КЛОУНУ
+createBtn("ЗАБРАТЬ КЛОУНА", UDim2.new(0.05, 0, 0.05, 0), Color3.fromRGB(150, 0, 0), function()
+    local clowns = workspace:FindFirstChild("Clowns") or workspace:FindFirstChild("Pickups")
+    if clowns then
+        local target = clowns:FindFirstChildWhichIsA("BasePart") or clowns:FindFirstChildWhichIsA("Model")
+        if target then
+            local pos = target:IsA("Model") and target:GetModelCFrame() or target.CFrame
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
         end
     end
-    Button.Text = "ОБЪЕКТОВ: " .. count
+end)
+
+-- 2. ТЕЛЕПОРТ НА БАЗУ
+createBtn("ДОМОЙ (БАЗА)", UDim2.new(0.05, 0, 0.35, 0), Color3.fromRGB(0, 100, 200), function()
+    local spawnPoint = game.Players.LocalPlayer.RespawnLocation
+    if spawnPoint then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = spawnPoint.CFrame + Vector3.new(0, 3, 0)
+    end
+end)
+
+-- 3. СКОРОСТЬ + ПРЫЖОК
+createBtn("ULTRA SPEED", UDim2.new(0.05, 0, 0.65, 0), Color3.fromRGB(50, 50, 50), function()
+    local hum = game.Players.LocalPlayer.Character.Humanoid
+    hum.WalkSpeed = 100
+    hum.JumpPower = 100
 end)
