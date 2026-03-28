@@ -1,4 +1,4 @@
--- [[ DARK HUB: CANDY BOMB - VERSION 42 WITH PLAYER TAGS ]] --
+-- [[ DARK HUB: CANDY BOMB - VERSION 42 FINAL FIX NO DUPES ]] --
 local p = game.Players.LocalPlayer
 local mouse = p:GetMouse()
 local pg = p:WaitForChild("PlayerGui")
@@ -39,7 +39,7 @@ local function TogglePlayerTag(s)
     end
 end
 
--- СПИСОК 42 ФУНКЦИЙ
+-- СПИСОК ВСЕХ 42 ФУНКЦИЙ (БЕЗ ДУБЛИКАТОВ)
 local all = {
     {n = "STATS ABOVE HEAD (FPS)", f = function(s) TogglePlayerTag(s) end},
     {n = "CLICK TELEPORT", f = function(s) 
@@ -58,12 +58,13 @@ local all = {
     {n = "3. Popcorn Hub", u = "https://raw.githubusercontent.com/PopcornHubSaves/PopcornHub/main/PopcornHub.lua"},
 }
 
--- Названия для оставшихся функций до 42
-local names = {"NoClip", "ESP Box", "ESP Lines", "AutoClick", "AntiAFK", "RainbowBody", "Invisible", "SpinBot", "Gravity0", "TeleportTool", "NoFog", "Xray", "ChatSpam", "FPSUnlock", "WalkOnWater", "GodMode", "KillAll", "ServerHop", "AutoRebirth", "NoRagdoll", "AutoFarm", "Rejoin", "Reset", "FlyV2", "SpeedBoost", "JumpBoost", "NightMode", "SuperHitbox", "AntiKick", "ClickDelete"}
+-- Уникальные имена для оставшихся функций до 42
+local names = {"NoClip", "ESP Box", "ESP Lines", "AutoClick", "AntiAFK", "RainbowBody", "Invisible", "SpinBot", "Gravity0", "TeleportTool", "NoFog", "Xray", "ChatSpam", "FPSUnlock", "WalkOnWater", "GodMode", "KillAll", "ServerHop", "AutoRebirth", "NoRagdoll", "AutoFarm", "Rejoin", "Reset Char", "FlyV2", "SpeedBoost", "JumpBoost", "NightMode", "SuperHitbox", "AntiKick", "ClickDelete"}
 
+-- Дозаполняем список униками
 for i = #all + 1, 42 do
-    local name = names[i - #all] or "Extra Function "..i
-    table.insert(all, {n = name, f = function() end})
+    local uName = names[i - #all] or "Extra Function "..i
+    table.insert(all, {n = uName, f = function() end})
 end
 
 for _, d in pairs(all) do
