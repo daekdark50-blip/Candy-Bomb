@@ -1,62 +1,87 @@
--- [[ DARK HUB v41 | BLOODY TRADE PLAZA EDITION ]] --
--- [[ ALL-IN-ONE: PLUTONIUM, STALKER, AUTO-BATTLE ]] --
+-- [[ DARK HUB v42 | BLOODY PROGRESS REBIRTH ]] --
+-- [[ AK ADMIN | FULL RESTORE + BLOODY UI ]] --
 
 local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
 local TweenService = game:GetService("TweenService")
 local lp = Players.LocalPlayer
 
-if CoreGui:FindFirstChild("DarkHubV41") then CoreGui.DarkHubV41:Destroy() end
+if CoreGui:FindFirstChild("DarkHubV42") then CoreGui.DarkHubV42:Destroy() end
 
 local Gui = Instance.new("ScreenGui", CoreGui)
-Gui.Name = "DarkHubV41"
+Gui.Name = "DarkHubV42"
 
--- ТВОЯ НОВАЯ АВА (Космонавт на качелях)
-local AvatarID = "rbxassetid://13110906232" 
-
--- [[ 1. КРОВАВАЯ ЗАГРУЗКА НА ВЕСЬ ЭКРАН ]] --
+-- [[ 1. КРОВАВАЯ ЗАГРУЗКА НА ВЕСЬ ЭКРАН С ПОЛЗУНКОМ ]] --
 local function StartLoader()
     local LoaderCont = Instance.new("Frame", Gui)
     LoaderCont.Size = UDim2.new(1, 0, 1, 0)
-    LoaderCont.BackgroundColor3 = Color3.fromRGB(15, 0, 0)
-    LoaderCont.ZIndex = 1000
+    LoaderCont.BackgroundColor3 = Color3.fromRGB(15, 0, 0) -- Темно-кровавый фон
+    LoaderCont.ZIndex = 500
 
-    local BgImg = Instance.new("ImageLabel", LoaderCont)
-    BgImg.Size = UDim2.new(1, 0, 1, 0)
-    BgImg.Image = AvatarID
-    BgImg.ScaleType = Enum.ScaleType.Crop
-    BgImg.ImageTransparency = 0.5
-    BgImg.BackgroundTransparency = 1
+    -- Эффект кровавого тумана (градиент)
+    local Gradient = Instance.new("UIGradient", LoaderCont)
+    Gradient.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(100, 0, 0)),
+        ColorSequenceKeypoint.new(0.5, Color3.fromRGB(20, 0, 0)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0))
+    })
+    Gradient.Rotation = 45
 
+    -- Текст DARK HUB
     local T = Instance.new("TextLabel", LoaderCont)
-    T.Size = UDim2.new(1, 0, 0, 100)
-    T.Position = UDim2.new(0, 0, 0.45, 0)
-    T.Text = "DARK HUB V41\nNEREST READY WORK"
+    T.Size = UDim2.new(1, 0, 0, 80)
+    T.Position = UDim2.new(0, 0, 0.45, -40)
+    T.Text = "DARK HUB"
     T.TextColor3 = Color3.fromRGB(255, 0, 0)
     T.Font = Enum.Font.GothamBold
     T.TextSize = 35
     T.BackgroundTransparency = 1
-    T.ZIndex = 1001
+    T.ZIndex = 501
 
-    -- Эффект биения сердца
+    -- Контейнер для ползунка
+    local BarCont = Instance.new("Frame", LoaderCont)
+    BarCont.Size = UDim2.new(0.5, 0, 0, 10)
+    BarCont.Position = UDim2.new(0.25, 0, 0.6, 0)
+    BarCont.BackgroundColor3 = Color3.fromRGB(40, 0, 0) -- Фон ползунка
+    BarCont.ZIndex = 502
+    Instance.new("UICorner", BarCont)
+
+    -- Сама КРОВЬ (Fill)
+    local BloodFill = Instance.new("Frame", BarCont)
+    BloodFill.Size = UDim2.new(0, 0, 1, 0) -- Сначала пустой
+    BloodFill.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Яркая кровь
+    BloodFill.ZIndex = 503
+    Instance.new("UICorner", BloodFill)
+
+    -- Анимация наливания крови (заполнение ползунка)
+    TweenService:Create(BloodFill, TweenInfo.new(3, Enum.EasingStyle.Linear), {Size = UDim2.new(1, 0, 1, 0)}):Play()
+    
+    -- Пульсация текста во время загрузки
     task.spawn(function()
         while LoaderCont.Parent do
-            TweenService:Create(T, TweenInfo.new(0.6), {TextSize = 38, TextColor3 = Color3.fromRGB(150, 0, 0)}):Play()
+            TweenService:Create(T, TweenInfo.new(0.6), {TextSize = 38}):Play()
             task.wait(0.6)
-            TweenService:Create(T, TweenInfo.new(0.6), {TextSize = 35, TextColor3 = Color3.fromRGB(255, 0, 0)}):Play()
+            TweenService:Create(T, TweenInfo.new(0.6), {TextSize = 35}):Play()
             task.wait(0.6)
         end
     end)
 
-    task.wait(4)
+    task.wait(3.5) -- Ждем пока ползунок заполнится
+
+    -- Исчезновение
+    TweenService:Create(LoaderCont, TweenInfo.new(1), {BackgroundTransparency = 1}):Play()
+    TweenService:Create(T, TweenInfo.new(1), {TextTransparency = 1}):Play()
+    TweenService:Create(BarCont, TweenInfo.new(1), {BackgroundTransparency = 1}):Play()
+    TweenService:Create(BloodFill, TweenInfo.new(1), {BackgroundTransparency = 1}):Play()
+    task.wait(1)
     LoaderCont:Destroy()
 end
 
--- [[ 2. ГЛАВНОЕ МЕНЮ (BLOODY STYLE) ]] --
+-- [[ 2. ГЛАВНОЕ МЕНЮ (Bloody Style) ]] --
 local Main = Instance.new("Frame", Gui)
 Main.Size = UDim2.new(0, 520, 0, 380)
 Main.Position = UDim2.new(0.5, -260, 0.5, -190)
-Main.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+Main.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
 Main.BorderSizePixel = 0
 Main.Visible = false
 Main.Active = true
@@ -65,7 +90,7 @@ Instance.new("UICorner", Main)
 
 local Side = Instance.new("Frame", Main)
 Side.Size = UDim2.new(0, 140, 1, 0)
-Side.BackgroundColor3 = Color3.fromRGB(8, 8, 8)
+Side.BackgroundColor3 = Color3.fromRGB(5, 5, 5)
 Instance.new("UICorner", Side)
 Instance.new("UIListLayout", Side).Padding = UDim.new(0, 5)
 
@@ -82,10 +107,10 @@ local function CreateTab(name)
     p.ScrollBarThickness = 0
     Instance.new("UIListLayout", p).Padding = UDim.new(0, 8)
     local b = Instance.new("TextButton", Side)
-    b.Size = UDim2.new(1, 0, 0, 40)
-    b.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+    b.Size = UDim2.new(1, 0, 0, 35)
+    b.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     b.Text = name
-    b.TextColor3 = Color3.fromRGB(255, 255, 255)
+    b.TextColor3 = Color3.fromRGB(200, 200, 200)
     b.Font = Enum.Font.GothamBold
     Instance.new("UICorner", b)
     b.MouseButton1Click:Connect(function()
@@ -101,8 +126,15 @@ local TabAuto = CreateTab("AUTO FARM")
 
 -- [[ СТАЛКЕР СПЕКТАТОР (ИЗ СКРИНШОТОВ) ]] --
 local function BuildStalker()
+    local Title = Instance.new("TextLabel", TabMain)
+    Title.Size = UDim2.new(1, 0, 0, 30)
+    Title.Text = "PLAYER STALKER"
+    Title.TextColor3 = Color3.fromRGB(255, 0, 0)
+    Title.Font = Enum.Font.GothamBold
+    Title.BackgroundTransparency = 1
+
     local List = Instance.new("Frame", TabMain)
-    List.Size = UDim2.new(1, 0, 0, 280)
+    List.Size = UDim2.new(1, 0, 0, 250)
     List.BackgroundTransparency = 1
     Instance.new("UIListLayout", List).Padding = UDim.new(0, 5)
 
@@ -112,27 +144,21 @@ local function BuildStalker()
             if p ~= lp then
                 local f = Instance.new("Frame", List)
                 f.Size = UDim2.new(1, 0, 0, 45)
-                f.BackgroundColor3 = Color3.fromRGB(22, 22, 22)
+                f.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
                 Instance.new("UICorner", f)
                 
-                local icon = Instance.new("ImageLabel", f)
-                icon.Size = UDim2.new(0, 35, 0, 35)
-                icon.Position = UDim2.new(0, 5, 0.5, -17)
-                icon.Image = Players:GetUserThumbnailAsync(p.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
-                Instance.new("UICorner", icon).CornerRadius = UDim.new(1, 0)
-
                 local btn = Instance.new("TextButton", f)
-                btn.Size = UDim2.new(0, 70, 0, 30)
-                btn.Position = UDim2.new(1, -75, 0.5, -15)
+                btn.Size = UDim2.new(0, 70, 0, 25)
+                btn.Position = UDim2.new(1, -75, 0.5, -12)
                 btn.Text = "WATCH"
-                btn.BackgroundColor3 = Color3.fromRGB(180, 0, 0)
+                btn.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
                 btn.TextColor3 = Color3.fromRGB(255, 255, 255)
                 Instance.new("UICorner", btn)
                 btn.MouseButton1Click:Connect(function() workspace.CurrentCamera.CameraSubject = p.Character.Humanoid end)
 
                 local name = Instance.new("TextLabel", f)
                 name.Size = UDim2.new(1, -90, 1, 0)
-                name.Position = UDim2.new(0, 50, 0, 0)
+                name.Position = UDim2.new(0, 10, 0, 0)
                 name.Text = p.DisplayName.."\n@"..p.Name
                 name.TextColor3 = Color3.fromRGB(255, 255, 255)
                 name.TextXAlignment = "Left"
@@ -142,38 +168,29 @@ local function BuildStalker()
         end
     end
     update()
-    
-    local Stop = Instance.new("TextButton", TabMain)
-    Stop.Size = UDim2.new(1, 0, 0, 35)
-    Stop.Text = "STOP SPECTATE"
-    Stop.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    Stop.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Instance.new("UICorner", Stop)
-    Stop.MouseButton1Click:Connect(function() workspace.CurrentCamera.CameraSubject = lp.Character.Humanoid end)
 end
 BuildStalker()
 
--- [[ ВСЕ СКРИПТЫ + PLUTONIUM ]] --
+-- [[ ВСЕ СКРИПТЫ + LUCKY BLOCKS BATTLE ]] --
 local function AddScript(name, url)
     local b = Instance.new("TextButton", TabScripts)
     b.Size = UDim2.new(1, 0, 0, 40)
     b.Text = name
-    b.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    b.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
     b.TextColor3 = Color3.fromRGB(255, 255, 255)
     Instance.new("UICorner", b)
     b.MouseButton1Click:Connect(function() loadstring(game:HttpGet(url))() end)
 end
 
-AddScript("Plutonium (Lucky Blocks Battle)", "https://raw.githubusercontent.com/PawsThePaw/Plutonium.AA/main/Plutonium.Loader.lua")
 AddScript("Escape Tsunami", "https://raw.githubusercontent.com/osakaTP2/OsakaTP2/refs/heads/main/Escape%20Tsunami%20For%20BrainrotsDelta")
 AddScript("Fly for Brainrots", "https://raw.githubusercontent.com/gumanba/Scripts/main/FlyforBrainrots")
-AddScript("Jump to Steal Lucky Blocks", "https://raw.githubusercontent.com/gumanba/Scripts/main/JumpToStealLuckyBlocks")
+AddScript("Lucky Blocks Battle", "https://raw.githubusercontent.com/PawsThePaw/Plutonium.AA/main/Plutonium.Loader.lua")
 
--- [[ AUTO FARM (POPCORN BATTLE КЛИКЕР) ]] --
+-- [[ AUTO FARM (ДЛЯ МИНИ-ИГРЫ) ]] --
 local function AddToggle(parent, name, callback)
     local b = Instance.new("TextButton", parent)
     b.Size = UDim2.new(1, 0, 0, 40)
-    b.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    b.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
     b.Text = name .. " [ OFF ]"
     b.TextColor3 = Color3.fromRGB(255, 255, 255)
     Instance.new("UICorner", b)
@@ -186,33 +203,43 @@ local function AddToggle(parent, name, callback)
     end)
 end
 
-AddToggle(TabAuto, "Auto Popcorn Battle", function(v)
-    _G.AutoBattle = v
+AddToggle(TabAuto, "Auto Popcorn Farm", function(v)
+    _G.AutoPop = v
     task.spawn(function()
-        while _G.AutoBattle do
-            pcall(function()
-                -- Авто-кликер для кнопок в мини-игре
-                for _, x in pairs(lp.PlayerGui:GetDescendants()) do
-                    if x:IsA("TextButton") and x.Visible and (x.Name:lower():find("click") or x.Text:lower():find("click")) then
-                        firesignal(x.MouseButton1Click)
-                    end
+        while _G.AutoPop do
+            for _, o in pairs(workspace:GetDescendants()) do
+                if o.Name:lower():find("popcorn") then
+                    pcall(function() firetouchinterest(lp.Character.HumanoidRootPart, o, 0); firetouchinterest(lp.Character.HumanoidRootPart, o, 1) end)
                 end
-            end)
-            task.wait(0.05)
+            end
+            task.wait(0.1)
         end
     end)
 end)
 
--- [[ КНОПКА DH (ТВОЯ АВА) ]] --
-local Tog = Instance.new("ImageButton", Gui)
+-- [[ КНОПКА ОТКРЫТИЯ (ЧЕРНЫЙ КРУГ) ]] --
+local Tog = Instance.new("TextButton", Gui) -- ЗАМЕНЕНО НА TextButton
 Tog.Size = UDim2.new(0, 60, 0, 60)
 Tog.Position = UDim2.new(0, 10, 0.5, 0)
-Tog.Image = AvatarID
-Tog.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Tog.Text = "DH" -- Кратко Dark Hub
+Tog.TextColor3 = Color3.fromRGB(255, 255, 255)
+Tog.Font = Enum.Font.GothamBold
+Tog.TextSize = 20
+Tog.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- ЧИСТЫЙ ЧЕРНЫЙ
+Tog.BorderSizePixel = 0
 Instance.new("UICorner", Tog).CornerRadius = UDim.new(1, 0)
+
+-- ТОНКАЯ КРОВАВАЯ ОБВОДКА
 local S = Instance.new("UIStroke", Tog)
-S.Color = Color3.fromRGB(255, 0, 0)
+S.Color = Color3.fromRGB(200, 0, 0) -- Кроваво-красный неоновый
 S.Thickness = 3
+S.Transparency = 0.3
+
 Tog.MouseButton1Click:Connect(function() Main.Visible = not Main.Visible end)
 
-task.spawn(function() StartLoader(); Main.Visible = true; TabMain.Visible = true end)
+-- ЗАПУСК
+task.spawn(function()
+    StartLoader()
+    Main.Visible = true
+    TabMain.Visible = true
+end)
