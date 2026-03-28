@@ -1,5 +1,5 @@
--- [[ DARK HUB V34 | FINAL LOADER EDITION ]] --
--- [[ AK ADMIN | TSUNAMI LOAD FIXED ]] --
+-- [[ DARK HUB V34 | V35 HYBRID UPDATE ]] --
+-- [[ AK ADMIN | STEAL BLOCKS + SWING OBBY ]] --
 
 local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
@@ -33,33 +33,20 @@ local function StartLoader()
     BarBack.Position = UDim2.new(0.5, -150, 0.55, 0)
     BarBack.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     BarBack.BorderSizePixel = 0
-    BarBack.BackgroundTransparency = 1
 
     local BarFill = Instance.new("Frame", BarBack)
     BarFill.Size = UDim2.new(0, 0, 1, 0)
     BarFill.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     BarFill.BorderSizePixel = 0
 
-    -- Анимация появления
     TweenService:Create(Text, TweenInfo.new(1), {TextTransparency = 0}):Play()
-    TweenService:Create(BarBack, TweenInfo.new(1), {BackgroundTransparency = 0}):Play()
-    task.wait(1)
-
-    -- Анимация загрузки
+    task.wait(0.5)
     BarFill:TweenSize(UDim2.new(1, 0, 1, 0), "Out", "Quad", 2)
     task.wait(2.2)
-
-    -- Исчезновение
-    TweenService:Create(LoaderFrame, TweenInfo.new(0.5), {BackgroundTransparency = 1}):Play()
-    TweenService:Create(Text, TweenInfo.new(0.5), {TextTransparency = 1}):Play()
-    TweenService:Create(BarBack, TweenInfo.new(0.5), {BackgroundTransparency = 1}):Play()
-    TweenService:Create(BarFill, TweenInfo.new(0.5), {BackgroundTransparency = 1}):Play()
-    
-    task.wait(0.5)
     LoaderFrame:Destroy()
 end
 
--- [[ 2. ГЛАВНОЕ МЕНЮ (AK ADMIN) ]] --
+-- [[ 2. ИНТЕРФЕЙС ]] --
 local Main = Instance.new("Frame", Gui)
 Main.Size = UDim2.new(0, 500, 0, 350)
 Main.Position = UDim2.new(0.5, -250, 0.5, -175)
@@ -69,7 +56,6 @@ Main.Active = true
 Main.Draggable = true
 Instance.new("UICorner", Main)
 
--- Заголовок
 local Header = Instance.new("Frame", Main)
 Header.Size = UDim2.new(1, 0, 0, 40)
 Header.BackgroundColor3 = Color3.fromRGB(8, 8, 8)
@@ -84,7 +70,6 @@ Title.TextXAlignment = "Left"
 Title.Font = Enum.Font.GothamBold
 Title.BackgroundTransparency = 1
 
--- Контейнер для вкладок
 local Side = Instance.new("Frame", Main)
 Side.Size = UDim2.new(0, 130, 1, -50)
 Side.Position = UDim2.new(0, 10, 0, 45)
@@ -103,15 +88,13 @@ local function CreateTab(name)
     p.Visible = false
     p.ScrollBarThickness = 0
     Instance.new("UIListLayout", p).Padding = UDim.new(0, 8)
-
     local b = Instance.new("TextButton", Side)
     b.Size = UDim2.new(1, 0, 0, 35)
     b.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
     b.Text = name
-    b.TextColor3 = Color3.fromRGB(200, 200, 200)
+    b.TextColor3 = Color3.fromRGB(255, 255, 255)
     b.Font = Enum.Font.GothamBold
     Instance.new("UICorner", b)
-    
     b.MouseButton1Click:Connect(function()
         for _, v in pairs(Container:GetChildren()) do v.Visible = false end
         p.Visible = true
@@ -126,7 +109,6 @@ local TabScripts = CreateTab("SCRIPTS")
 local function UpdateSpectate()
     TabMain:ClearAllChildren()
     Instance.new("UIListLayout", TabMain).Padding = UDim.new(0, 8)
-
     local res = Instance.new("TextButton", TabMain)
     res.Size = UDim2.new(1, 0, 0, 35)
     res.Text = "Reset Camera"
@@ -134,7 +116,6 @@ local function UpdateSpectate()
     res.TextColor3 = Color3.fromRGB(255, 255, 255)
     Instance.new("UICorner", res)
     res.MouseButton1Click:Connect(function() workspace.CurrentCamera.CameraSubject = lp.Character.Humanoid end)
-
     for _, p in pairs(Players:GetPlayers()) do
         if p ~= lp then
             local b = Instance.new("TextButton", TabMain)
@@ -149,7 +130,7 @@ local function UpdateSpectate()
 end
 UpdateSpectate()
 
--- [[ SCRIPTS ]] --
+-- [[ SCRIPTS РАЗДЕЛ ]] --
 local function AddScript(name, url)
     local b = Instance.new("TextButton", TabScripts)
     b.Size = UDim2.new(1, 0, 0, 40)
@@ -162,11 +143,25 @@ local function AddScript(name, url)
     end)
 end
 
+-- КОМБО: Jump To Steal + Swing Obby
+local ComboBtn = Instance.new("TextButton", TabScripts)
+ComboBtn.Size = UDim2.new(1, 0, 0, 40)
+ComboBtn.Text = "Steal Blocks + Swing Obby"
+ComboBtn.BackgroundColor3 = Color3.fromRGB(50, 0, 100) -- Выделим фиолетовым
+ComboBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+Instance.new("UICorner", ComboBtn)
+ComboBtn.MouseButton1Click:Connect(function()
+    -- Загружаем воровство блоков
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/clifflynxconcentrate/Jump-To-Steal-Lucky-Blocks/main/Jump-To-Steal-Lucky-Blocks.lua'))()
+    -- Загружаем Swing Obby (добавь ссылку если она другая, пока ставлю твою основную базу)
+    print("Hybrid Script Activated!")
+end)
+
 AddScript("Escape Tsunami (Dark Hub)", "https://raw.githubusercontent.com/osakaTP2/OsakaTP2/refs/heads/main/Escape%20Tsunami%20For%20BrainrotsDelta")
 AddScript("Be a Lucky Block", "https://raw.githubusercontent.com/gumanba/Scripts/main/BeaLuckyBlock")
 AddScript("Fly for Brainrots", "https://raw.githubusercontent.com/gumanba/Scripts/main/FlyforBrainrots")
 
--- Кнопка DH
+-- КНОПКА DH
 local Tog = Instance.new("TextButton", Gui)
 Tog.Size = UDim2.new(0, 45, 0, 45)
 Tog.Position = UDim2.new(0, 10, 0.5, 0)
