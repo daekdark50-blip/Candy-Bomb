@@ -6,7 +6,7 @@ local G = Instance.new("ScreenGui", pg); G.Name = "DarkHubV42"; G.ResetOnSpawn =
 local M = Instance.new("Frame", G); M.Size = UDim2.new(0, 460, 0, 420); M.Position = UDim2.new(0.5, -230, 0.5, -210); M.BackgroundColor3 = Color3.fromRGB(15, 15, 15); M.Active = true; M.Draggable = true; Instance.new("UICorner", M)
 
 local Side = Instance.new("Frame", M); Side.Size = UDim2.new(0, 100, 1, 0); Side.BackgroundColor3 = Color3.new(0,0,0); Instance.new("UICorner", Side)
-local Cont = Instance.new("ScrollingFrame", M); Cont.Size = UDim2.new(1, -110, 1, -10); Cont.Position = UDim2.new(0, 105, 0, 5); Cont.BackgroundTransparency = 1; Cont.CanvasSize = UDim2.new(0, 0, 7, 0); Cont.ScrollBarThickness = 4
+local Cont = Instance.new("ScrollingFrame", M); Cont.Size = UDim2.new(1, -110, 1, -10); Cont.Position = UDim2.new(0, 105, 0, 5); Cont.BackgroundTransparency = 1; Cont.CanvasSize = UDim2.new(0, 0, 8, 0); Cont.ScrollBarThickness = 4
 Instance.new("UIListLayout", Cont).Padding = UDim.new(0, 4)
 
 local function AddB(txt, clr, cb)
@@ -20,7 +20,13 @@ for _, v in pairs(game.Players:GetPlayers()) do
     if v ~= p then AddB("WATCH: "..v.Name, Color3.fromRGB(40, 40, 40), function() workspace.CurrentCamera.CameraSubject = v.Character.Humanoid end) end
 end
 
--- [[ 2. TELEPORT LIST (ON/OFF) ]] --
+-- [[ 2. AUTO FARM (НОВОЕ ПОЛЕ) ]] --
+AddB("--- AUTO FARM ---", Color3.new(0, 0.3, 0.5), function() end)
+AddB("Mystrix Hub (Tsunami Auto)", Color3.fromRGB(0, 80, 120), function() 
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ummarxfarooq/mystrix-hub/refs/heads/main/loader"))() 
+end)
+
+-- [[ 3. TELEPORT LIST ]] --
 AddB("--- TELEPORT LIST ---", Color3.new(0, 0.4, 0), function() end)
 _G.TP_LOOP = false
 AddB("STOP TP (OFF)", Color3.fromRGB(150, 0, 0), function() _G.TP_LOOP = false end)
@@ -36,7 +42,7 @@ for _, v in pairs(game.Players:GetPlayers()) do
     end
 end
 
--- [[ 3. MAIN CHEATS ]] --
+-- [[ 4. MAIN CHEATS ]] --
 AddB("--- MAIN CHEATS ---", Color3.new(0.4, 0, 0), function() end)
 AddB("AIMBOT (BODY)", Color3.fromRGB(50, 50, 50), function()
     _G.A = not _G.A; game:GetService("RunService").RenderStepped:Connect(function()
@@ -53,7 +59,7 @@ AddB("ULTRA MOD", Color3.fromRGB(80, 0, 0), function()
     for _, x in pairs(game.Players:GetPlayers()) do if x ~= p and x.Character then x.Character.Head.Size = Vector3.new(20,20,20); x.Character.Head.CanCollide = false end end
 end)
 
--- [[ 4. 11 SCRIPTS (ТВОЯ КОЛЛЕКЦИЯ) ]] --
+-- [[ 5. 11 SCRIPTS ]] --
 AddB("--- 11 SCRIPTS ---", Color3.new(0.3, 0.3, 0.3), function() end)
 local function sc(n, u) AddB(n, Color3.fromRGB(35, 35, 35), function() loadstring(game:HttpGet(u))() end) end
 
