@@ -1,5 +1,4 @@
--- [[ DARK HUB v42 | UPDATED & OWNED BY AK ADMIN ]] --
--- [[ TOTAL BLOODY REDESIGN | STALKER RESTORED ]] --
+-- [[ DARK HUB v42 | UPDATED INVISIBLE & SPECTATE ]] --
 
 local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
@@ -11,31 +10,31 @@ if CoreGui:FindFirstChild("DarkHubV42") then CoreGui.DarkHubV42:Destroy() end
 local Gui = Instance.new("ScreenGui", CoreGui)
 Gui.Name = "DarkHubV42"
 
--- [[ 1. КРОВАВАЯ ЗАГРУЗКА (КРАСНЫЙ ЭКРАН) ]] --
+-- [[ КРОВАВАЯ ЗАГРУЗКА ]] --
 local function StartLoader()
     local LoaderCont = Instance.new("Frame", Gui)
     LoaderCont.Size = UDim2.new(1, 0, 1, 0)
-    LoaderCont.BackgroundColor3 = Color3.fromRGB(180, 0, 0) -- ЯРКО КРАСНЫЙ ЭКРАН
+    LoaderCont.BackgroundColor3 = Color3.fromRGB(200, 0, 0) 
     LoaderCont.ZIndex = 2000
 
     local T = Instance.new("TextLabel", LoaderCont)
     T.Size = UDim2.new(1, 0, 0, 100)
     T.Position = UDim2.new(0, 0, 0.4, 0)
-    T.Text = "DARK HUB V42\nUPGRADED BY AK ADMIN"
+    T.Text = "LOADING DARK HUB..."
     T.TextColor3 = Color3.fromRGB(255, 255, 255)
     T.Font = Enum.Font.GothamBold
     T.TextSize = 35
     T.BackgroundTransparency = 1
 
     local BarBack = Instance.new("Frame", LoaderCont)
-    BarBack.Size = UDim2.new(0.5, 0, 0, 15)
-    BarBack.Position = UDim2.new(0.25, 0, 0.58, 0)
-    BarBack.BackgroundColor3 = Color3.fromRGB(80, 0, 0)
+    BarBack.Size = UDim2.new(0.6, 0, 0, 15)
+    BarBack.Position = UDim2.new(0.2, 0, 0.55, 0)
+    BarBack.BackgroundColor3 = Color3.fromRGB(100, 0, 0)
     Instance.new("UICorner", BarBack)
 
     local Fill = Instance.new("Frame", BarBack)
     Fill.Size = UDim2.new(0, 0, 1, 0)
-    Fill.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- Белая кровь/заполнение на красном
+    Fill.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     Instance.new("UICorner", Fill)
 
     TweenService:Create(Fill, TweenInfo.new(3), {Size = UDim2.new(1, 0, 1, 0)}):Play()
@@ -43,12 +42,11 @@ local function StartLoader()
     LoaderCont:Destroy()
 end
 
--- [[ 2. ГЛАВНОЕ МЕНЮ ]] --
+-- [[ ОСНОВНОЕ МЕНЮ ]] --
 local Main = Instance.new("Frame", Gui)
 Main.Size = UDim2.new(0, 520, 0, 380)
 Main.Position = UDim2.new(0.5, -260, 0.5, -190)
 Main.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
-Main.BorderSizePixel = 0
 Main.Visible = false
 Main.Active = true
 Main.Draggable = true
@@ -89,20 +87,51 @@ local TabMain = CreateTab("MAIN")
 local TabScripts = CreateTab("SCRIPTS")
 local TabAuto = CreateTab("AUTO FARM")
 
--- [[ ВЕРНУЛ СПЕКТАТОР С ФОТО ]] --
-local function BuildStalker()
-    local List = Instance.new("ScrollingFrame", TabMain)
-    List.Size = UDim2.new(1, 0, 0, 280)
+-- [[ ВКЛАДКА MAIN: ИНВИЗ + СПЕКТАТОР ]] --
+local function BuildMainTab()
+    -- КНОПКА ИНВИЗА (ВКЛ/ВЫКЛ)
+    local InvBtn = Instance.new("TextButton", TabMain)
+    InvBtn.Size = UDim2.new(1, 0, 0, 40)
+    InvBtn.Text = "INVISIBLE [ OFF ]"
+    InvBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    InvBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    InvBtn.Font = Enum.Font.GothamBold
+    Instance.new("UICorner", InvBtn)
+    
+    local isInvis = false
+    InvBtn.MouseButton1Click:Connect(function()
+        isInvis = not isInvis
+        InvBtn.Text = isInvis and "INVISIBLE [ ACTIVE ]" or "INVISIBLE [ OFF ]"
+        InvBtn.BackgroundColor3 = isInvis and Color3.fromRGB(150, 0, 0) or Color3.fromRGB(40, 40, 40)
+        
+        for _, v in pairs(lp.Character:GetDescendants()) do
+            if v:IsA("BasePart") or v:IsA("Decal") then
+                if v.Name ~= "HumanoidRootPart" then
+                    v.Transparency = isInvis and 1 or 0
+                end
+            end
+        end
+    end)
+
+    -- РАЗДЕЛИТЕЛЬ
+    local Sep = Instance.new("Frame", TabMain)
+    Sep.Size = UDim2.new(1, 0, 0, 2)
+    Sep.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    Sep.BorderSizePixel = 0
+
+    -- СПИСОК ИГРОКОВ (STALKER)
+    local List = Instance.new("Frame", TabMain)
+    List.Size = UDim2.new(1, 0, 0, 240)
     List.BackgroundTransparency = 1
-    List.ScrollBarThickness = 2
-    Instance.new("UIListLayout", List).Padding = UDim.new(0, 5)
+    local layout = Instance.new("UIListLayout", List)
+    layout.Padding = UDim.new(0, 5)
 
     local function update()
         for _, v in pairs(List:GetChildren()) do if v:IsA("Frame") then v:Destroy() end end
         for _, p in pairs(Players:GetPlayers()) do
             if p ~= lp then
                 local f = Instance.new("Frame", List)
-                f.Size = UDim2.new(1, -10, 0, 50)
+                f.Size = UDim2.new(1, -5, 0, 50)
                 f.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
                 Instance.new("UICorner", f)
 
@@ -112,38 +141,38 @@ local function BuildStalker()
                 icon.Image = Players:GetUserThumbnailAsync(p.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
                 Instance.new("UICorner", icon).CornerRadius = UDim.new(1, 0)
 
-                local name = Instance.new("TextLabel", f)
-                name.Size = UDim2.new(1, -140, 1, 0)
-                name.Position = UDim2.new(0, 55, 0, 0)
-                name.Text = p.DisplayName.."\n@"..p.Name
-                name.TextColor3 = Color3.fromRGB(255, 255, 255)
-                name.TextXAlignment = "Left"
-                name.TextSize = 10
-                name.BackgroundTransparency = 1
-
                 local btn = Instance.new("TextButton", f)
-                btn.Size = UDim2.new(0, 65, 0, 30)
-                btn.Position = UDim2.new(1, -70, 0.5, -15)
+                btn.Size = UDim2.new(0, 70, 0, 30)
+                btn.Position = UDim2.new(1, -75, 0.5, -15)
                 btn.Text = "WATCH"
-                btn.BackgroundColor3 = Color3.fromRGB(180, 0, 0)
+                btn.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
                 btn.TextColor3 = Color3.fromRGB(255, 255, 255)
                 Instance.new("UICorner", btn)
                 btn.MouseButton1Click:Connect(function() workspace.CurrentCamera.CameraSubject = p.Character.Humanoid end)
+
+                local txt = Instance.new("TextLabel", f)
+                txt.Size = UDim2.new(1, -140, 1, 0)
+                txt.Position = UDim2.new(0, 55, 0, 0)
+                txt.Text = p.DisplayName.."\n@"..p.Name
+                txt.TextColor3 = Color3.fromRGB(255, 255, 255)
+                txt.TextXAlignment = "Left"
+                txt.TextSize = 10
+                txt.BackgroundTransparency = 1
             end
         end
     end
     update()
     
-    local Reset = Instance.new("TextButton", TabMain)
-    Reset.Size = UDim2.new(1, 0, 0, 35)
-    Reset.Text = "STOP SPECTATE (RESET)"
-    Reset.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    Instance.new("UICorner", Reset)
-    Reset.MouseButton1Click:Connect(function() workspace.CurrentCamera.CameraSubject = lp.Character.Humanoid end)
+    local Stop = Instance.new("TextButton", TabMain)
+    Stop.Size = UDim2.new(1, 0, 0, 35)
+    Stop.Text = "STOP SPECTATE"
+    Stop.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+    Instance.new("UICorner", Stop)
+    Stop.MouseButton1Click:Connect(function() workspace.CurrentCamera.CameraSubject = lp.Character.Humanoid end)
 end
-BuildStalker()
+BuildMainTab()
 
--- [[ ВСЕ СКРИПТЫ (7 ШТУК) ]] --
+-- [[ ВКЛАДКА SCRIPTS (8 ШТУК) ]] --
 local function AddScript(name, url)
     local b = Instance.new("TextButton", TabScripts)
     b.Size = UDim2.new(1, 0, 0, 40)
@@ -154,21 +183,21 @@ local function AddScript(name, url)
     b.MouseButton1Click:Connect(function() loadstring(game:HttpGet(url))() end)
 end
 
-AddScript("FPS Flick (NEW)", "https://api.junkie-development.de/api/v1/luascripts/public/8b5174946c76ba81d5c374bd4a69f7694d10c837e37522a04c91b2b32991e20e/download")
-AddScript("Lucky Blocks Battle (Plutonium)", "https://raw.githubusercontent.com/PawsThePaw/Plutonium.AA/main/Plutonium.Loader.lua")
-AddScript("Swing Obby Script", "https://raw.githubusercontent.com/gumanba/Scripts/main/SwingObbyforBrainrots")
-AddScript("Jump to Steal Lucky Blocks", "https://raw.githubusercontent.com/gumanba/Scripts/main/JumpToStealLuckyBlocks")
+AddScript("FPS Flick", "https://api.junkie-development.de/api/v1/luascripts/public/8b5174946c76ba81d5c374bd4a69f7694d10c837e37522a04c91b2b32991e20e/download")
+AddScript("Lucky Blocks Battle", "https://raw.githubusercontent.com/PawsThePaw/Plutonium.AA/main/Plutonium.Loader.lua")
+AddScript("Swing Obby", "https://raw.githubusercontent.com/gumanba/Scripts/main/SwingObbyforBrainrots")
+AddScript("Jump to Steal", "https://raw.githubusercontent.com/gumanba/Scripts/main/JumpToStealLuckyBlocks")
 AddScript("Escape Tsunami", "https://raw.githubusercontent.com/osakaTP2/OsakaTP2/refs/heads/main/Escape%20Tsunami%20For%20BrainrotsDelta")
 AddScript("Fly Script", "https://raw.githubusercontent.com/gumanba/Scripts/main/FlyforBrainrots")
 AddScript("Be a Lucky Block", "https://raw.githubusercontent.com/gumanba/Scripts/main/BeaLuckyBlock")
+AddScript("Remote Spy", "https://raw.githubusercontent.com/7YSeven/SimpleSpyV3/main/main.lua")
 
--- [[ КНОПКА DH ]] --
+-- [[ КНОПКА ОТКРЫТИЯ (DH) ]] --
 local Tog = Instance.new("TextButton", Gui)
 Tog.Size = UDim2.new(0, 60, 0, 60)
 Tog.Position = UDim2.new(0, 10, 0.5, 0)
 Tog.Text = "DH"
 Tog.TextColor3 = Color3.fromRGB(255, 255, 255)
-Tog.Font = Enum.Font.GothamBold
 Tog.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 Instance.new("UICorner", Tog).CornerRadius = UDim.new(1, 0)
 local S = Instance.new("UIStroke", Tog)
