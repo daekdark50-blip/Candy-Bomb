@@ -1,5 +1,5 @@
--- [[ DARK HUB V34 | V38 INDIVIDUAL SCRIPTS ]] --
--- [[ AK ADMIN | ALL LOADS SEPARATED ]] --
+-- [[ DARK HUB V34 | V40 CLEAN EDITION ]] --
+-- [[ AK ADMIN | CORRECT GUMANBA LOAD ]] --
 
 local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
@@ -11,7 +11,7 @@ if CoreGui:FindFirstChild("DarkHubV34") then CoreGui.DarkHubV34:Destroy() end
 local Gui = Instance.new("ScreenGui", CoreGui)
 Gui.Name = "DarkHubV34"
 
--- [[ 1. ФИНАЛЬНЫЙ ЛОАДЕР (v34 Style) ]] --
+-- [[ 1. ЧЕРНЫЙ ЛОАДЕР (v34) ]] --
 local function StartLoader()
     local LoaderFrame = Instance.new("Frame", Gui)
     LoaderFrame.Size = UDim2.new(1, 0, 1, 0)
@@ -127,7 +127,7 @@ local function UpdateSpectate()
 end
 UpdateSpectate()
 
--- [[ SCRIPTS: ВСЕ ССЫЛКИ ПО ПОРЯДКУ ]] --
+-- [[ SCRIPTS: ПРЯМЫЕ ЛОАДЫ ]] --
 local function AddScript(name, url)
     local b = Instance.new("TextButton", TabScripts)
     b.Size = UDim2.new(1, 0, 0, 40)
@@ -140,8 +140,8 @@ local function AddScript(name, url)
     end)
 end
 
--- Кнопки по отдельности
-AddScript("Jump to Steal Lucky Blocks", "https://raw.githubusercontent.com/clifflynxconcentrate/Jump-To-Steal-Lucky-Blocks/main/Jump-To-Steal-Lucky-Blocks.lua")
+-- Jump To Steal Lucky Blocks теперь по твоей ссылке:
+AddScript("Jump to Steal Lucky Blocks", "https://raw.githubusercontent.com/gumanba/Scripts/main/JumpToStealLuckyBlocks")
 AddScript("Swing Obby for Brainrots", "https://raw.githubusercontent.com/gumanba/Scripts/main/SwingObbyforBrainrots")
 AddScript("Escape Tsunami (Dark Hub)", "https://raw.githubusercontent.com/osakaTP2/OsakaTP2/refs/heads/main/Escape%20Tsunami%20For%20BrainrotsDelta")
 AddScript("Be a Lucky Block", "https://raw.githubusercontent.com/gumanba/Scripts/main/BeaLuckyBlock")
