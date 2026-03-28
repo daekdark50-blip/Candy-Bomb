@@ -1,20 +1,20 @@
--- [[ DARK HUB v38 | FULL CUSTOM SPECTATE ]] --
--- [[ AK ADMIN | NO MORE BLACK SQUARES ]] --
+-- [[ DARK HUB v39 | ALL FEATURES RESTORED ]] --
+-- [[ AK ADMIN | SPECTATE + POPCORN + AVATAR ]] --
 
 local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
 local TweenService = game:GetService("TweenService")
 local lp = Players.LocalPlayer
 
-if CoreGui:FindFirstChild("DarkHubV38") then CoreGui.DarkHubV38:Destroy() end
+if CoreGui:FindFirstChild("DarkHubV39") then CoreGui.DarkHubV39:Destroy() end
 
 local Gui = Instance.new("ScreenGui", CoreGui)
-Gui.Name = "DarkHubV38"
+Gui.Name = "DarkHubV39"
 
--- ТВОЯ АВА (Попробуй этот ID или вставь свой рабочий)
+-- Твоя новая ава из файлов (ID для примера, замени на свой если не грузит)
 local AvatarID = "rbxassetid://13110906232" 
 
--- [[ 1. ЗАГРУЗКА V38 ]] --
+-- [[ 1. КРАСИВАЯ ЗАГРУЗКА С АВОЙ ]] --
 local function StartLoader()
     local Loader = Instance.new("Frame", Gui)
     Loader.Size = UDim2.new(1, 0, 1, 0)
@@ -22,26 +22,26 @@ local function StartLoader()
     Loader.ZIndex = 500
 
     local Img = Instance.new("ImageLabel", Loader)
-    Img.Size = UDim2.new(0, 200, 0, 200)
-    Img.Position = UDim2.new(0.5, -100, 0.4, -100)
+    Img.Size = UDim2.new(0, 300, 0, 450)
+    Img.Position = UDim2.new(0.5, -150, 0.4, -225)
     Img.Image = AvatarID
     Img.BackgroundTransparency = 1
-    Instance.new("UICorner", Img).CornerRadius = UDim.new(1, 0)
+    Instance.new("UICorner", Img)
 
     local T = Instance.new("TextLabel", Loader)
     T.Size = UDim2.new(1, 0, 0, 50)
-    T.Position = UDim2.new(0, 0, 0.6, 0)
+    T.Position = UDim2.new(0, 0, 0.85, 0)
     T.Text = "loading dark hub script nerest ready work"
     T.TextColor3 = Color3.fromRGB(255, 255, 255)
     T.Font = Enum.Font.GothamBold
-    T.TextSize = 20
+    T.TextSize = 22
     T.BackgroundTransparency = 1
 
-    task.wait(3)
+    task.wait(3.5)
     Loader:Destroy()
 end
 
--- [[ 2. МЕНЮ ]] --
+-- [[ 2. ОСНОВНОЕ МЕНЮ ]] --
 local Main = Instance.new("Frame", Gui)
 Main.Size = UDim2.new(0, 520, 0, 380)
 Main.Position = UDim2.new(0.5, -260, 0.5, -190)
@@ -67,7 +67,7 @@ local function CreateTab(name)
     p.Size = UDim2.new(1, 0, 1, 0)
     p.BackgroundTransparency = 1
     p.Visible = false
-    p.ScrollBarThickness = 0
+    p.ScrollBarThickness = 2
     Instance.new("UIListLayout", p).Padding = UDim.new(0, 8)
     local b = Instance.new("TextButton", Side)
     b.Size = UDim2.new(1, 0, 0, 40)
@@ -87,70 +87,70 @@ local TabMain = CreateTab("MAIN")
 local TabScripts = CreateTab("SCRIPTS")
 local TabAuto = CreateTab("AUTO FARM")
 
--- [[ КРУТОЙ SPECTATE (КАК НА ВИДЕО) ]] --
+-- [[ SPECTATE (STALKER) В MAIN ]] --
 local function BuildSpectate()
-    local Title = Instance.new("TextLabel", TabMain)
-    Title.Size = UDim2.new(1, 0, 0, 30)
-    Title.Text = "STALKER / SPECTATE"
-    Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Title.Font = Enum.Font.GothamBold
-    Title.BackgroundTransparency = 1
-
     local List = Instance.new("Frame", TabMain)
-    List.Size = UDim2.new(1, 0, 0, 250)
+    List.Size = UDim2.new(1, 0, 0, 280)
     List.BackgroundTransparency = 1
     Instance.new("UIListLayout", List).Padding = UDim.new(0, 5)
 
-    local function Refresh()
-        for _, v in pairs(List:GetChildren()) do if v:IsA("Frame") then v:Destroy() end end
-        for _, p in pairs(Players:GetPlayers()) do
-            if p ~= lp then
-                local f = Instance.new("Frame", List)
-                f.Size = UDim2.new(1, 0, 0, 45)
-                f.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-                Instance.new("UICorner", f)
+    for _, p in pairs(Players:GetPlayers()) do
+        if p ~= lp then
+            local f = Instance.new("Frame", List)
+            f.Size = UDim2.new(1, 0, 0, 45)
+            f.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+            Instance.new("UICorner", f)
+            
+            local name = Instance.new("TextLabel", f)
+            name.Size = UDim2.new(1, -90, 1, 0)
+            name.Position = UDim2.new(0, 10, 0, 0)
+            name.Text = p.DisplayName .. " (@" .. p.Name .. ")"
+            name.TextColor3 = Color3.fromRGB(255, 255, 255)
+            name.TextXAlignment = "Left"
+            name.BackgroundTransparency = 1
 
-                local icon = Instance.new("ImageLabel", f)
-                icon.Size = UDim2.new(0, 35, 0, 35)
-                icon.Position = UDim2.new(0, 5, 0.5, -17)
-                icon.Image = Players:GetUserThumbnailAsync(p.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
-                Instance.new("UICorner", icon).CornerRadius = UDim.new(1, 0)
-
-                local name = Instance.new("TextLabel", f)
-                name.Size = UDim2.new(1, -100, 1, 0)
-                name.Position = UDim2.new(0, 50, 0, 0)
-                name.Text = p.DisplayName .. "\n@" .. p.Name
-                name.TextColor3 = Color3.fromRGB(255, 255, 255)
-                name.TextXAlignment = "Left"
-                name.Font = Enum.Font.Gotham
-                name.TextSize = 12
-                name.BackgroundTransparency = 1
-
-                local btn = Instance.new("TextButton", f)
-                btn.Size = UDim2.new(0, 80, 0, 30)
-                btn.Position = UDim2.new(1, -85, 0.5, -15)
-                btn.Text = "WATCH"
-                btn.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
-                btn.TextColor3 = Color3.fromRGB(255, 255, 255)
-                Instance.new("UICorner", btn)
-
-                btn.MouseButton1Click:Connect(function()
-                    workspace.CurrentCamera.CameraSubject = p.Character.Humanoid
-                end)
-            end
+            local btn = Instance.new("TextButton", f)
+            btn.Size = UDim2.new(0, 70, 0, 30)
+            btn.Position = UDim2.new(1, -75, 0.5, -15)
+            btn.Text = "WATCH"
+            btn.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
+            Instance.new("UICorner", btn)
+            btn.MouseButton1Click:Connect(function() workspace.CurrentCamera.CameraSubject = p.Character.Humanoid end)
         end
     end
-    Refresh()
-    
-    local Stop = Instance.new("TextButton", TabMain)
-    Stop.Size = UDim2.new(1, 0, 0, 40)
-    Stop.Text = "STOP SPECTATE"
-    Stop.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
-    Stop.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Instance.new("UICorner", Stop)
-    Stop.MouseButton1Click:Connect(function() workspace.CurrentCamera.CameraSubject = lp.Character.Humanoid end)
 end
 BuildSpectate()
+
+-- [[ AUTO FARM ПОПКРОН (ВЕРНУЛ!) ]] --
+local function AddToggle(parent, name, callback)
+    local b = Instance.new("TextButton", parent)
+    b.Size = UDim2.new(1, 0, 0, 40)
+    b.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    b.Text = name .. " [ OFF ]"
+    b.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Instance.new("UICorner", b)
+    local active = false
+    b.MouseButton1Click:Connect(function()
+        active = not active
+        b.Text = name .. (active and " [ ACTIVE ]" or " [ OFF ]")
+        b.TextColor3 = active and Color3.fromRGB(0, 255, 100) or Color3.fromRGB(255, 255, 255)
+        callback(active)
+    end)
+end
+
+AddToggle(TabAuto, "Auto Popcorn +99", function(v)
+    _G.AutoPop = v
+    task.spawn(function()
+        while _G.AutoPop do
+            for _, obj in pairs(workspace:GetDescendants()) do
+                if obj.Name:lower():find("popcorn") then
+                    pcall(function() firetouchinterest(lp.Character.HumanoidRootPart, obj, 0); firetouchinterest(lp.Character.HumanoidRootPart, obj, 1) end)
+                end
+            end
+            task.wait(0.1)
+        end
+    end)
+end)
 
 -- [[ SCRIPTS ВКЛАДКА ]] --
 local function AddScript(name, url)
@@ -162,13 +162,12 @@ local function AddScript(name, url)
     Instance.new("UICorner", b)
     b.MouseButton1Click:Connect(function() loadstring(game:HttpGet(url))() end)
 end
-
 AddScript("Be a Lucky Block", "https://raw.githubusercontent.com/gumanba/Scripts/main/BeaLuckyBlock")
 AddScript("Fly for Brainrots", "https://raw.githubusercontent.com/gumanba/Scripts/main/FlyforBrainrots")
 
 -- [[ КНОПКА DH (С ТВОЕЙ АВОЙ) ]] --
 local Tog = Instance.new("ImageButton", Gui)
-Tog.Size = UDim2.new(0, 55, 0, 55)
+Tog.Size = UDim2.new(0, 60, 0, 60)
 Tog.Position = UDim2.new(0, 10, 0.5, 0)
 Tog.Image = AvatarID
 Tog.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
@@ -176,7 +175,6 @@ Instance.new("UICorner", Tog).CornerRadius = UDim.new(1, 0)
 local S = Instance.new("UIStroke", Tog)
 S.Color = Color3.fromRGB(0, 255, 100)
 S.Thickness = 2
-
 Tog.MouseButton1Click:Connect(function() Main.Visible = not Main.Visible end)
 
 task.spawn(function() StartLoader(); Main.Visible = true; TabMain.Visible = true end)
