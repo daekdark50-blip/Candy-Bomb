@@ -6,7 +6,7 @@ local G = Instance.new("ScreenGui", pg); G.Name = "DarkHubV42"; G.ResetOnSpawn =
 local M = Instance.new("Frame", G); M.Size = UDim2.new(0, 460, 0, 420); M.Position = UDim2.new(0.5, -230, 0.5, -210); M.BackgroundColor3 = Color3.fromRGB(15, 15, 15); M.Active = true; M.Draggable = true; Instance.new("UICorner", M)
 
 local Side = Instance.new("Frame", M); Side.Size = UDim2.new(0, 100, 1, 0); Side.BackgroundColor3 = Color3.new(0,0,0); Instance.new("UICorner", Side)
-local Cont = Instance.new("ScrollingFrame", M); Cont.Size = UDim2.new(1, -110, 1, -10); Cont.Position = UDim2.new(0, 105, 0, 5); Cont.BackgroundTransparency = 1; Cont.CanvasSize = UDim2.new(0, 0, 9, 0); Cont.ScrollBarThickness = 4
+local Cont = Instance.new("ScrollingFrame", M); Cont.Size = UDim2.new(1, -110, 1, -10); Cont.Position = UDim2.new(0, 105, 0, 5); Cont.BackgroundTransparency = 1; Cont.CanvasSize = UDim2.new(0, 0, 10, 0); Cont.ScrollBarThickness = 4
 Instance.new("UIListLayout", Cont).Padding = UDim.new(0, 4)
 
 local function AddB(txt, clr, cb)
@@ -20,17 +20,16 @@ for _, v in pairs(game.Players:GetPlayers()) do
     if v ~= p then AddB("WATCH: "..v.Name, Color3.fromRGB(40, 40, 40), function() workspace.CurrentCamera.CameraSubject = v.Character.Humanoid end) end
 end
 
--- [[ 2. AUTO FARM (ЗДЕСЬ ТВОЙ СОЛИКС) ]] --
+-- [[ 2. AUTO FARM (Mystrix + Solix теперь вместе) ]] --
 AddB("--- AUTO FARM ---", Color3.new(0, 0.3, 0.5), function() end)
 AddB("Mystrix Hub (Tsunami Auto)", Color3.fromRGB(0, 80, 120), function() 
     loadstring(game:HttpGet("https://raw.githubusercontent.com/ummarxfarooq/mystrix-hub/refs/heads/main/loader"))() 
 end)
--- ВОТ ОН, ТВОЙ СОЛИКС!
 AddB("Solix Hub (Auto Popcorn)", Color3.fromRGB(100, 0, 200), function() 
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Dark-Sploit/SolixHub/main/EscapeTsunami.lua"))() 
 end)
 
--- [[ 3. TELEPORT LIST ]] --
+-- [[ 3. TELEPORT LIST (Теперь под авто-фармом) ]] --
 AddB("--- TELEPORT LIST ---", Color3.new(0, 0.4, 0), function() end)
 _G.TP_LOOP = false
 AddB("STOP TP (OFF)", Color3.fromRGB(150, 0, 0), function() _G.TP_LOOP = false end)
