@@ -6,11 +6,11 @@ local G = Instance.new("ScreenGui", pg); G.Name = "DarkHubV42"; G.ResetOnSpawn =
 local M = Instance.new("Frame", G); M.Size = UDim2.new(0, 460, 0, 420); M.Position = UDim2.new(0.5, -230, 0.5, -210); M.BackgroundColor3 = Color3.fromRGB(15, 15, 15); M.Active = true; M.Draggable = true; Instance.new("UICorner", M)
 
 local Side = Instance.new("Frame", M); Side.Size = UDim2.new(0, 100, 1, 0); Side.BackgroundColor3 = Color3.new(0,0,0); Instance.new("UICorner", Side)
-local Cont = Instance.new("ScrollingFrame", M); Cont.Size = UDim2.new(1, -110, 1, -10); Cont.Position = UDim2.new(0, 105, 0, 5); Cont.BackgroundTransparency = 1; Cont.CanvasSize = UDim2.new(0, 0, 8, 0); Cont.ScrollBarThickness = 4
+local Cont = Instance.new("ScrollingFrame", M); Cont.Size = UDim2.new(1, -110, 1, -10); Cont.Position = UDim2.new(0, 105, 0, 5); Cont.BackgroundTransparency = 1; Cont.CanvasSize = UDim2.new(0, 0, 9, 0); Cont.ScrollBarThickness = 4
 Instance.new("UIListLayout", Cont).Padding = UDim.new(0, 4)
 
 local function AddB(txt, clr, cb)
-    local b = Instance.new("TextButton", Cont); b.Size = UDim2.new(1, -10, 0, 35); b.Text = txt; b.BackgroundColor3 = clr; b.TextColor3 = Color3.new(1,1,1); b.Font = Enum.Font.SourceSansBold; b.TextSize = 14; Instance.new("UICorner", b); b.MouseButton1Click:Connect(cb)
+    local b = Instance.new("TextButton", Cont); b.Size = UDim2.new(1, -10, 0, 35); b.Text = txt; b.BackgroundColor3 = clr; b.TextColor3 = Color3.new(1,1,1); b.Font = Enum.Font.SourceSansBold; b.TextSize = 13; Instance.new("UICorner", b); b.MouseButton1Click:Connect(cb)
 end
 
 -- [[ 1. SPECTATE LIST ]] --
@@ -20,9 +20,14 @@ for _, v in pairs(game.Players:GetPlayers()) do
     if v ~= p then AddB("WATCH: "..v.Name, Color3.fromRGB(40, 40, 40), function() workspace.CurrentCamera.CameraSubject = v.Character.Humanoid end) end
 end
 
--- [[ 2. AUTO FARM (НОВОЕ ПОЛЕ) ]] --
-AddB("--- AUTO FARM ---", Color3.new(0, 0.3, 0.5), function() end)
-AddB("Mystrix Hub (Tsunami Auto)", Color3.fromRGB(0, 80, 120), function() 
+-- [[ 2. AUTO FARM (ЦУНАМИ СПЕЦ) ]] --
+AddB("--- AUTO FARM & MINIGAMES ---", Color3.new(0, 0.3, 0.5), function() end)
+-- ТОТ САМЫЙ СОЛИКС С ПОПКОРНОМ
+AddB("SOLIX HUB (AUTO POPCORN)", Color3.fromRGB(120, 0, 220), function() 
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Dark-Sploit/SolixHub/main/EscapeTsunami.lua"))() 
+end)
+-- АЛЬТЕРНАТИВА (MYSTRIX)
+AddB("MYSTRIX HUB (AUTO FARM)", Color3.fromRGB(0, 80, 120), function() 
     loadstring(game:HttpGet("https://raw.githubusercontent.com/ummarxfarooq/mystrix-hub/refs/heads/main/loader"))() 
 end)
 
@@ -50,19 +55,14 @@ AddB("AIMBOT (BODY)", Color3.fromRGB(50, 50, 50), function()
         if t then workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame.Position, t.Character.UpperTorso.Position) end end
     end)
 end)
-AddB("FLY HACK (OFF/ON)", Color3.fromRGB(50, 50, 50), function()
+AddB("FLY HACK", Color3.fromRGB(50, 50, 50), function()
     local r = p.Character.HumanoidRootPart; if r:FindFirstChild("DH_Fly") then r.DH_Fly:Destroy() else
     local v = Instance.new("BodyVelocity", r); v.Name = "DH_Fly"; v.MaxForce = Vector3.new(9e9, 9e9, 9e9); v.Velocity = workspace.CurrentCamera.CFrame.LookVector * 60 end
-end)
-AddB("ULTRA MOD", Color3.fromRGB(80, 0, 0), function()
-    p.Character.Humanoid.WalkSpeed = 100; for _, x in pairs(p.Character:GetDescendants()) do if x:IsA("BasePart") then x.Transparency = 0.5 end end
-    for _, x in pairs(game.Players:GetPlayers()) do if x ~= p and x.Character then x.Character.Head.Size = Vector3.new(20,20,20); x.Character.Head.CanCollide = false end end
 end)
 
 -- [[ 5. 11 SCRIPTS ]] --
 AddB("--- 11 SCRIPTS ---", Color3.new(0.3, 0.3, 0.3), function() end)
 local function sc(n, u) AddB(n, Color3.fromRGB(35, 35, 35), function() loadstring(game:HttpGet(u))() end) end
-
 sc("1. Escape Tsunami", "https://raw.githubusercontent.com/osakaTP2/OsakaTP2/refs/heads/main/Escape%20Tsunami%20For%20BrainrotsDelta")
 sc("2. Be a Lucky Block", "https://vonixehub.com/raw")
 sc("3. Jump to Steal", "https://raw.githubusercontent.com/gumanba/Scripts/main/JumpToStealLuckyBlocks")
@@ -73,7 +73,7 @@ sc("7. Lucky Battle", "https://raw.githubusercontent.com/PawsThePaw/Plutonium.AA
 sc("8. Popcorn Hub", "https://raw.githubusercontent.com/PopcornHubSaves/PopcornHub/main/PopcornHub.lua")
 sc("9. SimpleSpy V3", "https://raw.githubusercontent.com/7YSeven/SimpleSpyV3/main/main.lua")
 sc("10. Remote Spy", "https://raw.githubusercontent.com/infyiff/remoteSpy/main/main.lua")
-sc("11. Z-Hub (Private API)", "https://api.jnkie.com/api/v1/luascripts/public/1bdc51f71dbe6341881f5f1d3b1e018a30841cc093a770a03731c060e764a072/download")
+sc("11. Z-Hub (Private)", "https://api.jnkie.com/api/v1/luascripts/public/1bdc51f71dbe6341881f5f1d3b1e018a30841cc093a770a03731c060e764a072/download")
 
 local Tog = Instance.new("TextButton", G); Tog.Size = UDim2.new(0, 50, 0, 50); Tog.Position = UDim2.new(0, 10, 0.5, 0); Tog.Text = "DH"; Tog.BackgroundColor3 = Color3.new(0,0,0); Tog.TextColor3 = Color3.new(1,0,0); Instance.new("UICorner", Tog).CornerRadius = UDim.new(1,0)
 Tog.MouseButton1Click:Connect(function() M.Visible = not M.Visible end)
