@@ -1,58 +1,74 @@
--- [[ CANDY-BOMB: 20 FUNCTIONS FIXED ]] --
+-- [[ CANDY-BOMB: BLOODY FINAL EDITION ]] --
 local p = game.Players.LocalPlayer
 local pg = p:WaitForChild("PlayerGui")
 local rs = game:GetService("RunService")
 local uis = game:GetService("UserInputService")
 local ts = game:GetService("TweenService")
 
+-- Удаление дубликатов
+if pg:FindFirstChild("DarkHubV42") then pg.DarkHubV42:Destroy() end
+if pg:FindFirstChild("CandyLoading") then pg.CandyLoading:Destroy() end
+
 -- 1. КРОВАВАЯ ЗАГРУЗКА (LOADING WORK...)
 local function StartLoading()
-    local LG = Instance.new("ScreenGui", pg)
+    local LG = Instance.new("ScreenGui", pg); LG.Name = "CandyLoading"
     local MainF = Instance.new("Frame", LG); MainF.Size = UDim2.new(1,0,1,0); MainF.BackgroundColor3 = Color3.new(0,0,0); MainF.ZIndex = 100
-    local txt = Instance.new("TextLabel", MainF); txt.Size = UDim2.new(0,400,0,50); txt.Position = UDim2.new(0.5,-200,0.45,0); txt.Text = "LOADING WORK..."; txt.TextColor3 = Color3.fromRGB(200,0,0); txt.Font = Enum.Font.SourceSansBold; txt.TextSize = 35; txt.BackgroundTransparency = 1
-    local barBG = Instance.new("Frame", MainF); barBG.Size = UDim2.new(0,300,0,15); barBG.Position = UDim2.new(0.5,-150,0.55,0); barBG.BackgroundColor3 = Color3.fromRGB(30,0,0); Instance.new("UICorner", barBG)
-    local barFill = Instance.new("Frame", barBG); barFill.Size = UDim2.new(0,0,1,0); barFill.BackgroundColor3 = Color3.fromRGB(255,0,0); Instance.new("UICorner", barFill)
     
-    local tw = ts:Create(barFill, TweenInfo.new(3, Enum.EasingStyle.Linear), {Size = UDim2.new(1,0,1,0)})
+    local txt = Instance.new("TextLabel", MainF); txt.Size = UDim2.new(0,400,0,60); txt.Position = UDim2.new(0.5,-200,0.4,0); txt.Text = "LOADING WORK..."; txt.TextColor3 = Color3.fromRGB(150, 0, 0); txt.Font = Enum.Font.SourceSansBold; txt.TextSize = 50; txt.BackgroundTransparency = 1
+    
+    local barBG = Instance.new("Frame", MainF); barBG.Size = UDim2.new(0,350,0,12); barBG.Position = UDim2.new(0.5,-175,0.55,0); barBG.BackgroundColor3 = Color3.fromRGB(20,0,0); barBG.BorderSizePixel = 0; Instance.new("UICorner", barBG)
+    local barFill = Instance.new("Frame", barBG); barFill.Size = UDim2.new(0,0,1,0); barFill.BackgroundColor3 = Color3.fromRGB(180,0,0); barFill.BorderSizePixel = 0; Instance.new("UICorner", barFill)
+    
+    local tw = ts:Create(barFill, TweenInfo.new(3.5, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {Size = UDim2.new(1,0,1,0)})
     tw:Play()
-    tw.Completed:Connect(function() task.wait(0.5); LG:Destroy(); CreateCandyHub() end)
+    tw.Completed:Connect(function() 
+        task.wait(0.5)
+        LG:Destroy()
+        CreateCandyHub() 
+    end)
 end
 
 function CreateCandyHub()
     local G = Instance.new("ScreenGui", pg); G.Name = "DarkHubV42"; G.ResetOnSpawn = false
     local M = Instance.new("Frame", G); M.Size = UDim2.new(0, 560, 0, 460); M.Position = UDim2.new(0.5, -280, 0.5, -230); M.BackgroundColor3 = Color3.new(0,0,0); M.Active = true; Instance.new("UICorner", M)
 
-    -- ДВИЖЕНИЕ МЕНЮ (ПК + ТЕЛЕФОН)
+    -- Перетаскивание меню
     local dS, sP, dG; M.InputBegan:Connect(function(i) if i.UserInputType == Enum.UserInputType.MouseButton1 or i.UserInputType == Enum.UserInputType.Touch then dG = true; dS = i.Position; sP = M.Position; i.Changed:Connect(function() if i.UserInputState == Enum.UserInputState.End then dG = false end end) end end)
     uis.InputChanged:Connect(function(i) if dG and (i.UserInputType == Enum.UserInputType.MouseMovement or i.UserInputType == Enum.UserInputType.Touch) then local d = i.Position - dS; M.Position = UDim2.new(sP.X.Scale, sP.X.Offset + d.X, sP.Y.Scale, sP.Y.Offset + d.Y) end end)
 
-    -- КНОПКА ОТКРЫТИЯ
-    local Tog = Instance.new("TextButton", G); Tog.Size = UDim2.new(0, 55, 0, 55); Tog.Position = UDim2.new(0, 15, 0.5, -27); Tog.BackgroundColor3 = Color3.new(0,0,0); Tog.Text = "DH"; Tog.TextColor3 = Color3.new(1,0,0); Tog.Font = Enum.Font.SourceSansBold; Tog.TextSize = 20; Instance.new("UICorner", Tog).CornerRadius = UDim.new(1, 0)
+    -- Кнопка DH для открытия/закрытия
+    local Tog = Instance.new("TextButton", G); Tog.Size = UDim2.new(0, 50, 0, 50); Tog.Position = UDim2.new(0, 10, 0.5, -25); Tog.BackgroundColor3 = Color3.new(0,0,0); Tog.Text = "DH"; Tog.TextColor3 = Color3.fromRGB(200,0,0); Tog.Font = Enum.Font.SourceSansBold; Tog.TextSize = 20; Instance.new("UICorner", Tog).CornerRadius = UDim.new(1,0)
     Tog.MouseButton1Click:Connect(function() M.Visible = not M.Visible end)
 
-    local Side = Instance.new("Frame", M); Side.Size = UDim2.new(0, 140, 1, 0); Side.BackgroundColor3 = Color3.fromRGB(12, 12, 12); Instance.new("UICorner", Side)
+    local Side = Instance.new("Frame", M); Side.Size = UDim2.new(0, 145, 1, 0); Side.BackgroundColor3 = Color3.fromRGB(15, 15, 15); Instance.new("UICorner", Side)
     local Pages = {}
     local function CreateP(name, vis)
-        local f = Instance.new("ScrollingFrame", M); f.Size = UDim2.new(1, -155, 1, -20); f.Position = UDim2.new(0, 145, 0, 10); f.BackgroundTransparency = 1; f.Visible = vis; f.CanvasSize = UDim2.new(0, 0, 10, 0); f.ScrollBarThickness = 3
+        local f = Instance.new("ScrollingFrame", M); f.Size = UDim2.new(1, -160, 1, -20); f.Position = UDim2.new(0, 150, 0, 10); f.BackgroundTransparency = 1; f.Visible = vis; f.CanvasSize = UDim2.new(0, 0, 12, 0); f.ScrollBarThickness = 2
         Instance.new("UIListLayout", f).Padding = UDim.new(0, 5); Pages[name] = f; return f
     end
     
-    local P1 = CreateP("Scripts", true); local P2 = CreateP("MyHub", false); local P3 = CreateP("Tsunami", false)
+    local P1 = CreateP("Scripts", true); local P2 = CreateP("MyHub", false); local P3 = CreateP("AutoFarm", false)
 
     local function AddTab(txt, target)
-        local b = Instance.new("TextButton", Side); b.Size = UDim2.new(0, 130, 0, 45); b.Text = txt; b.BackgroundColor3 = Color3.fromRGB(25, 25, 25); b.TextColor3 = Color3.new(1,1,1); b.Font = Enum.Font.SourceSansBold; b.TextSize = 9; Instance.new("UICorner", b)
+        local b = Instance.new("TextButton", Side); b.Size = UDim2.new(0, 135, 0, 45); b.Text = txt; b.BackgroundColor3 = Color3.fromRGB(25, 25, 25); b.TextColor3 = Color3.new(1,1,1); b.Font = Enum.Font.SourceSansBold; b.TextSize = 9; Instance.new("UICorner", b)
         b.MouseButton1Click:Connect(function() for n, pge in pairs(Pages) do pge.Visible = (n == target) end end)
     end
-    AddTab("1. SCRIPTS", "Scripts"); AddTab("2. MY HUB", "MyHub"); AddTab("3. TSUNAMI BRAIROT", "Tsunami")
+    
+    -- Твои 3 базы
+    AddTab("1. SCRIPT GAME", "Scripts")
+    AddTab("2. MY HUB", "MyHub")
+    AddTab("3. AUTO FARM", "AutoFarm")
 
-    local function AddB(parent, txt, clr, cb)
-        local b = Instance.new("TextButton", parent); b.Size = UDim2.new(1, -10, 0, 38); b.Text = txt; b.BackgroundColor3 = clr; b.TextColor3 = Color3.new(1, 1, 1); b.Font = Enum.Font.SourceSansBold; b.TextSize = 13; Instance.new("UICorner", b); b.MouseButton1Click:Connect(cb)
+    local function AddB(pnt, txt, clr, cb)
+        local b = Instance.new("TextButton", pnt); b.Size = UDim2.new(1, -10, 0, 38); b.Text = txt; b.BackgroundColor3 = clr; b.TextColor3 = Color3.new(1, 1, 1); b.Font = Enum.Font.SourceSansBold; b.TextSize = 12; Instance.new("UICorner", b)
+        if cb then b.MouseButton1Click:Connect(cb) end
+        return b
     end
 
-    -- ВКЛАДКА 1: 11 SCRIPTS (ВОЗВРАЩЕНО)
-    local function s(n, u) AddB(P1, n, Color3.fromRGB(25,25,25), function() loadstring(game:HttpGet(u))() end) end
+    -- БАЗА 1: SCRIPT GAME (11 СКРИПТОВ)
+    local function s(n, u) AddB(P1, n, Color3.fromRGB(30,30,30), function() loadstring(game:HttpGet(u))() end) end
     s("1. Escape Tsunami", "https://raw.githubusercontent.com/osakaTP2/OsakaTP2/refs/heads/main/Escape%20Tsunami%20For%20BrainrotsDelta")
-    s("2. Lucky Block (FIX)", "https://raw.githubusercontent.com/gumanba/Scripts/main/BeALuckyBlock")
+    s("2. Lucky Block (FIXED)", "https://raw.githubusercontent.com/gumanba/Scripts/main/BeALuckyBlock")
     s("3. Popcorn Hub", "https://raw.githubusercontent.com/PopcornHubSaves/PopcornHub/main/PopcornHub.lua")
     s("4. SimpleSpy V3", "https://raw.githubusercontent.com/7YSeven/SimpleSpyV3/main/main.lua")
     s("5. Fly for Brainrots", "https://raw.githubusercontent.com/gumanba/Scripts/main/FlyforBrainrots")
@@ -61,35 +77,51 @@ function CreateCandyHub()
     s("8. Trollz Hub V2", "https://raw.githubusercontent.com/PawsThePaw/Plutonium.AA/main/Plutonium.Loader.lua")
     s("9. Lucky Battle", "https://raw.githubusercontent.com/PawsThePaw/Plutonium.AA/main/Plutonium.Loader.lua")
     s("10. Remote Spy", "https://raw.githubusercontent.com/infyiff/remoteSpy/main/main.lua")
-    s("11. Infinite Yield", "https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source")
+    s("11. Infinite Yield (Admin)", "https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source")
 
-    -- ВКЛАДКА 2: MY HUB (РОВНО 20 ФУНКЦИЙ)
-    AddB(P2, "--- STATS ---", Color3.fromRGB(100,0,0), function() end) -- 1
-    AddB(P2, "CHECK FPS", Color3.fromRGB(40,40,40), function() game:GetService("StarterGui"):SetCore("SendNotification", {Title="FPS", Text=tostring(math.floor(1/rs.RenderStepped:Wait()))}) end) -- 2
-    AddB(P2, "CHECK PING", Color3.fromRGB(40,40,40), function() game:GetService("StarterGui"):SetCore("SendNotification", {Title="Ping", Text=math.floor(p:GetNetworkPing()*1000).."ms"}) end) -- 3
-    AddB(P2, "--- MOVEMENT ---", Color3.fromRGB(100,0,0), function() end) -- 4
-    AddB(P2, "SPEED 100", Color3.fromRGB(40,40,40), function() p.Character.Humanoid.WalkSpeed = 100 end) -- 5
-    AddB(P2, "SPEED 200", Color3.fromRGB(40,40,40), function() p.Character.Humanoid.WalkSpeed = 200 end) -- 6
-    AddB(P2, "JUMP 150", Color3.fromRGB(40,40,40), function() p.Character.Humanoid.JumpPower = 150 end) -- 7
-    AddB(P2, "JUMP 300", Color3.fromRGB(40,40,40), function() p.Character.Humanoid.JumpPower = 300 end) -- 8
-    AddB(P2, "INF JUMP (ON)", Color3.fromRGB(0,120,0), function() _G.IJ=true; uis.JumpRequest:Connect(function() if _G.IJ then p.Character.Humanoid:ChangeState("Jumping") end end) end) -- 9
-    AddB(P2, "INF JUMP (OFF)", Color3.fromRGB(120,0,0), function() _G.IJ=false end) -- 10
-    AddB(P2, "NOCLIP (ON)", Color3.fromRGB(0,120,0), function() _G.NC=true; rs.Stepped:Connect(function() if _G.NC then for _,v in pairs(p.Character:GetDescendants()) do if v:IsA("BasePart") then v.CanCollide=false end end end end) end) -- 11
-    AddB(P2, "NOCLIP (OFF)", Color3.fromRGB(120,0,0), function() _G.NC=false end) -- 12
-    AddB(P2, "--- SERVER ---", Color3.fromRGB(100,0,0), function() end) -- 13
-    AddB(P2, "SERVER HOP", Color3.fromRGB(40,40,40), function() loadstring(game:HttpGet("https://raw.githubusercontent.com/EmperorsHacks/ServerHop/main/ServerHop.lua"))() end) -- 14
-    AddB(P2, "REJOIN", Color3.fromRGB(40,40,40), function() game:GetService("TeleportService"):Teleport(game.PlaceId, p) end) -- 15
-    AddB(P2, "FPS BOOSTER", Color3.fromRGB(40,40,40), function() loadstring(game:HttpGet("https://raw.githubusercontent.com/gumanba/Scripts/main/FPSBooster"))() end) -- 16
-    AddB(P2, "--- SPECTATE ---", Color3.fromRGB(100,0,0), function() end) -- 17
-    AddB(P2, "STOP WATCHING", Color3.fromRGB(150,0,0), function() workspace.CurrentCamera.CameraSubject = p.Character.Humanoid end) -- 18
-    AddB(P2, "FULL BRIGHT", Color3.fromRGB(40,40,40), function() game.Lighting.Brightness=2; game.Lighting.ClockTime=14 end) -- 19
-    AddB(P2, "RESPAWN", Color3.fromRGB(40,40,40), function() p.Character:BreakJoints() end) -- 20
+    -- БАЗА 2: MY HUB (20 ФУНКЦИЙ С ON/OFF)
+    AddB(P2, "-- STATS --", Color3.fromRGB(150,0,0))
+    AddB(P2, "CHECK FPS", Color3.fromRGB(40,40,40), function() game:GetService("StarterGui"):SetCore("SendNotification", {Title="FPS", Text=tostring(math.floor(1/rs.RenderStepped:Wait()))}) end)
+    AddB(P2, "CHECK PING", Color3.fromRGB(40,40,40), function() game:GetService("StarterGui"):SetCore("SendNotification", {Title="Ping", Text=math.floor(p:GetNetworkPing()*1000).."ms"}) end)
+    
+    AddB(P2, "-- MOVEMENT --", Color3.fromRGB(150,0,0))
+    AddB(P2, "SPEED 150", Color3.fromRGB(40,40,40), function() p.Character.Humanoid.WalkSpeed = 150 end)
+    AddB(P2, "JUMP 250", Color3.fromRGB(40,40,40), function() p.Character.Humanoid.JumpPower = 250 end)
+    
+    local ij_on = false; local ijb = AddB(P2, "INF JUMP: OFF", Color3.fromRGB(80,0,0), function() 
+        ij_on = not ij_on; ijb.Text = "INF JUMP: "..(ij_on and "ON" or "OFF"); ijb.BackgroundColor3 = (ij_on and Color3.fromRGB(0,100,0) or Color3.fromRGB(80,0,0))
+    end); uis.JumpRequest:Connect(function() if ij_on then p.Character.Humanoid:ChangeState("Jumping") end end)
 
-    -- ВКЛАДКА 3: TSUNAMI BRAIROT
-    AddB(P3, "1. MYSTRIX HUB 🔥", Color3.fromRGB(0,80,200), function() loadstring(game:HttpGet("https://raw.githubusercontent.com/ummarxfarooq/mystrix-hub/refs/heads/main/loader"))() end)
-    AddB(P3, "2. AUTO-FARM", Color3.fromRGB(0,80,200), function() loadstring(game:HttpGet("https://raw.githubusercontent.com/osakaTP2/OsakaTP2/refs/heads/main/Escape%20Tsunami%20For%20BrainrotsDelta"))() end)
-    AddB(P3, "3. GOD MODE", Color3.fromRGB(0,80,200), function() p.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Dead, false) end)
-    AddB(P3, "4. ITEM COLLECT", Color3.fromRGB(0,80,200), function() for _,v in pairs(workspace:GetChildren()) do if v:IsA("TouchTransmitter") then firetouchinterest(p.Character.HumanoidRootPart, v.Parent, 0) end end end)
+    local nc_on = false; local ncb = AddB(P2, "NOCLIP: OFF", Color3.fromRGB(80,0,0), function() 
+        nc_on = not nc_on; ncb.Text = "NOCLIP: "..(nc_on and "ON" or "OFF"); ncb.BackgroundColor3 = (nc_on and Color3.fromRGB(0,100,0) or Color3.fromRGB(80,0,0))
+    end); rs.Stepped:Connect(function() if nc_on then for _,v in pairs(p.Character:GetDescendants()) do if v:IsA("BasePart") then v.CanCollide = false end end end end)
+
+    AddB(P2, "-- SERVER --", Color3.fromRGB(150,0,0))
+    AddB(P2, "SERVER HOP", Color3.fromRGB(40,40,40), function() loadstring(game:HttpGet("https://raw.githubusercontent.com/EmperorsHacks/ServerHop/main/ServerHop.lua"))() end)
+    AddB(P2, "REJOIN", Color3.fromRGB(40,40,40), function() game:GetService("TeleportService"):Teleport(game.PlaceId, p) end)
+    AddB(P2, "RESPAWN", Color3.fromRGB(40,40,40), function() p.Character:BreakJoints() end)
+    
+    AddB(P2, "-- UTILS --", Color3.fromRGB(150,0,0))
+    local fb_on = false; local fbb = AddB(P2, "FULL BRIGHT: OFF", Color3.fromRGB(80,0,0), function() 
+        fb_on = not fb_on; fbb.Text = "FULL BRIGHT: "..(fb_on and "ON" or "OFF"); fbb.BackgroundColor3 = (fb_on and Color3.fromRGB(0,100,0) or Color3.fromRGB(80,0,0))
+        game.Lighting.Brightness = (fb_on and 2 or 1); game.Lighting.ClockTime = (fb_on and 14 or 12)
+    end)
+    
+    AddB(P2, "ANTI-AFK (ON)", Color3.fromRGB(0,100,0), function() p.Idled:Connect(function() game:GetService("VirtualUser"):CaptureController(); game:GetService("VirtualUser"):ClickButton2(Vector2.new()) end) end)
+    AddB(P2, "STOP WATCHING", Color3.fromRGB(120,0,0), function() workspace.CurrentCamera.CameraSubject = p.Character.Humanoid end)
+    
+    -- Блок слежки за игроками (занимает оставшиеся слоты до 20)
+    AddB(P2, "-- SPECTATE --", Color3.fromRGB(150,0,0))
+    for i, v in ipairs(game.Players:GetPlayers()) do
+        if v ~= p and i <= 5 then AddB(P2, "WATCH: "..v.DisplayName, Color3.fromRGB(30,30,30), function() workspace.CurrentCamera.CameraSubject = v.Character.Humanoid end) end
+    end
+
+    -- БАЗА 3: AUTO FARM
+    AddB(P3, "1. MYSTRIX HUB 🔥", Color3.fromRGB(0,50,150), function() loadstring(game:HttpGet("https://raw.githubusercontent.com/ummarxfarooq/mystrix-hub/refs/heads/main/loader"))() end)
+    AddB(P3, "2. AUTO FARM (TSUNAMI)", Color3.fromRGB(0,50,150), function() loadstring(game:HttpGet("https://raw.githubusercontent.com/osakaTP2/OsakaTP2/refs/heads/main/Escape%20Tsunami%20For%20BrainrotsDelta"))() end)
+    AddB(P3, "3. GOD MODE", Color3.fromRGB(0,50,150), function() p.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Dead, false) end)
+    AddB(P3, "4. ITEM COLLECT", Color3.fromRGB(0,50,150), function() for _,v in pairs(workspace:GetChildren()) do if v:IsA("TouchTransmitter") then firetouchinterest(p.Character.HumanoidRootPart, v.Parent, 0) end end end)
+    AddB(P3, "5. SPEED & JUMP", Color3.fromRGB(0,50,150), function() p.Character.Humanoid.WalkSpeed = 100; p.Character.Humanoid.JumpPower = 200 end)
 end
 
 StartLoading()
