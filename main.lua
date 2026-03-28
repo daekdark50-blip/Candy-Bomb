@@ -15,6 +15,8 @@ local function CreateCandyHub()
 
     -- БОКОВАЯ ПАНЕЛЬ
     local Side = Instance.new("Frame", M); Side.Size = UDim2.new(0, 120, 1, 0); Side.BackgroundColor3 = Color3.fromRGB(10, 10, 10); Instance.new("UICorner", Side)
+    local SideList = Instance.new("UIListLayout", Side); SideList.Padding = UDim.new(0, 5); SideList.HorizontalAlignment = Enum.HorizontalAlignment.Center
+
     local Pages = {}
     local function CreateP(name, vis)
         local f = Instance.new("ScrollingFrame", M); f.Size = UDim2.new(1, -130, 1, -20); f.Position = UDim2.new(0, 125, 0, 10); f.BackgroundTransparency = 1; f.Visible = vis; f.CanvasSize = UDim2.new(0, 0, 18, 0); f.ScrollBarThickness = 2
@@ -27,23 +29,41 @@ local function CreateCandyHub()
 
     -- ВКЛАДКИ
     local function AddTab(txt, target)
-        local b = Instance.new("TextButton", Side); b.Size = UDim2.new(0, 110, 0, 40); b.Text = txt; b.BackgroundColor3 = Color3.fromRGB(25, 25, 25); b.TextColor3 = Color3.new(1,1,1); b.Font = Enum.Font.SourceSansBold; b.TextSize = 8; b.TextWrapped = true; Instance.new("UICorner", b)
+        local b = Instance.new("TextButton", Side); b.Size = UDim2.new(0, 110, 0, 45); b.Text = txt; b.BackgroundColor3 = Color3.fromRGB(25, 25, 25); b.TextColor3 = Color3.new(1,1,1); b.Font = Enum.Font.SourceSansBold; b.TextSize = 8; b.TextWrapped = true; Instance.new("UICorner", b)
         b.MouseButton1Click:Connect(function() for n, pge in pairs(Pages) do pge.Visible = (n == target) end end)
     end
     AddTab("SCRIPTS", "Scripts")
     AddTab("MY HUB", "MyHub")
     AddTab("SCRIPT ESCAPE TSUNAMI FOR BRAIROT", "Tsunami")
 
-    local function AddB(p, t, c, cb)
-        local b = Instance.new("TextButton", p); b.Size = UDim2.new(1, -10, 0, 38); b.Text = t; b.BackgroundColor3 = c; b.TextColor3 = Color3.new(1, 1, 1); b.Font = Enum.Font.SourceSansBold; b.TextSize = 13; Instance.new("UICorner", b); b.MouseButton1Click:Connect(cb)
+    local function AddB(parent, txt, clr, cb)
+        local b = Instance.new("TextButton", parent); b.Size = UDim2.new(1, -10, 0, 38); b.Text = txt; b.BackgroundColor3 = clr; b.TextColor3 = Color3.new(1, 1, 1); b.Font = Enum.Font.SourceSansBold; b.TextSize = 13; Instance.new("UICorner", b); b.MouseButton1Click:Connect(cb)
     end
 
-    -- ВКЛАДКА 3 (ДЛЯ ЦУНАМИ)
-    AddB(P3, "--- TSUNAMI SPECIAL ---", Color3.fromRGB(0, 0, 150), function() end)
-    AddB(P3, "LOAD MYSTRIX HUB 🔥", Color3.fromRGB(0, 50, 100), function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/ummarxfarooq/mystrix-hub/refs/heads/main/loader"))()
+    -- ВКЛАДКА 1: SCRIPTS
+    local function s(n, u) AddB(P1, n, Color3.fromRGB(20,20,20), function() loadstring(game:HttpGet(u))() end) end
+    s("1. Escape Tsunami", "https://raw.githubusercontent.com/osakaTP2/OsakaTP2/refs/heads/main/Escape%20Tsunami%20For%20BrainrotsDelta")
+    s("2. Be a Lucky Block", "https://vonixehub.com/raw")
+    s("3. Popcorn Hub", "https://raw.githubusercontent.com/PopcornHubSaves/PopcornHub/main/PopcornHub.lua")
+    s("4. SimpleSpy V3", "https://raw.githubusercontent.com/7YSeven/SimpleSpyV3/main/main.lua")
+    s("5. Jump to Steal", "https://raw.githubusercontent.com/gumanba/Scripts/main/JumpToStealLuckyBlocks")
+    s("6. Swing Obby", "https://raw.githubusercontent.com/gumanba/Scripts/main/SwingObbyforBrainrots")
+    s("7. Fly for Brainrots", "https://raw.githubusercontent.com/gumanba/Scripts/main/FlyforBrainrots")
+    s("8. Trollz Hub V2", "https://raw.githubusercontent.com/PawsThePaw/Plutonium.AA/main/Plutonium.Loader.lua")
+    s("9. Lucky Battle", "https://raw.githubusercontent.com/PawsThePaw/Plutonium.AA/main/Plutonium.Loader.lua")
+    s("10. Remote Spy", "https://raw.githubusercontent.com/infyiff/remoteSpy/main/main.lua")
+    s("11. Z-Hub", "https://api.jnkie.com/api/v1/luascripts/public/1bdc51f71dbe6341881f5f1d3b1e018a30841cc093a770a03731c060e764a072/download")
+
+    -- ВКЛАДКА 2: MY HUB
+    AddB(P2, "--- SPECTATE ---", Color3.fromRGB(150,0,0), function() end)
+    AddB(P2, "STOP WATCH (OFF)", Color3.fromRGB(200,0,0), function() workspace.CurrentCamera.CameraSubject = p.Character.Humanoid end)
+    AddB(P2, "ESP (HIGHLIGHT)", Color3.fromRGB(40,40,40), function()
+        for _, pl in pairs(game.Players:GetPlayers()) do if pl ~= p and pl.Character then Instance.new("Highlight", pl.Character) end end
     end)
-    
-    -- (Тут также добавь остальные кнопки из предыдущего кода для P1 и P2)
+    AddB(P2, "SPEED 80", Color3.fromRGB(40,40,40), function() p.Character.Humanoid.WalkSpeed = 80 end)
+
+    -- ВКЛАДКА 3: TSUNAMI
+    AddB(P3, "--- SCRIPT ESCAPE TSUNAMI ---", Color3.fromRGB(0,0,150), function() end)
+    AddB(P3, "LOAD MYSTRIX HUB 🔥", Color3.fromRGB(0,50,100), function() loadstring(game:HttpGet("https://raw.githubusercontent.com/ummarxfarooq/mystrix-hub/refs/heads/main/loader"))() end)
 end
 CreateCandyHub()
