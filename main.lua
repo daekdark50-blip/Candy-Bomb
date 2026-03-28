@@ -20,15 +20,14 @@ for _, v in pairs(game.Players:GetPlayers()) do
     if v ~= p then AddB("WATCH: "..v.Name, Color3.fromRGB(40, 40, 40), function() workspace.CurrentCamera.CameraSubject = v.Character.Humanoid end) end
 end
 
--- [[ 2. AUTO FARM (ЦУНАМИ СПЕЦ) ]] --
-AddB("--- AUTO FARM & MINIGAMES ---", Color3.new(0, 0.3, 0.5), function() end)
--- ТОТ САМЫЙ СОЛИКС С ПОПКОРНОМ
-AddB("SOLIX HUB (AUTO POPCORN)", Color3.fromRGB(120, 0, 220), function() 
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Dark-Sploit/SolixHub/main/EscapeTsunami.lua"))() 
-end)
--- АЛЬТЕРНАТИВА (MYSTRIX)
-AddB("MYSTRIX HUB (AUTO FARM)", Color3.fromRGB(0, 80, 120), function() 
+-- [[ 2. AUTO FARM (ЗДЕСЬ ТВОЙ СОЛИКС) ]] --
+AddB("--- AUTO FARM ---", Color3.new(0, 0.3, 0.5), function() end)
+AddB("Mystrix Hub (Tsunami Auto)", Color3.fromRGB(0, 80, 120), function() 
     loadstring(game:HttpGet("https://raw.githubusercontent.com/ummarxfarooq/mystrix-hub/refs/heads/main/loader"))() 
+end)
+-- ВОТ ОН, ТВОЙ СОЛИКС!
+AddB("Solix Hub (Auto Popcorn)", Color3.fromRGB(100, 0, 200), function() 
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Dark-Sploit/SolixHub/main/EscapeTsunami.lua"))() 
 end)
 
 -- [[ 3. TELEPORT LIST ]] --
