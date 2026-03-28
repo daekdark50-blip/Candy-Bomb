@@ -1,57 +1,49 @@
--- [[ DARK HUB V34 | V44 AVATAR + NEW LOAD ]] --
--- [[ AK ADMIN | COMPLETE OVERHAUL ]] --
+-- [[ DARK HUB V34 | V45 ULTIMATE ]] --
+-- [[ AK ADMIN | SPECTATE LIKE VIDEO + AVATAR ]] --
 
 local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
 local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
 local lp = Players.LocalPlayer
 
--- Удаление старой версии
-if CoreGui:FindFirstChild("DarkHubV44") then CoreGui.DarkHubV44:Destroy() end
+if CoreGui:FindFirstChild("DarkHubV45") then CoreGui.DarkHubV45:Destroy() end
 
 local Gui = Instance.new("ScreenGui", CoreGui)
-Gui.Name = "DarkHubV44"
+Gui.Name = "DarkHubV45"
 
--- Ссылка на твою аву
-local AvatarID = "rbxassetid://1234567890" -- ЗАМЕНИ ЭТО НА ID ТВОЕЙ АВАТАРКИ!
+-- Твоя аватарка (ID нужно заменить на настоящий, если этот не сработает)
+local AvatarID = "rbxassetid://82541334057881" 
 
--- [[ 1. КРУТАЯ ЗАГРУЗКА С АВОЙ ]] --
+-- [[ 1. КРУТАЯ ЗАГРУЗКА С ТВОЕЙ АВОЙ ]] --
 local function StartLoader()
     local LoaderCont = Instance.new("Frame", Gui)
     LoaderCont.Size = UDim2.new(1, 0, 1, 0)
     LoaderCont.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-    LoaderCont.ZIndex = 100
+    LoaderCont.ZIndex = 200
 
-    -- Силуэт на весь экран
     local Img = Instance.new("ImageLabel", LoaderCont)
     Img.Size = UDim2.new(1, 0, 1, 0)
-    Img.Position = UDim2.new(0, 0, 0, 0)
     Img.Image = AvatarID
     Img.ScaleType = Enum.ScaleType.Crop
     Img.BackgroundTransparency = 1
-    Img.ImageTransparency = 1 -- Сначала скрыт
+    Img.ImageTransparency = 1
 
-    -- Твой текст
     local T = Instance.new("TextLabel", LoaderCont)
-    T.Size = UDim2.new(1, -40, 0, 80)
-    T.Position = UDim2.new(0.5, -T.Size.X.Offset/2, 0.45, 0)
+    T.Size = UDim2.new(1, 0, 0, 50)
+    T.Position = UDim2.new(0, 0, 0.5, -25)
     T.Text = "loading dark hub script nerest ready work"
     T.TextColor3 = Color3.fromRGB(255, 255, 255)
     T.Font = Enum.Font.GothamBold
-    T.TextSize = 24
-    T.TextTransparency = 1 -- Сначала скрыт
+    T.TextSize = 25
+    T.TextTransparency = 1
     T.BackgroundTransparency = 1
-    T.ZIndex = 101
+    T.ZIndex = 201
 
-    -- Анимация появления авы
-    TweenService:Create(Img, TweenInfo.new(1.5), {ImageTransparency = 0}):Play()
+    TweenService:Create(Img, TweenInfo.new(1.5), {ImageTransparency = 0.3}):Play()
     task.wait(1)
-    
-    -- Анимация появления текста
     TweenService:Create(T, TweenInfo.new(1), {TextTransparency = 0}):Play()
     task.wait(2.5)
-
-    -- Исчезновение
     TweenService:Create(LoaderCont, TweenInfo.new(1), {BackgroundTransparency = 1}):Play()
     TweenService:Create(Img, TweenInfo.new(1), {ImageTransparency = 1}):Play()
     TweenService:Create(T, TweenInfo.new(1), {TextTransparency = 1}):Play()
@@ -59,42 +51,26 @@ local function StartLoader()
     LoaderCont:Destroy()
 end
 
--- [[ 2. ИНТЕРФЕЙС (AK ADMIN) ]] --
+-- [[ 2. ГЛАВНОЕ МЕНЮ ]] --
 local Main = Instance.new("Frame", Gui)
 Main.Size = UDim2.new(0, 520, 0, 380)
 Main.Position = UDim2.new(0.5, -260, 0.5, -190)
-Main.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+Main.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 Main.BorderSizePixel = 0
 Main.Visible = false
 Main.Active = true
 Main.Draggable = true
 Instance.new("UICorner", Main)
 
--- Хедер
-local Header = Instance.new("Frame", Main)
-Header.Size = UDim2.new(1, 0, 0, 40)
-Header.BackgroundColor3 = Color3.fromRGB(5, 5, 5)
-Instance.new("UICorner", Header)
-
-local Title = Instance.new("TextLabel", Header)
-Title.Size = UDim2.new(1, -20, 1, 0)
-Title.Position = UDim2.new(0, 15, 0, 0)
-Title.Text = "AK ADMIN | DARK HUB V34"
-Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-Title.TextXAlignment = "Left"
-Title.Font = Enum.Font.GothamBold
-Title.BackgroundTransparency = 1
-
--- Сайдбар
 local Side = Instance.new("Frame", Main)
-Side.Size = UDim2.new(0, 140, 1, -50)
-Side.Position = UDim2.new(0, 10, 0, 45)
+Side.Size = UDim2.new(0, 140, 1, -10)
+Side.Position = UDim2.new(0, 5, 0, 5)
 Side.BackgroundTransparency = 1
 Instance.new("UIListLayout", Side).Padding = UDim.new(0, 5)
 
 local Container = Instance.new("Frame", Main)
-Container.Size = UDim2.new(1, -170, 1, -60)
-Container.Position = UDim2.new(0, 160, 0, 50)
+Container.Size = UDim2.new(1, -160, 1, -20)
+Container.Position = UDim2.new(0, 150, 0, 10)
 Container.BackgroundTransparency = 1
 
 local function CreateTab(name)
@@ -102,13 +78,13 @@ local function CreateTab(name)
     p.Size = UDim2.new(1, 0, 1, 0)
     p.BackgroundTransparency = 1
     p.Visible = false
-    p.ScrollBarThickness = 0
-    Instance.new("UIListLayout", p).Padding = UDim.new(0, 8)
+    p.ScrollBarThickness = 2
+    Instance.new("UIListLayout", p).Padding = UDim.new(0, 5)
     local b = Instance.new("TextButton", Side)
-    b.Size = UDim2.new(1, 0, 0, 35)
-    b.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    b.Size = UDim2.new(1, 0, 0, 40)
+    b.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
     b.Text = name
-    b.TextColor3 = Color3.fromRGB(200, 200, 200)
+    b.TextColor3 = Color3.fromRGB(255, 255, 255)
     b.Font = Enum.Font.GothamBold
     Instance.new("UICorner", b)
     b.MouseButton1Click:Connect(function()
@@ -122,7 +98,97 @@ local TabMain = CreateTab("MAIN")
 local TabScripts = CreateTab("SCRIPTS")
 local TabAuto = CreateTab("AUTO FARM")
 
--- [[ СКРИПТЫ (ТВОИ ССЫЛКИ) ]] --
+-- [[ ФУНКЦИИ В MAIN ]] --
+
+-- 1. SPECTATE (КАК НА ВИДЕО)
+local function CreateSpectateUI()
+    local SpecTitle = Instance.new("TextLabel", TabMain)
+    SpecTitle.Size = UDim2.new(1, 0, 0, 30)
+    SpecTitle.Text = "SPECTATE PLAYER"
+    SpecTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    SpecTitle.BackgroundTransparency = 1
+    SpecTitle.Font = Enum.Font.GothamBold
+
+    local Search = Instance.new("TextBox", TabMain)
+    Search.Size = UDim2.new(1, 0, 0, 35)
+    Search.PlaceholderText = "Search players..."
+    Search.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    Search.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Instance.new("UICorner", Search)
+
+    local List = Instance.new("Frame", TabMain)
+    List.Size = UDim2.new(1, 0, 0, 200)
+    List.BackgroundTransparency = 1
+    local listLayout = Instance.new("UIListLayout", List)
+    listLayout.Padding = UDim.new(0, 5)
+
+    local function UpdateList()
+        for _, v in pairs(List:GetChildren()) do if v:IsA("TextButton") then v:Destroy() end end
+        for _, p in pairs(Players:GetPlayers()) do
+            if p ~= lp and (Search.Text == "" or p.Name:lower():find(Search.Text:lower())) then
+                local b = Instance.new("TextButton", List)
+                b.Size = UDim2.new(1, 0, 0, 40)
+                b.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+                b.Text = "   " .. p.DisplayName .. " (@" .. p.Name .. ")"
+                b.TextColor3 = Color3.fromRGB(255, 255, 255)
+                b.TextXAlignment = "Left"
+                Instance.new("UICorner", b)
+                b.MouseButton1Click:Connect(function()
+                    workspace.CurrentCamera.CameraSubject = p.Character:FindFirstChild("Humanoid")
+                end)
+            end
+        end
+    end
+    Search:GetPropertyChangedSignal("Text"):Connect(UpdateList)
+    Players.PlayerAdded:Connect(UpdateList)
+    Players.PlayerRemoving:Connect(UpdateList)
+    UpdateList()
+
+    local Reset = Instance.new("TextButton", TabMain)
+    Reset.Size = UDim2.new(1, 0, 0, 40)
+    Reset.Text = "STOP SPECTATE"
+    Reset.BackgroundColor3 = Color3.fromRGB(100, 0, 0)
+    Reset.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Instance.new("UICorner", Reset)
+    Reset.MouseButton1Click:Connect(function()
+        workspace.CurrentCamera.CameraSubject = lp.Character:FindFirstChild("Humanoid")
+    end)
+end
+CreateSpectateUI()
+
+-- 2. INVISIBLE (РАБОЧИЙ)
+local function AddToggle(parent, name, callback)
+    local b = Instance.new("TextButton", parent)
+    b.Size = UDim2.new(1, 0, 0, 40)
+    b.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    b.Text = name .. " [ OFF ]"
+    b.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Instance.new("UICorner", b)
+    local active = false
+    b.MouseButton1Click:Connect(function()
+        active = not active
+        b.Text = name .. (active and " [ ACTIVE ]" or " [ OFF ]")
+        b.TextColor3 = active and Color3.fromRGB(0, 255, 100) or Color3.fromRGB(255, 255, 255)
+        callback(active)
+    end)
+end
+
+AddToggle(TabMain, "Invisible", function(v)
+    if v then
+        local char = lp.Character
+        if char then
+            for _, part in pairs(char:GetDescendants()) do
+                if part:IsA("BasePart") or part:IsA("Decal") then
+                    part.Transparency = 1
+                end
+            end
+        end
+    else
+        lp.Character:BreakJoints() -- Ресет для возврата видимости
+    end
+end)
+
+-- [[ ВКЛАДКА SCRIPTS (ВОЗВРАТ СТАРЫХ) ]] --
 local function AddScript(name, url)
     local b = Instance.new("TextButton", TabScripts)
     b.Size = UDim2.new(1, 0, 0, 40)
@@ -133,58 +199,34 @@ local function AddScript(name, url)
     b.MouseButton1Click:Connect(function() loadstring(game:HttpGet(url))() end)
 end
 
+AddScript("Be a Lucky Block", "https://raw.githubusercontent.com/gumanba/Scripts/main/BeaLuckyBlock")
+AddScript("Fly for Brainrots", "https://raw.githubusercontent.com/gumanba/Scripts/main/FlyforBrainrots")
 AddScript("Jump to Steal Lucky Blocks", "https://raw.githubusercontent.com/gumanba/Scripts/main/JumpToStealLuckyBlocks")
 AddScript("Swing Obby for Brainrots", "https://raw.githubusercontent.com/gumanba/Scripts/main/SwingObbyforBrainrots")
-AddScript("Escape Tsunami (Original)", "https://raw.githubusercontent.com/osakaTP2/OsakaTP2/refs/heads/main/Escape%20Tsunami%20For%20BrainrotsDelta")
+AddScript("Escape Tsunami (Brainrots)", "https://raw.githubusercontent.com/osakaTP2/OsakaTP2/refs/heads/main/Escape%20Tsunami%20For%20BrainrotsDelta")
 
--- Кнопка авто-попкорна (из V43)
-local function PopcornFarm(state)
-    _G.AutoPop = state
+-- [[ AUTO FARM (POPCORN) ]] --
+AddToggle(TabAuto, "Auto Popcorn +99/81", function(v)
+    _G.AutoPop = v
     task.spawn(function()
         while _G.AutoPop do
             for _, obj in pairs(workspace:GetDescendants()) do
                 if obj.Name:lower():find("popcorn") then
-                    pcall(function()
-                        if lp.Character and lp.Character:FindFirstChild("HumanoidRootPart") then
-                            firetouchinterest(lp.Character.HumanoidRootPart, obj, 0)
-                            firetouchinterest(lp.Character.HumanoidRootPart, obj, 1)
-                        end
-                    end)
+                    pcall(function() firetouchinterest(lp.Character.HumanoidRootPart, obj, 0); firetouchinterest(lp.Character.HumanoidRootPart, obj, 1) end)
                 end
             end
             task.wait(0.1)
         end
     end)
-end
+end)
 
-local function AddToggle(parent, name, callback)
-    local b = Instance.new("TextButton", parent)
-    b.Size = UDim2.new(1, 0, 0, 40)
-    b.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-    b.Text = "  " .. name .. " [ OFF ]"
-    b.TextColor3 = Color3.fromRGB(255, 255, 255)
-    b.TextXAlignment = "Left"
-    b.Font = Enum.Font.Gotham
-    Instance.new("UICorner", b)
-    local active = false
-    b.MouseButton1Click:Connect(function()
-        active = not active
-        b.Text = active and "  " .. name .. " [ ACTIVE ]" or "  " .. name .. " [ OFF ]"
-        b.TextColor3 = active and Color3.fromRGB(0, 255, 100) or Color3.fromRGB(255, 255, 255)
-        callback(active)
-    end)
-end
-AddToggle(TabAuto, "Auto Popcorn Tsunami", PopcornFarm)
-
--- [[ 3. ИКОНКА МЕНЮ (НА ТВОЕЙ АВАТАРКЕ) ]] --
-local Tog = Instance.new("ImageButton", Gui) -- ЗАМЕНЕНО НА ImageButton
-Tog.Size = UDim2.new(0, 50, 0, 50)
+-- [[ КНОПКА ОТКРЫТИЯ (АВА) ]] --
+local Tog = Instance.new("ImageButton", Gui)
+Tog.Size = UDim2.new(0, 55, 0, 55)
 Tog.Position = UDim2.new(0, 10, 0.5, 0)
-Tog.Image = AvatarID -- Твоя ава!
+Tog.Image = AvatarID
 Tog.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-local C = Instance.new("UICorner", Tog)
-C.CornerRadius = UDim.new(1, 0) -- Идеальный круг
-
+Instance.new("UICorner", Tog).CornerRadius = UDim.new(1, 0)
 Tog.MouseButton1Click:Connect(function() Main.Visible = not Main.Visible end)
 
 -- ЗАПУСК
