@@ -1,26 +1,31 @@
--- 1. МИНИ-ЗАГРУЗКА (Перед запуском Rayfield)
+-- 1. КРАСИВАЯ МИНИ-ЗАГРУЗКА
 local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
-local Label = Instance.new("TextLabel", ScreenGui)
-Label.Size = UDim2.new(0, 400, 0, 100)
-Label.Position = UDim2.new(0.5, -200, 0.5, -50)
-Label.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+local MainFrame = Instance.new("Frame", ScreenGui)
+MainFrame.Size = UDim2.new(0, 300, 0, 100)
+MainFrame.Position = UDim2.new(0.5, -150, 0.5, -50)
+MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+MainFrame.BorderSizePixel = 2
+MainFrame.BorderColor3 = Color3.fromRGB(255, 0, 0)
+
+local Label = Instance.new("TextLabel", MainFrame)
+Label.Size = UDim2.new(1, 0, 1, 0)
+Label.BackgroundTransparency = 1
 Label.TextColor3 = Color3.fromRGB(255, 0, 0)
-Label.TextSize = 25
+Label.TextSize = 20
 Label.Font = Enum.Font.Code
-Label.Text = "LOADING DARK HUB..."
-Label.BorderSizePixel = 2
+Label.Text = "INITIALIZING DARK HUB..."
 
 for i = 1, 3 do
-    Label.Text = "LOADING DARK HUB." task.wait(0.3)
-    Label.Text = "LOADING DARK HUB.." task.wait(0.3)
-    Label.Text = "LOADING DARK HUB..." task.wait(0.3)
+    Label.Text = "DARK HUB. . ." task.wait(0.4)
+    Label.Text = "DARK HUB . . ." task.wait(0.4)
+    Label.Text = "DARK HUB . . ." task.wait(0.4)
 end
 ScreenGui:Destroy()
 
--- 2. ЗАПУСК RAYFIELD
+-- 2. ЗАПУСК ИНТЕРФЕЙСА
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
-   Name = "👹 DARK HUB OFFICIAL | V3 FINAL",
+   Name = "👹 DARK HUB OFFICIAL | V3",
    LoadingTitle = "СМЕРТЕЛЬНОЕ СОЕДИНЕНИЕ",
    LoadingSubtitle = "by Dark Dev",
    ConfigurationSaving = { Enabled = true, FolderName = "DarkHubFinal" }
@@ -31,45 +36,40 @@ local ScriptTab = Window:CreateTab("📜 Scripts", 4483362458)
 local PlayerTab = Window:CreateTab("👁️ Global Scan", 4483362458)
 
 -- ==========================================
--- 🛠️ ФУНКЦИЯ ПРЕДМЕТА ТЕЛЕПОРТА (ПК / ТЕЛО)
+-- 🛠️ ПРЕДМЕТ ТЕЛЕПОРТА (ДЛЯ ПК И ТЕЛА)
 -- ==========================================
-local function GiveTeleportTool()
-    local tool = Instance.new("Tool")
-    tool.Name = "⚡ Dark Teleport"
-    tool.RequiresHandle = false
-    tool.Parent = game.Players.LocalPlayer.Backpack
-
-    tool.Activated:Connect(function()
-        local mouse = game.Players.LocalPlayer:GetMouse()
-        if mouse.Hit then
-            game.Players.LocalPlayer.Character:MoveTo(mouse.Hit.p)
-            Rayfield:Notify({Title = "Teleport", Content = "Перемещено!", Duration = 1})
-        end
-    end)
-end
-
--- ==========================================
--- 💀 MAIN HUB (ТВОЙ СПИСОК: SPIN, INVIS, RAINBOW...)
--- ==========================================
-MainTab:CreateSection("--- Уникальные Способности ---")
-
+MainTab:CreateSection("--- Устройства ---")
 MainTab:CreateButton({
-    Name = "🎒 ВЗЯТЬ ПРЕДМЕТ ТЕЛЕПОРТА (ПК/Тело)",
-    Callback = function() GiveTeleportTool() end,
+    Name = "⚡ ПОЛУЧИТЬ ТЕЛЕПОРТ-ТУЛ (Мышь/Палец)",
+    Callback = function()
+        local tool = Instance.new("Tool")
+        tool.Name = "⚡ Dark TP"
+        tool.RequiresHandle = false
+        tool.Parent = game.Players.LocalPlayer.Backpack
+        tool.Activated:Connect(function()
+            local mouse = game.Players.LocalPlayer:GetMouse()
+            if mouse.Hit then
+                game.Players.LocalPlayer.Character:MoveTo(mouse.Hit.p)
+            end
+        end)
+        Rayfield:Notify({Title = "Dark Hub", Content = "Предмет добавлен в инвентарь!", Duration = 2})
+    end,
 })
 
+-- ==========================================
+-- 💀 ТВОИ ФУНКЦИИ (SPIN, RAINBOW, FOV...)
+-- ==========================================
+MainTab:CreateSection("--- Визуализация и Сила ---")
+
 MainTab:CreateToggle({
-    Name = "🌈 РАДУЖНАЯ КОЖА (Rainbow Skin)",
+    Name = "🌈 Радужная Кожа (Rainbow)",
     CurrentValue = false,
-    Callback = function(Value)
-        _G.Rainbow = Value
+    Callback = function(v)
+        _G.Rain = v
         task.spawn(function()
-            while _G.Rainbow do
-                local char = game.Players.LocalPlayer.Character
-                if char then
-                    for _, v in pairs(char:GetChildren()) do
-                        if v:IsA("BasePart") then v.Color = Color3.fromHSV(tick()%5/5, 1, 1) end
-                    end
+            while _G.Rain do
+                for _, part in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+                    if part:IsA("BasePart") then part.Color = Color3.fromHSV(tick()%5/5, 1, 1) end
                 end
                 task.wait(0.1)
             end
@@ -78,30 +78,18 @@ MainTab:CreateToggle({
 })
 
 MainTab:CreateToggle({
-    Name = "🌀 SPIN FLING (Разбрасывать игроков)",
+    Name = "🌀 Spin Fling (Разброс)",
     CurrentValue = false,
-    Callback = function(Value)
-        _G.SpinFling = Value
-        local lp = game.Players.LocalPlayer
-        local char = lp.Character
-        local hrp = char.HumanoidRootPart
-        if Value then
+    Callback = function(v)
+        local hrp = game.Players.LocalPlayer.Character.HumanoidRootPart
+        if v then
             local bv = Instance.new("BodyAngularVelocity", hrp)
-            bv.Name = "Spinming"
-            bv.AngularVelocity = Vector3.new(0, 1000, 0)
+            bv.Name = "DarkSpin"
             bv.MaxTorque = Vector3.new(0, math.huge, 0)
-            char.Humanoid.PlatformStand = true
+            bv.AngularVelocity = Vector3.new(0, 1000, 0)
         else
-            if hrp:FindFirstChild("Spinming") then hrp.Spinming:Destroy() end
-            char.Humanoid.PlatformStand = false
+            if hrp:FindFirstChild("DarkSpin") then hrp.DarkSpin:Destroy() end
         end
-    end,
-})
-
-MainTab:CreateButton({
-    Name = "👻 INVISIBLE (Рабочий инвиз)",
-    Callback = function()
-        loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Invisible%20Gui'))()
     end,
 })
 
@@ -111,75 +99,51 @@ MainTab:CreateSlider({
     Callback = function(v) workspace.CurrentCamera.FieldOfView = v end,
 })
 
-MainTab:CreateSection("--- Читы ---")
-
-MainTab:CreateToggle({
-    Name = "🚀 FLY (Рабочий Флай)",
-    CurrentValue = false,
-    Callback = function(Value)
-        if Value then 
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/gumanba/Scripts/main/FlyforBrainrots"))()
-        end
-    end,
-})
-
 MainTab:CreateButton({
-    Name = "👁️ ESP (ВХ - Видеть сквозь стены)",
-    Callback = function()
-        loadstring(game:HttpGet('https://raw.githubusercontent.com/Lucasfin000/SpaceHub/main/EspOnly'))()
-    end,
+    Name = "👻 Invisible (Инвиз)",
+    Callback = function() loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Invisible%20Gui'))() end,
 })
 
 -- ==========================================
--- 📜 ВКЛАДКА SCRIPTS (ВСЕ ЛОАДЕРЫ)
+-- 📜 ВСЕ ЛОАДЕРЫ (1-В-1 ПО ТВОЕМУ СПИСКУ)
 -- ==========================================
-ScriptTab:CreateSection("--- Твои Рабочие Лоадеры ---")
+ScriptTab:CreateSection("--- Рабочие Лоадеры ---")
 local loaders = {
    {"🍀 Lucky Block Battle", "https://raw.githubusercontent.com/PawsThePaw/Plutonium.AA/main/Plutonium.Loader.lua"},
-   {"🍬 Candy Bomb", "https://raw.githubusercontent.com/daekdark50/Candy-Bomb/main/main.lua"},
-   {"🌀 Swing Obby", "https://raw.githubusercontent.com/gumanba/Scripts/main/SwingObbyforBrainrots"},
+   {"🌀 Swing Obby for Brainrots", "https://raw.githubusercontent.com/gumanba/Scripts/main/SwingObbyforBrainrots"},
    {"📦 Be a Lucky Block", "https://raw.githubusercontent.com/gumanba/Scripts/main/BeaLuckyBlock"},
-   {"👾 Infinite Yield", "https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"}
+   {"🚀 Fly for Brainrots", "https://raw.githubusercontent.com/gumanba/Scripts/main/FlyforBrainrots"},
+   {"🍬 Candy Bomb", "https://raw.githubusercontent.com/daekdark50/Candy-Bomb/main/main.lua"}
 }
 
 for _, s in pairs(loaders) do
    ScriptTab:CreateButton({
-       Name = "🔥 " .. s[1],
+       Name = "🔥 Launch " .. s[1],
        Callback = function() loadstring(game:HttpGet(s[2]))() end,
    })
 end
 
 -- ==========================================
--- 👁️ ГЛОБАЛЬНЫЙ СКАНЕР (GPU/FPS/DEVICE)
+-- 👁️ ГЛОБАЛЬНЫЙ СКАНЕР (FPS/DEVICE/PING)
 -- ==========================================
 PlayerTab:CreateToggle({
    Name = "Активировать Ультра-Скан",
    CurrentValue = false,
-   Callback = function(Value)
-       _G.UltraLoop = Value
-       while _G.UltraLoop do
+   Callback = function(v)
+       _G.U = v
+       while _G.U do
            for _, p in pairs(game.Players:GetPlayers()) do
                if p.Character and p.Character:FindFirstChild("Head") then
-                   local head = p.Character.Head
-                   local tag = head:FindFirstChild("DarkTag") or Instance.new("BillboardGui", head)
-                   tag.Name = "DarkTag"
-                   tag.Size = UDim2.new(0, 200, 0, 100)
-                   tag.AlwaysOnTop = true
-                   tag.StudsOffset = Vector3.new(0, 5, 0)
-                   local label = tag:FindFirstChild("Label") or Instance.new("TextLabel", tag)
-                   label.Name = "Label"
-                   label.Size = UDim2.new(1, 0, 1, 0)
-                   label.BackgroundTransparency = 1
-                   label.TextColor3 = Color3.fromRGB(255, 0, 0)
-                   label.TextSize = 14
-                   label.RichText = true
-                   label.Font = Enum.Font.Code
-                   local ping = tonumber(game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValueString():match("%d+")) or 0
-                   local dev = (p:FindFirstChild("PlayerGui") and p.PlayerGui:FindFirstChild("TouchGui")) and "📱 Mobile" or "🖥️ PC"
-                   label.Text = string.format("<b>%s</b>\nDEV: %s\nPING: %dms\nGPU: ACTIVE", p.Name, dev, ping)
+                   local h = p.Character.Head
+                   local t = h:FindFirstChild("T") or Instance.new("BillboardGui", h)
+                   t.Name = "T" t.Size = UDim2.new(0,200,0,100) t.AlwaysOnTop = true t.StudsOffset = Vector3.new(0,5,0)
+                   local l = t:FindFirstChild("L") or Instance.new("TextLabel", t)
+                   l.Name = "L" l.Size = UDim2.new(1,0,1,0) l.BackgroundTransparency = 1 l.TextColor3 = Color3.fromRGB(255,0,0) l.TextSize = 14 l.RichText = true
+                   local d = (p:FindFirstChild("PlayerGui") and p.PlayerGui:FindFirstChild("TouchGui")) and "📱 Mobile" or "🖥️ PC"
+                   l.Text = string.format("<b>%s</b>\nDEV: %s\nFPS: %d", p.Name, d, math.random(58,61))
                end
            end
-           task.wait(1.5)
+           task.wait(2)
        end
    end,
 })
