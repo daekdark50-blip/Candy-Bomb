@@ -1,161 +1,125 @@
-local Players = game:GetService("Players")
-local lp = Players.LocalPlayer
-local pgui = lp:WaitForChild("PlayerGui")
-local TweenService = game:GetService("TweenService")
-local RunService = game:GetService("RunService")
+local p = game.Players.LocalPlayer
+local pg = p:WaitForChild("PlayerGui")
 
--- Удаление старой версии
-if pgui:FindFirstChild("DarkHubV42") then pgui.DarkHubV42:Destroy() end
+-- 1. Удаляем старое меню, чтобы не плодить копии
+if pg:FindFirstChild("DarkHubV42") then pg.DarkHubV42:Destroy() end
 
-local Gui = Instance.new("ScreenGui", pgui)
-Gui.Name = "DarkHubV42"
-Gui.ResetOnSpawn = false
+local G = Instance.new("ScreenGui", pg)
+G.Name = "DarkHubV42"
+G.ResetOnSpawn = false
 
--- [[ 🩸 УЛЬТРА-ЗАГРУЗКА ]] --
-local function RunLoader()
-    local L = Instance.new("Frame", Gui)
-    L.Size = UDim2.new(1, 0, 1, 0)
-    L.BackgroundColor3 = Color3.new(0, 0, 0)
-    L.ZIndex = 10000
+-- 2. Главное Окно (Как на твоем скрине)
+local M = Instance.new("Frame", G)
+M.Size = UDim2.new(0, 460, 0, 420)
+M.Position = UDim2.new(0.5, -230, 0.5, -210)
+M.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+M.Active = true
+M.Draggable = true
+Instance.new("UICorner", M)
 
-    local T = Instance.new("TextLabel", L)
-    T.Size = UDim2.new(1, 0, 0, 100)
-    T.Position = UDim2.new(0, 0, 0.4, 0)
-    T.Text = "LOADING DARK HUB V42...\nBY AK ADMIN"
-    T.TextColor3 = Color3.new(1, 0, 0)
-    T.Font = Enum.Font.GothamBold
-    T.TextSize = 40
-    T.BackgroundTransparency = 1
+-- Боковая панель (черная полоска слева)
+local Side = Instance.new("Frame", M)
+Side.Size = UDim2.new(0, 100, 1, 0)
+Side.BackgroundColor3 = Color3.new(0,0,0)
+Instance.new("UICorner", Side)
 
-    local B = Instance.new("Frame", L)
-    B.Size = UDim2.new(0.6, 0, 0, 12)
-    B.Position = UDim2.new(0.2, 0, 0.6, 0)
-    B.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    
-    local F = Instance.new("Frame", B)
-    F.Size = UDim2.new(0, 0, 1, 0)
-    F.BackgroundColor3 = Color3.new(1, 0, 0)
-    Instance.new("UICorner", F)
+-- Список кнопок с прокруткой (Scrolling)
+local Cont = Instance.new("ScrollingFrame", M)
+Cont.Size = UDim2.new(1, -110, 1, -10)
+Cont.Position = UDim2.new(0, 105, 0, 5)
+Cont.BackgroundTransparency = 1
+Cont.CanvasSize = UDim2.new(0, 0, 2.8, 0) -- Хватит места на всё!
+Cont.ScrollBarThickness = 4
+local List = Instance.new("UIListLayout", Cont)
+List.Padding = UDim.new(0, 4)
 
-    TweenService:Create(F, TweenInfo.new(3), {Size = UDim2.new(1, 0, 1, 0)}):Play()
-    task.wait(3.5)
-    T.Text = "WORK"
-    task.wait(1.5)
-    L:Destroy()
-end
-
--- [[ 🏢 ГЛАВНОЕ МЕНЮ ]] --
-local Main = Instance.new("Frame", Gui)
-Main.Size = UDim2.new(0, 540, 0, 420)
-Main.Position = UDim2.new(0.5, -270, 0.5, -210)
-Main.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-Main.Visible = false
-Main.Active = true
-Main.Draggable = true
-Instance.new("UICorner", Main)
-
--- КРЕСТ ЗАКРЫТИЯ
-local Close = Instance.new("TextButton", Main)
-Close.Size = UDim2.new(0, 45, 0, 45)
-Close.Position = UDim2.new(1, -50, 0, 5)
-Close.Text = "X"
-Close.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
-Close.TextColor3 = Color3.new(1, 1, 1)
-Close.Font = Enum.Font.GothamBold
-Close.TextSize = 30
-Instance.new("UICorner", Close)
-Close.MouseButton1Click:Connect(function() Gui:Destroy() end)
-
-local Side = Instance.new("Frame", Main)
-Side.Size = UDim2.new(0, 140, 1, 0)
-Side.BackgroundColor3 = Color3.new(0, 0, 0)
-Instance.new("UIListLayout", Side).Padding = UDim.new(0, 2)
-
-local Container = Instance.new("Frame", Main)
-Container.Size = UDim2.new(1, -150, 1, -20)
-Container.Position = UDim2.new(0, 145, 0, 10)
-Container.BackgroundTransparency = 1
-
-local function CreateTab(name)
-    local p = Instance.new("ScrollingFrame", Container)
-    p.Size = UDim2.new(1, 0, 1, 0)
-    p.Visible = false
-    p.BackgroundTransparency = 1
-    p.ScrollBarThickness = 2
-    Instance.new("UIListLayout", p).Padding = UDim.new(0, 5)
-    
-    local b = Instance.new("TextButton", Side)
-    b.Size = UDim2.new(1, 0, 0, 45)
-    b.Text = name
-    b.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-    b.TextColor3 = Color3.new(1, 1, 1)
-    b.Font = Enum.Font.GothamBold
-    b.MouseButton1Click:Connect(function()
-        for _, v in pairs(Container:GetChildren()) do v.Visible = false end
-        p.Visible = true
-    end)
-    return p
-end
-
-local MTab = CreateTab("MAIN")
-local STab = CreateTab("SCRIPTS")
-
--- [[ 🛠️ ФУНКЦИИ В MAIN ]] --
-local function AddToggle(n, cb)
-    local state = false
-    local b = Instance.new("TextButton", MTab)
+-- Функция для создания кнопок
+local function AddB(txt, clr, cb)
+    local b = Instance.new("TextButton", Cont)
     b.Size = UDim2.new(1, -10, 0, 35)
-    b.Text = n .. " [ OFF ]"
-    b.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-    b.TextColor3 = Color3.new(1, 1, 1)
+    b.Text = txt
+    b.BackgroundColor3 = clr
+    b.TextColor3 = Color3.new(1,1,1)
+    b.Font = Enum.Font.SourceSansBold
+    b.TextSize = 16
     Instance.new("UICorner", b)
-    b.MouseButton1Click:Connect(function()
-        state = not state
-        b.Text = n .. (state and " [ ON ]" or " [ OFF ]")
-        b.BackgroundColor3 = state and Color3.fromRGB(150, 0, 0) or Color3.fromRGB(35, 35, 35)
-        cb(state)
+    b.MouseButton1Click:Connect(cb)
+end
+
+-- [[ РАЗДЕЛ 1: SPECTATE (СЛЕЖКА) ]] --
+AddB("--- SPECTATE LIST ---", Color3.new(0.2,0,0), function() end)
+AddB("STOP SPECTATE", Color3.fromRGB(180, 0, 0), function() 
+    workspace.CurrentCamera.CameraSubject = p.Character.Humanoid 
+end)
+
+for _, v in pairs(game.Players:GetPlayers()) do
+    if v ~= p then
+        AddB("WATCH: "..v.Name, Color3.fromRGB(40,40,40), function() 
+            workspace.CurrentCamera.CameraSubject = v.Character.Humanoid 
+        end)
+    end
+end
+
+-- [[ РАЗДЕЛ 2: ОСНОВНЫЕ ЧИТЫ ]] --
+AddB("--- MAIN CHEATS ---", Color3.new(0.2,0,0), function() end)
+
+AddB("AIMBOT (BODY)", Color3.fromRGB(50,50,50), function()
+    _G.A = not _G.A
+    game:GetService("RunService").RenderStepped:Connect(function()
+        if _G.A then 
+            local t = nil; local d = 1000
+            for _, x in pairs(game.Players:GetPlayers()) do
+                if x ~= p and x.Character and x.Character:FindFirstChild("UpperTorso") then t = x; break end
+            end
+            if t then workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame.Position, t.Character.UpperTorso.Position) end 
+        end
     end)
-end
+end)
 
--- ТВОЙ СПИСОК ФУНКЦИЙ
-AddToggle("Fling Player", function(v) end)
-AddToggle("Spin Bot", function(v) end)
-AddToggle("Aimbot", function(v) end)
-AddToggle("ESP Box", function(v) end)
-AddToggle("ESP Avatar", function(v) end)
-AddToggle("ESP Tracer", function(v) end)
-AddToggle("Speed Boost", function(v) lp.Character.Humanoid.WalkSpeed = v and 100 or 16 end)
-AddToggle("Rainbow Skin", function(v) end)
-AddToggle("Click Fly", function(v) end)
-AddToggle("Day / Night", function(v) game.Lighting.ClockTime = v and 0 or 12 end)
+AddB("FLY HACK", Color3.fromRGB(50,50,50), function()
+    local r = p.Character.HumanoidRootPart
+    local v = r:FindFirstChild("DH_Fly") or Instance.new("BodyVelocity", r)
+    v.Name = "DH_Fly"; v.MaxForce = Vector3.new(9e9,9e9,9e9)
+    v.Velocity = workspace.CurrentCamera.CFrame.LookVector * 60
+end)
 
--- [[ 📜 ВКЛАДКА SCRIPTS ]] --
-local function AddS(n, u)
-    local b = Instance.new("TextButton", STab)
-    b.Size = UDim2.new(1, -10, 0, 40)
-    b.Text = n
-    b.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    b.TextColor3 = Color3.new(1, 1, 1)
-    Instance.new("UICorner", b)
-    b.MouseButton1Click:Connect(function() loadstring(game:HttpGet(u))() end)
-end
+AddB("ULTRA MOD (INV/SPD/HIT)", Color3.fromRGB(80, 0, 0), function()
+    p.Character.Humanoid.WalkSpeed = 100
+    for _, x in pairs(p.Character:GetDescendants()) do if x:IsA("BasePart") then x.Transparency = 0.5 end end
+    for _, x in pairs(game.Players:GetPlayers()) do
+        if x ~= p and x.Character and x.Character:FindFirstChild("Head") then 
+            x.Character.Head.Size = Vector3.new(20,20,20); x.Character.Head.CanCollide = false 
+        end
+    end
+end)
 
-AddS("Dark Hub Loader", "https://raw.githubusercontent.com/Davidfhdgfyyfytyttry/DAVITROLLZ-BRASIL/refs/heads/main/loader%20trollz%20hub%20v2.lua.txt")
-AddS("Popcorn Hub", "https://raw.githubusercontent.com/PopcornHubSaves/PopcornHub/main/PopcornHub.lua")
-AddS("Jump Steal (Brainrot)", "https://raw.githubusercontent.com/gumanba/Scripts/main/JumpToStealLuckyBlocks")
-AddS("Fly (Brainrot)", "https://raw.githubusercontent.com/gumanba/Scripts/main/FlyforBrainrots")
+AddB("RAINBOW SKIN", Color3.fromRGB(50,50,50), function()
+    task.spawn(function() while task.wait() do 
+        for _, x in pairs(p.Character:GetChildren()) do if x:IsA("BasePart") then x.Color = Color3.fromHSV(tick()%5/5, 1, 1) end end 
+    end end)
+end)
 
--- КНОПКА ОТКРЫТИЯ
-local Tog = Instance.new("TextButton", Gui)
-Tog.Size = UDim2.new(0, 55, 0, 55)
+-- [[ РАЗДЕЛ 3: ВСЕ 10 СКРИПТОВ ]] --
+AddB("--- 10 SCRIPTS ---", Color3.new(0.2,0,0), function() end)
+local function sc(n, u) AddB(n, Color3.fromRGB(35,35,35), function() loadstring(game:HttpGet(u))() end) end
+
+sc("1. Escape Tsunami", "https://raw.githubusercontent.com/osakaTP2/OsakaTP2/refs/heads/main/Escape%20Tsunami%20For%20BrainrotsDelta")
+sc("2. Be a Lucky Block", "https://raw.githubusercontent.com/gumanba/Scripts/main/BeaLuckyBlock")
+sc("3. Jump to Steal", "https://raw.githubusercontent.com/gumanba/Scripts/main/JumpToStealLuckyBlocks")
+sc("4. Swing Obby", "https://raw.githubusercontent.com/gumanba/Scripts/main/SwingObbyforBrainrots")
+sc("5. Fly for Brainrots", "https://raw.githubusercontent.com/gumanba/Scripts/main/FlyforBrainrots")
+sc("6. Trollz Hub V2", "https://raw.githubusercontent.com/PawsThePaw/Plutonium.AA/main/Plutonium.Loader.lua")
+sc("7. Lucky Battle", "https://raw.githubusercontent.com/PawsThePaw/Plutonium.AA/main/Plutonium.Loader.lua")
+sc("8. Popcorn Hub", "https://raw.githubusercontent.com/PopcornHubSaves/PopcornHub/main/PopcornHub.lua")
+sc("9. SimpleSpy V3", "https://raw.githubusercontent.com/7YSeven/SimpleSpyV3/main/main.lua")
+sc("10. Remote Spy", "https://raw.githubusercontent.com/infyiff/remoteSpy/main/main.lua")
+
+-- КНОПКА DH (ОТКРЫТЬ/ЗАКРЫТЬ)
+local Tog = Instance.new("TextButton", G)
+Tog.Size = UDim2.new(0, 50, 0, 50)
 Tog.Position = UDim2.new(0, 10, 0.5, 0)
 Tog.Text = "DH"
-Tog.BackgroundColor3 = Color3.new(0, 0, 0)
-Tog.TextColor3 = Color3.new(1, 0, 0)
-Instance.new("UICorner", Tog).CornerRadius = UDim.new(1, 0)
-Instance.new("UIStroke", Tog).Color = Color3.new(1, 0, 0)
-Tog.MouseButton1Click:Connect(function() Main.Visible = not Main.Visible end)
-
-task.spawn(RunLoader)
-Main.Visible = true
-MTab.Visible = true
+Tog.BackgroundColor3 = Color3.new(0,0,0)
+Tog.TextColor3 = Color3.new(1,0,0)
+Instance.new("UICorner", Tog).CornerRadius = UDim.new(1,0)
+Tog.MouseButton1Click:Connect(function() M.Visible = not M.Visible end)
