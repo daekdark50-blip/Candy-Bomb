@@ -1,5 +1,5 @@
--- [[ DARK HUB V34 | V35 HYBRID UPDATE ]] --
--- [[ AK ADMIN | STEAL BLOCKS + SWING OBBY ]] --
+-- [[ DARK HUB V34 | V38 INDIVIDUAL SCRIPTS ]] --
+-- [[ AK ADMIN | ALL LOADS SEPARATED ]] --
 
 local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
@@ -11,7 +11,7 @@ if CoreGui:FindFirstChild("DarkHubV34") then CoreGui.DarkHubV34:Destroy() end
 local Gui = Instance.new("ScreenGui", CoreGui)
 Gui.Name = "DarkHubV34"
 
--- [[ 1. ПОЛНОЭКРАННАЯ ЗАГРУЗКА ]] --
+-- [[ 1. ФИНАЛЬНЫЙ ЛОАДЕР (v34 Style) ]] --
 local function StartLoader()
     local LoaderFrame = Instance.new("Frame", Gui)
     LoaderFrame.Size = UDim2.new(1, 0, 1, 0)
@@ -26,7 +26,6 @@ local function StartLoader()
     Text.Font = Enum.Font.GothamBold
     Text.TextSize = 28
     Text.BackgroundTransparency = 1
-    Text.TextTransparency = 1
 
     local BarBack = Instance.new("Frame", LoaderFrame)
     BarBack.Size = UDim2.new(0, 300, 0, 4)
@@ -39,14 +38,12 @@ local function StartLoader()
     BarFill.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     BarFill.BorderSizePixel = 0
 
-    TweenService:Create(Text, TweenInfo.new(1), {TextTransparency = 0}):Play()
-    task.wait(0.5)
     BarFill:TweenSize(UDim2.new(1, 0, 1, 0), "Out", "Quad", 2)
     task.wait(2.2)
     LoaderFrame:Destroy()
 end
 
--- [[ 2. ИНТЕРФЕЙС ]] --
+-- [[ 2. ГЛАВНОЕ МЕНЮ (AK ADMIN) ]] --
 local Main = Instance.new("Frame", Gui)
 Main.Size = UDim2.new(0, 500, 0, 350)
 Main.Position = UDim2.new(0.5, -250, 0.5, -175)
@@ -105,7 +102,7 @@ end
 local TabMain = CreateTab("MAIN")
 local TabScripts = CreateTab("SCRIPTS")
 
--- [[ MAIN: SPECTRATE ]] --
+-- [[ MAIN: SPECTATE ]] --
 local function UpdateSpectate()
     TabMain:ClearAllChildren()
     Instance.new("UIListLayout", TabMain).Padding = UDim.new(0, 8)
@@ -130,7 +127,7 @@ local function UpdateSpectate()
 end
 UpdateSpectate()
 
--- [[ SCRIPTS РАЗДЕЛ ]] --
+-- [[ SCRIPTS: ВСЕ ССЫЛКИ ПО ПОРЯДКУ ]] --
 local function AddScript(name, url)
     local b = Instance.new("TextButton", TabScripts)
     b.Size = UDim2.new(1, 0, 0, 40)
@@ -143,20 +140,9 @@ local function AddScript(name, url)
     end)
 end
 
--- КОМБО: Jump To Steal + Swing Obby
-local ComboBtn = Instance.new("TextButton", TabScripts)
-ComboBtn.Size = UDim2.new(1, 0, 0, 40)
-ComboBtn.Text = "Steal Blocks + Swing Obby"
-ComboBtn.BackgroundColor3 = Color3.fromRGB(50, 0, 100) -- Выделим фиолетовым
-ComboBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-Instance.new("UICorner", ComboBtn)
-ComboBtn.MouseButton1Click:Connect(function()
-    -- Загружаем воровство блоков
-    loadstring(game:HttpGet('https://raw.githubusercontent.com/clifflynxconcentrate/Jump-To-Steal-Lucky-Blocks/main/Jump-To-Steal-Lucky-Blocks.lua'))()
-    -- Загружаем Swing Obby (добавь ссылку если она другая, пока ставлю твою основную базу)
-    print("Hybrid Script Activated!")
-end)
-
+-- Кнопки по отдельности
+AddScript("Jump to Steal Lucky Blocks", "https://raw.githubusercontent.com/clifflynxconcentrate/Jump-To-Steal-Lucky-Blocks/main/Jump-To-Steal-Lucky-Blocks.lua")
+AddScript("Swing Obby for Brainrots", "https://raw.githubusercontent.com/gumanba/Scripts/main/SwingObbyforBrainrots")
 AddScript("Escape Tsunami (Dark Hub)", "https://raw.githubusercontent.com/osakaTP2/OsakaTP2/refs/heads/main/Escape%20Tsunami%20For%20BrainrotsDelta")
 AddScript("Be a Lucky Block", "https://raw.githubusercontent.com/gumanba/Scripts/main/BeaLuckyBlock")
 AddScript("Fly for Brainrots", "https://raw.githubusercontent.com/gumanba/Scripts/main/FlyforBrainrots")
