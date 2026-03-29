@@ -1,18 +1,18 @@
 --[[
-    👹 DARK HUB V3.2 | LAST MACHINE EDITION
-    - Черный лоадер (без лиц)
-    - Статистика: FPS, Пинг, Устройство (6 вкладка)
-    - Все новые лоадеры и инвиз добавлены
+    🌑 DARK HUB | LAST MACHINE EDITION
+    - Смайлик заменен на Черную Луну
+    - FOV 120 перенесен в низ Main Hub
+    - Черный лоадер и статистика
 ]]
 
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
--- 1. [НОВЫЙ ЧЕРНЫЙ ЛОАДЕР]
+-- 1. [ЧЕРНЫЙ ЛОАДЕР]
 local function StartBlackLoading()
     local screen = Instance.new("ScreenGui", game.CoreGui)
     local frame = Instance.new("Frame", screen)
     frame.Size = UDim2.new(1, 0, 1, 0)
-    frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Полностью черный
+    frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     
     local label = Instance.new("TextLabel", frame)
     label.Size = UDim2.new(0, 400, 0, 100)
@@ -23,7 +23,7 @@ local function StartBlackLoading()
     label.Font = Enum.Font.GothamBold
     label.BackgroundTransparency = 1
     
-    task.wait(2.5)
+    task.wait(2.2)
     screen:Destroy()
 end
 StartBlackLoading()
@@ -31,7 +31,7 @@ StartBlackLoading()
 -- 2. [ЯДРО АИМБОТА]
 local AimEnabled, AimSmoothness, AimFOV = false, 0.15, 150
 local FOVCircle = Drawing.new("Circle")
-FOVCircle.Thickness, FOVCircle.NumSides, FOVCircle.Filled, FOVCircle.Transparency = 1, 100, false, 0.4
+FOVCircle.Thickness, FOVCircle.NumSides, FOVCircle.Filled, FOVCircle.Transparency = 1, 100, false, 0.3
 FOVCircle.Color = Color3.fromRGB(255, 255, 255)
 FOVCircle.Visible = false
 
@@ -55,10 +55,10 @@ game:GetService("RunService").RenderStepped:Connect(function()
     end
 end)
 
--- 3. [ИНТЕРФЕЙС]
+-- 3. [ИНТЕРФЕЙС С ЧЕРНОЙ ЛУНОЙ]
 local Window = Rayfield:CreateWindow({
-   Name = "👹 DARK HUB | LAST MACHINE",
-   LoadingTitle = "Запуск Систем...",
+   Name = "🌑 DARK HUB | LAST MACHINE",
+   LoadingTitle = "Запуск Тьмы...",
    ConfigurationSaving = { Enabled = true, FileName = "DarkHubFinal" }
 })
 
@@ -70,16 +70,17 @@ local VisualTab = Window:CreateTab("👁️ Visuals")
 -- [ 🏠 MAIN HUB ]
 MainTab:CreateSlider({Name = "⚡ Speed", Range = {16, 500}, Increment = 1, CurrentValue = 16, Callback = function(V) game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = V end})
 MainTab:CreateButton({Name = "👻 NEW INVISIBLE (Universal)", Callback = function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Invisible-Script-Universal-109667"))() end})
+-- FOV ТЕПЕРЬ ТУТ (В САМОМ НИЗУ)
+MainTab:CreateButton({Name = "🎥 Установить FOV 120", Callback = function() workspace.CurrentCamera.FieldOfView = 120 end})
 
--- [ 📜 SCRIPTS - ВСЁ ВКЛЮЧЕНО ]
+-- [ 📜 SCRIPTS ]
 local scripts = {
     ["☢️ Plutonium (Lucky Block)"] = "https://raw.githubusercontent.com/PawsThePaw/Plutonium.AA/main/Plutonium.Loader.lua",
+    ["💣 Candy Bomb Hub"] = "https://raw.githubusercontent.com/daekdark50-blip/Candy-Bomb/main/main.lua",
     ["💎 Bea Lucky Block"] = "https://raw.githubusercontent.com/gumanba/Scripts/main/BeaLuckyBlock",
     ["🎡 Swing Obby"] = "https://raw.githubusercontent.com/gumanba/Scripts/main/SwingObbyforBrainrots",
     ["🌌 Mystrix Hub"] = "https://raw.githubusercontent.com/ummarxfarooq/mystrix-hub/refs/heads/main/loader",
-    ["🔪 Murderers VS Sheriffs"] = "https://raw.githubusercontent.com/Rysted/scripts/main/MurderersVSSheriffs.lua",
-    ["🚀 Speed Hub X"] = "https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua",
-    ["💪 Get STRONG"] = "https://raw.githubusercontent.com/gumanba/Scripts/main/GetSTRONGforBrainrots"
+    ["🚀 Speed Hub X"] = "https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua"
 }
 for name, url in pairs(scripts) do
     ScriptTab:CreateButton({Name = name, Callback = function() loadstring(game:HttpGet(url))() end})
@@ -91,7 +92,7 @@ AimTab:CreateToggle({Name = "Показать Круг", CurrentValue = false, C
 AimTab:CreateSlider({Name = "Радиус", Range = {50, 600}, Increment = 5, CurrentValue = 150, Callback = function(V) AimFOV = V end})
 AimTab:CreateColorPicker({Name = "Цвет Круга", Color = Color3.fromRGB(255,255,255), Callback = function(V) FOVCircle.Color = V end})
 
--- [ 👁️ VISUALS - 6 ВКЛАДКА ]
+-- [ 👁️ VISUALS (STATS) ]
 local FPSLabel = VisualTab:CreateLabel("FPS: Вычисляем...")
 local PingLabel = VisualTab:CreateLabel("Ping: Вычисляем...")
 VisualTab:CreateLabel("Device: " .. (game:GetService("UserInputService").TouchEnabled and "Mobile/Tablet" or "PC"))
@@ -104,4 +105,4 @@ task.spawn(function()
     end
 end)
 
-Rayfield:Notify({ Title = "FINAL UPDATE!", Content = "Машина Убийства готова к работе ✅", Duration = 5 })
+Rayfield:Notify({ Title = "🌑 DARK HUB", Content = "Финальное обновление загружено! ✅", Duration = 5 })
