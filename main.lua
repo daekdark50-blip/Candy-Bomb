@@ -1,13 +1,13 @@
 --[[
     👹 DARK HUB OFFICIAL | V3 ULTIMATE REBORN
-    - Все ссылки вшиты (Swing, Plutonium, Lucky Block, VinzHub, Fly)
-    - Имбовый лоадер с полоской
-    - Main Hub полностью на кнопках и ползунках
+    - Добавлен Luarmor Loader (Vape V4/Other)
+    - Все 9 рабочих ссылок вшиты
+    - Исправлен загрузчик и кнопки в Main Hub
 ]]
 
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
--- 1. [ЛОАДЕР С ПОЛОСКОЙ]
+-- 1. [ИМБОВАЯ ЗАГРУЗКА]
 local function StartLoading()
     local screen = Instance.new("ScreenGui", game.CoreGui)
     local frame = Instance.new("Frame", screen)
@@ -21,8 +21,8 @@ local function StartLoading()
     label.Text = "Loading DARK HUB OFFICIAL..."
     label.TextColor3 = Color3.fromRGB(255, 255, 255)
     label.TextSize = 24
-    label.BackgroundTransparency = 1
     label.Font = Enum.Font.GothamBold
+    label.BackgroundTransparency = 1
 
     local barBg = Instance.new("Frame", frame)
     barBg.Size = UDim2.new(0.85, 0, 0, 8)
@@ -54,7 +54,7 @@ local MainTab = Window:CreateTab("🏠 Main Hub", 4483362458)
 local ScriptTab = Window:CreateTab("📜 Scripts", 4483345998)
 local GlobalTab = Window:CreateTab("👁️ Global Scan", 4483362458)
 
--- 3. [СТАТИСТИКА]
+-- 3. [СТАТИСТИКА ПИНГ/ФПС]
 local StatsLabel = MainTab:CreateLabel("Stats: Connecting...")
 task.spawn(function()
     while task.wait(0.5) do
@@ -64,15 +64,12 @@ task.spawn(function()
     end
 end)
 
---- [ MAIN HUB - КНОПКИ И ПОЛЗУНКИ ] ---
+--- [ MAIN HUB ] ---
 MainTab:CreateSection("--- Персонаж и Камера ---")
 
 MainTab:CreateButton({
-   Name = "🎥 Установить FOV 120",
-   Callback = function()
-       workspace.CurrentCamera.FieldOfView = 120
-       Rayfield:Notify({Title = "FOV", Content = "Установлено 120", Duration = 2})
-   end,
+   Name = "🎥 Обзор (FOV 120)",
+   Callback = function() workspace.CurrentCamera.FieldOfView = 120 end,
 })
 
 MainTab:CreateButton({
@@ -102,16 +99,14 @@ MainTab:CreateButton({
    end,
 })
 
-MainTab:CreateSection("--- Скорость и Прыжок ---")
+MainTab:CreateSection("--- Ползунки ---")
 
 MainTab:CreateSlider({
    Name = "⚡ WalkSpeed (Скорость)",
    Range = {16, 300},
    Increment = 1,
    CurrentValue = 16,
-   Callback = function(Value)
-       game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
-   end,
+   Callback = function(Value) game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value end,
 })
 
 MainTab:CreateSlider({
@@ -119,50 +114,69 @@ MainTab:CreateSlider({
    Range = {50, 500},
    Increment = 1,
    CurrentValue = 50,
-   Callback = function(Value)
-       game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
+   Callback = function(Value) game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value end,
+})
+
+--- [ SCRIPTS - ВСЕ 9 ССЫЛОК ] ---
+
+ScriptTab:CreateButton({
+   Name = "1. Luarmor Loader (Vape/Elite)",
+   Callback = function()
+       loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/fda9babd071d6b536a745774b6bc681c.lua"))()
    end,
 })
 
---- [ SCRIPTS - ВСЕ ТВОИ ССЫЛКИ ] ---
+ScriptTab:CreateButton({
+   Name = "2. Escape Police (Brainrots)",
+   Callback = function()
+       loadstring(game:HttpGet("https://raw.githubusercontent.com/gumanba/Scripts/main/EscapePoliceForBrainrots"))()
+   end,
+})
 
 ScriptTab:CreateButton({
-   Name = "1. Swing Obby (Brainrots)",
+   Name = "3. Get STRONG (Brainrots)",
+   Callback = function()
+       loadstring(game:HttpGet("https://raw.githubusercontent.com/gumanba/Scripts/main/GetSTRONGforBrainrots"))()
+   end,
+})
+
+ScriptTab:CreateButton({
+   Name = "4. Swing Obby (Brainrots)",
    Callback = function()
        loadstring(game:HttpGet("https://raw.githubusercontent.com/gumanba/Scripts/main/SwingObbyforBrainrots"))()
    end,
 })
 
 ScriptTab:CreateButton({
-   Name = "2. Plutonium Loader",
+   Name = "5. Plutonium Loader",
    Callback = function()
        loadstring(game:HttpGet("https://raw.githubusercontent.com/PawsThePaw/Plutonium.AA/main/Plutonium.Loader.lua", true))()
    end,
 })
 
 ScriptTab:CreateButton({
-   Name = "3. Be a Lucky Block",
+   Name = "6. Be a Lucky Block",
    Callback = function()
        loadstring(game:HttpGet("https://raw.githubusercontent.com/gumanba/Scripts/main/BeaLuckyBlock"))()
    end,
 })
 
 ScriptTab:CreateButton({
-   Name = "4. VinzHub Loader",
+   Name = "7. VinzHub Loader",
    Callback = function()
        loadstring(game:HttpGet("https://script.vinzhub.com/loader"))()
    end,
 })
 
 ScriptTab:CreateButton({
-   Name = "5. Fly for Brainrots",
+   Name = "8. Fly for Brainrots",
    Callback = function()
        loadstring(game:HttpGet("https://raw.githubusercontent.com/gumanba/Scripts/main/FlyforBrainrots"))()
    end,
 })
 
 ScriptTab:CreateButton({
-   Name = "6. Infinite Yield (Admin)",
+   Name = "9. Infinite Yield (Admin)",
    Callback = function()
        loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
    end,
@@ -177,4 +191,4 @@ GlobalTab:CreateToggle({
    end,
 })
 
-Rayfield:Notify({ Title = "READY!", Content = "Все скрипты успешно вшиты ✅", Duration = 5 })
+Rayfield:Notify({ Title = "READY!", Content = "Luarmor Loader добавлен ✅", Duration = 5 })
