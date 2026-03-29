@@ -1,14 +1,14 @@
 --[[
-	🌑 DARK HUB OFFICIAL | V6 FULL
-	- FOV 120 (Автоматически)
-	- Аимбот с авто-наводкой
-	- Настройка цвета FOV
-	- Вкладка Hacker: Coolkid + John Doe
+	🌑 DARK HUB OFFICIAL | V7 FINAL
+	- FOV 120 (Фикс)
+	- Аимбот + Настройка цвета
+	- РАБОЧИЙ John Doe (Виден всем)
+	- Вкладка Hacker: Coolkid + New John Doe
 ]]
 
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
--- 1. [ЗАГРУЗКА]
+-- 1. [ЧЕРНЫЙ ЭКРАН ЗАГРУЗКИ]
 local function StartLoading()
     local screen = Instance.new("ScreenGui", game.CoreGui)
     local frame = Instance.new("Frame", screen)
@@ -62,7 +62,7 @@ end)
 local Window = Rayfield:CreateWindow({
    Name = "🌑 DARK HUB | LAST MACHINE",
    LoadingTitle = "Запуск Системы...",
-   ConfigurationSaving = { Enabled = true, FileName = "DarkHubV6" }
+   ConfigurationSaving = { Enabled = true, FileName = "DarkHubV7" }
 })
 
 local MainTab = Window:CreateTab("🏠 Main Hub")
@@ -85,10 +85,22 @@ AimTab:CreateColorPicker({
 })
 
 -- [ HACKER ]
-HackerTab:CreateButton({Name = "💀 Coolkid GUI", Callback = function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-coolkid-gui-15453"))() end})
-HackerTab:CreateButton({Name = "🤡 John Doe", Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/sinret/rbxscript.com-scripts-reuploads-/main/johndoe", true))() end})
+HackerTab:CreateButton({
+    Name = "💀 Coolkid GUI", 
+    Callback = function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-coolkid-gui-15453"))() end
+})
+
+HackerTab:CreateButton({
+    Name = "🤡 John Doe (Real Server)", -- Новый рабочий скрипт
+    Callback = function() 
+        loadstring(game:HttpGet("https://rawscripts.net/raw/Client-Replication-John-doe-up-by-gojohdkaisenkt-34198"))() 
+    end
+})
 
 -- [ VISUALS ]
-VisualTab:CreateButton({Name = "👁️ ВХ (scriptrbgod)", Callback = function() loadstring(game:HttpGet("https://pastebin.com/raw/n88ttmFh"))() end})
+VisualTab:CreateButton({
+    Name = "👁️ ВХ (scriptrbgod)", 
+    Callback = function() loadstring(game:HttpGet("https://pastebin.com/raw/n88ttmFh"))() end
+})
 
-Rayfield:Notify({ Title = "🌑 DARK HUB", Content = "Хаб готов на 100%! ✅", Duration = 5 })
+Rayfield:Notify({ Title = "🌑 DARK HUB", Content = "Всё готово! John Doe обновлен. ✅", Duration = 5 })
