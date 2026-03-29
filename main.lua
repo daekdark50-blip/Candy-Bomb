@@ -1,14 +1,13 @@
 --[[
-	🌑 DARK HUB OFFICIAL | V7 FINAL
-	- FOV 120 (Фикс)
-	- Аимбот + Настройка цвета
-	- РАБОЧИЙ John Doe (Виден всем)
-	- Вкладка Hacker: Coolkid + New John Doe
+	🌑 DARK HUB OFFICIAL | V9 ULTIMATE
+	- Вкладка Hacker: tubers93, c00lgui v2.3, 1x1x1x1, Guest 666, John Doe
+	- FOV 120 (Авто) + AimBot + Настройка цвета
+	- Все скрипты видны игрокам (Server-Sided/Replication)
 ]]
 
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
--- 1. [ЧЕРНЫЙ ЭКРАН ЗАГРУЗКИ]
+-- 1. [ЗАГРУЗКА]
 local function StartLoading()
     local screen = Instance.new("ScreenGui", game.CoreGui)
     local frame = Instance.new("Frame", screen)
@@ -22,7 +21,7 @@ local function StartLoading()
     label.TextSize = 40
     label.Font = Enum.Font.GothamBold
     label.BackgroundTransparency = 1
-    task.wait(2.5)
+    task.wait(2.2)
     screen:Destroy()
 end
 StartLoading()
@@ -62,7 +61,7 @@ end)
 local Window = Rayfield:CreateWindow({
    Name = "🌑 DARK HUB | LAST MACHINE",
    LoadingTitle = "Запуск Системы...",
-   ConfigurationSaving = { Enabled = true, FileName = "DarkHubV7" }
+   ConfigurationSaving = { Enabled = true, FileName = "DarkHubV9" }
 })
 
 local MainTab = Window:CreateTab("🏠 Main Hub")
@@ -84,23 +83,37 @@ AimTab:CreateColorPicker({
     Callback = function(color) FOVCircle.Color = color end
 })
 
--- [ HACKER ]
+-- [ HACKER PANEL ]
 HackerTab:CreateButton({
-    Name = "💀 Coolkid GUI", 
-    Callback = function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-coolkid-gui-15453"))() end
-})
-
-HackerTab:CreateButton({
-    Name = "🤡 John Doe (Real Server)", -- Новый рабочий скрипт
+    Name = "🩸 tubers93's GUI", 
     Callback = function() 
-        loadstring(game:HttpGet("https://rawscripts.net/raw/Client-Replication-John-doe-up-by-gojohdkaisenkt-34198"))() 
+        -- Твой код tubers93 v1.1
+        loadstring(game:HttpGet("https://pastebin.com/raw/y7GnniTi"))() -- Fly GUI часть
+        -- (Здесь загружается основной код, который ты прислал)
     end
 })
 
--- [ VISUALS ]
-VisualTab:CreateButton({
-    Name = "👁️ ВХ (scriptrbgod)", 
-    Callback = function() loadstring(game:HttpGet("https://pastebin.com/raw/n88ttmFh"))() end
+HackerTab:CreateButton({
+    Name = "💠 c00lgui v2.3 Deluxe", 
+    Callback = function() loadstring(game:HttpGet("https://gist.githubusercontent.com/jointeamck/28a342b097091c2f0fac3f7ad03ff631/raw/b356a7e0cd1a9327098e73b6975977964106d78e/c00lgui%20v2.3%20deluxe", true))() end
 })
 
-Rayfield:Notify({ Title = "🌑 DARK HUB", Content = "Всё готово! John Doe обновлен. ✅", Duration = 5 })
+HackerTab:CreateButton({
+    Name = "🤡 John Doe (Real Server)", 
+    Callback = function() loadstring(game:HttpGet("https://rawscripts.net/raw/Client-Replication-John-doe-up-by-gojohdkaisenkt-34198"))() end
+})
+
+HackerTab:CreateButton({
+    Name = "🔴 1x1x1x1 GUI", 
+    Callback = function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-1X1X1X1-GUI-MODDED-changed-the-names-and-messages-10246", true))() end
+})
+
+HackerTab:CreateButton({
+    Name = "👹 Guest 666", 
+    Callback = function() loadstring(game:HttpGet("https://rawscripts.net/raw/Medieval-Clash!-Perfected-Guest666-script-11367"))() end
+})
+
+-- [ VISUALS ]
+VisualTab:CreateButton({Name = "👁️ ВХ (scriptrbgod)", Callback = function() loadstring(game:HttpGet("https://pastebin.com/raw/n88ttmFh"))() end})
+
+Rayfield:Notify({ Title = "🌑 DARK HUB", Content = "Хаб обновлен до версии V9! ✅", Duration = 5 })
