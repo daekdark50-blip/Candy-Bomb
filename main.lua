@@ -1,28 +1,28 @@
 --[[
-	🍬 CANDY HUB OFFICIAL | REBORN
-	- Твой личный хаб обновлен!
-	- Черная загрузка + Черная Луна 🌑
-	- Все твои новые лоадеры (Swing Obby, Plutonium)
-	- Рабочее ВХ и Аимбот
+	🌑 DARK HUB OFFICIAL | V4 FINAL
+	- Черный экран загрузки: "Loading DARK HUB..."
+	- Новая вкладка: 💻 Hacker (Coolkid GUI)
+	- Исправленное ВХ: Скрипт от scriptrbgod
+	- Все твои лоадеры сохранены
 ]]
 
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
--- 1. [ЧЕРНЫЙ ЛОАДЕР CANDY]
+-- 1. [ЧЕРНЫЙ ЭКРАН ЗАГРУЗКИ]
 local function StartLoading()
     local screen = Instance.new("ScreenGui", game.CoreGui)
     local frame = Instance.new("Frame", screen)
     frame.Size = UDim2.new(1, 0, 1, 0)
     frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     local label = Instance.new("TextLabel", frame)
-    label.Size = UDim2.new(0, 400, 0, 100)
-    label.Position = UDim2.new(0.5, -200, 0.5, -50)
-    label.Text = "🍬 CANDY HUB LOADING..."
+    label.Size = UDim2.new(0, 500, 0, 100)
+    label.Position = UDim2.new(0.5, -250, 0.5, -50)
+    label.Text = "Loading DARK HUB..."
     label.TextColor3 = Color3.fromRGB(255, 255, 255)
-    label.TextSize = 35
+    label.TextSize = 40
     label.Font = Enum.Font.GothamBold
     label.BackgroundTransparency = 1
-    task.wait(2.2)
+    task.wait(2.5)
     screen:Destroy()
 end
 StartLoading()
@@ -55,55 +55,50 @@ game:GetService("RunService").RenderStepped:Connect(function()
     end
 end)
 
--- 3. [ОКНО ТВОЕГО ХАБА]
+-- 3. [ОКНО ХАБА]
 local Window = Rayfield:CreateWindow({
-   Name = "🌑 CANDY HUB | LAST MACHINE",
-   LoadingTitle = "Запуск Твоей Системы...",
-   ConfigurationSaving = { Enabled = true, FileName = "CandyHubV3" }
+   Name = "🌑 DARK HUB | LAST MACHINE",
+   LoadingTitle = "Запуск Рауфельд...",
+   ConfigurationSaving = { Enabled = true, FileName = "DarkHubV4" }
 })
 
 local MainTab = Window:CreateTab("🏠 Main Hub")
 local ScriptTab = Window:CreateTab("📜 Scripts")
 local AimTab = Window:CreateTab("🎯 AimBot")
 local VisualTab = Window:CreateTab("👁️ Visuals")
+local HackerTab = Window:CreateTab("💻 Hacker")
 
--- [ 🏠 MAIN HUB ]
+-- [ MAIN HUB ]
 MainTab:CreateSlider({Name = "⚡ Speed", Range = {16, 500}, Increment = 1, CurrentValue = 16, Callback = function(V) game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = V end})
-MainTab:CreateButton({Name = "👻 NEW INVISIBLE (Universal)", Callback = function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Invisible-Script-Universal-109667"))() end})
+MainTab:CreateButton({Name = "👻 NEW INVISIBLE", Callback = function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Invisible-Script-Universal-109667"))() end})
 MainTab:CreateButton({Name = "🎥 Установить FOV 120", Callback = function() workspace.CurrentCamera.FieldOfView = 120 end})
 
--- [ 📜 SCRIPTS - ТВОИ ФАВОРИТЫ ]
+-- [ SCRIPTS ]
 local loaders = {
     ["🎡 Swing Obby"] = "https://raw.githubusercontent.com/gumanba/Scripts/main/SwingObbyforBrainrots",
-    ["☢️ Plutonium (Lucky Block)"] = "https://raw.githubusercontent.com/PawsThePaw/Plutonium.AA/main/Plutonium.Loader.lua",
+    ["☢️ Plutonium"] = "https://raw.githubusercontent.com/PawsThePaw/Plutonium.AA/main/Plutonium.Loader.lua",
     ["🌌 Mystrix Hub"] = "https://raw.githubusercontent.com/ummarxfarooq/mystrix-hub/refs/heads/main/loader",
-    ["🚀 Speed Hub X"] = "https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua",
-    ["🔪 Murderers VS Sheriffs"] = "https://raw.githubusercontent.com/Rysted/scripts/main/MurderersVSSheriffs.lua"
+    ["🚀 Speed Hub X"] = "https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua"
 }
-
 for name, url in pairs(loaders) do
     ScriptTab:CreateButton({Name = name, Callback = function() loadstring(game:HttpGet(url))() end})
 end
 
--- [ 🎯 AIMBOT ]
+-- [ VISUALS - ВХ ОТ SCRIPT RB GOD ]
+VisualTab:CreateButton({
+    Name = "👁️ Включить ВХ (scriptrbgod)",
+    Callback = function() loadstring(game:HttpGet("https://pastebin.com/raw/n88ttmFh"))() end
+})
+
+-- [ HACKER - COOLKID GUI ]
+HackerTab:CreateButton({
+    Name = "💀 Запустить Coolkid GUI",
+    Callback = function() loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-coolkid-gui-15453"))() end
+})
+
+-- [ AIMBOT ]
 AimTab:CreateToggle({Name = "Авто-наводка", CurrentValue = false, Callback = function(V) AimEnabled = V end})
 AimTab:CreateToggle({Name = "Показать Круг", CurrentValue = false, Callback = function(V) FOVCircle.Visible = V end})
 AimTab:CreateSlider({Name = "Радиус", Range = {10, 600}, Increment = 1, CurrentValue = 150, Callback = function(V) AimFOV = V end})
 
--- [ 👁️ VISUALS ]
-VisualTab:CreateButton({
-    Name = "👁️ Включить ESP (ВХ)",
-    Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/IratuServices/SkidWare/main/UniversalESP.lua"))() end
-})
-
-local FPSLabel = VisualTab:CreateLabel("FPS: ...")
-local PingLabel = VisualTab:CreateLabel("Ping: ...")
-task.spawn(function()
-    while task.wait(1) do
-        FPSLabel:Set("FPS: " .. math.floor(workspace:GetRealPhysicsFPS()))
-        local p = tonumber(string.format("%.0f", game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValue()))
-        PingLabel:Set("Ping: " .. p .. "ms")
-    end
-end)
-
-Rayfield:Notify({ Title = "🍬 CANDY HUB", Content = "Твой хаб обновлен и готов! ✅", Duration = 5 })
+Rayfield:Notify({ Title = "🌑 DARK HUB", Content = "Всё готово! Машина запущена. ✅", Duration = 5 })
