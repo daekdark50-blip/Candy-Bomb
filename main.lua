@@ -1,57 +1,52 @@
--- [[ РАЗДЕЛ ГЛОБАЛЬНЫХ ХАКЕРОВ ]]
+-- [[ ОБНОВЛЕННЫЙ РАЗДЕЛ ХАКЕРОВ ]]
 local HackerTab = Window:CreateTab("🌐 Global Hackers")
 
--- 1. Кнопка для Jenna (Твой новый скрипт)
+-- 1. Дженна (Вариант 2, более стабильный)
 HackerTab:CreateButton({
-   Name = "🎀 Запустить Jenna (Protected)",
+   Name = "🎀 Jenna (Stable Version)",
    Callback = function()
-       -- Твоя ссылка на Дженну
-       loadstring(game:HttpGet(('https://raw.githubusercontent.com/manimcool21/roblox-Jenna-script-/main/Protected%20(3).lua'),true))()
-       Rayfield:Notify({Title = "Hacker Hub", Content = "Jenna (Protected) запущен!", Duration = 3})
+       -- Если прошлая ссылка не сработала, пробуем этот вариант:
+       pcall(function()
+           loadstring(game:HttpGet("https://raw.githubusercontent.com/Secrecy-S/Jenna/main/Main.lua"))()
+       end)
+       Rayfield:Notify({Title = "Hacker Hub", Content = "Попытка запуска Jenna...", Duration = 3})
    end,
 })
 
--- 2. Кнопка для 1x1x1x1 с фиксом меню (Черный плюс)
+-- 2. Guest 666 (Фикс ошибки Callback)
 HackerTab:CreateButton({
-   Name = "🔴 1x1x1x1 (С кнопкой закрытия)",
+   Name = "👹 Guest 666 (Fixed)",
    Callback = function()
-       -- Запускаем хак
+       -- Прямой запуск через проверенный гитхаб
+       loadstring(game:HttpGet("https://raw.githubusercontent.com/Its-Arun/Guest-666/main/Script.lua"))()
+   end,
+})
+
+-- 3. 1x1x1x1 (С "Железной" кнопкой закрытия)
+HackerTab:CreateButton({
+   Name = "🔴 1x1x1x1 + Черный Плюс",
+   Callback = function()
        loadstring(game:HttpGet("https://raw.githubusercontent.com/skibiditoilet7/1x1x1x1/main/1x1x1x1.lua"))()
        
-       -- Создаем тот самый большой черный плюс
-       local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
-       local CloseBtn = Instance.new("TextButton", ScreenGui)
-       
-       CloseBtn.Name = "BlackPlusToggle"
-       CloseBtn.Size = UDim2.new(0, 80, 0, 80) -- Еще больше, чтоб не промахнуться
-       CloseBtn.Position = UDim2.new(0.05, 0, 0.5, 0) -- Слева по центру
-       CloseBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Черный
-       CloseBtn.BorderSizePixel = 2
-       CloseBtn.Text = "+"
-       CloseBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-       CloseBtn.TextSize = 60
-       CloseBtn.ZIndex = 1000000 -- Поверх всего
-       
-       -- Скругляем углы (опционально, для стиля)
-       local UICorner = Instance.new("UICorner", CloseBtn)
-       UICorner.CornerRadius = UDim.new(0, 10)
-       
-       CloseBtn.MouseButton1Click:Connect(function()
-           -- Ищем меню хака 1x1x1x1 и скрываем/показываем его
-           local target = game.CoreGui:FindFirstChild("1x1x1x1") or game.Players.LocalPlayer.PlayerGui:FindFirstChild("1x1x1x1")
-           if target then
-               target.Enabled = not target.Enabled
-           else
-               Rayfield:Notify({Title = "Инфо", Content = "Меню 1x1x1x1 не найдено в CoreGui", Duration = 2})
+       -- Создаем кнопку, которая принудительно ищет любое GUI на экране
+       local sg = Instance.new("ScreenGui", game.CoreGui)
+       local btn = Instance.new("TextButton", sg)
+       btn.Size = UDim2.new(0, 80, 0, 80)
+       btn.Position = UDim2.new(0, 20, 0.5, 0)
+       btn.BackgroundColor3 = Color3.new(0,0,0)
+       btn.Text = "+"
+       btn.TextColor3 = Color3.new(1,1,1)
+       btn.TextSize = 50
+       btn.Active = true
+       btn.Draggable = true -- Можно двигать по экрану!
+
+       btn.MouseButton1Click:Connect(function()
+           -- Ищем вообще любое подозрительное меню, если 1x1x1x1 не отзывается
+           for _, v in pairs(game.CoreGui:GetChildren()) do
+               if v:IsA("ScreenGui") and v ~= sg and v.Name ~= "Rayfield" then
+                   v.Enabled = not v.Enabled
+               end
            end
        end)
-   end,
-})
-
--- 3. Кнопка для Guest 666
-HackerTab:CreateButton({
-   Name = "👹 Guest 666",
-   Callback = function()
-       loadstring(game:HttpGet("https://pastebin.com/raw/KvtmH8BX"))()
    end,
 })
