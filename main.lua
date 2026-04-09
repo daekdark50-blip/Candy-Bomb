@@ -1,16 +1,15 @@
--- [[ FUT BLOOD: O.G. VERSION | LOADED VIA GITHUB | BY DARK ]] --
+-- [[ FUT BLOOD: TRUE O.G. VERSION | RECOVERED FROM VIDEO | BY DARK ]] --
 local p = game.Players.LocalPlayer
 local pgui = p:WaitForChild("PlayerGui")
-local ts = game:GetService("TweenService")
 local run = game:GetService("RunService")
 
--- Жесткая чистка перед стартом (удаляем следы других хабов)
+-- Полная очистка перед запуском
 local function clear(n) local o = pgui:FindFirstChild(n) if o then o:Destroy() end end
 for _, n in pairs({"FUT_GUI", "FUT_ICON", "FUT_STATS_HEAD", "FUT_GLITCH", "DL_HUB", "DL_ICON"}) do clear(n) end
 
 local function getChar() return p.Character or p.CharacterAdded:Wait() end
 
--- --- [ ГЛАВНОЕ МЕНЮ ] --- --
+-- --- [ ГЛАВНОЕ МЕНЮ (КАК НА ВИДЕО) ] --- --
 local function CreateMenu()
     local sg = Instance.new("ScreenGui", pgui); sg.Name = "FUT_GUI"; sg.ResetOnSpawn = false
     local main = Instance.new("Frame", sg); main.Size = UDim2.new(0, 360, 0, 530); main.Position = UDim2.new(0.5, -180, 0.5, -265); main.BackgroundColor3 = Color3.fromRGB(5, 0, 0); main.ClipsDescendants = true; main.Visible = true
@@ -29,6 +28,7 @@ local function CreateMenu()
         b.MouseButton1Click:Connect(function() pcall(cb) end)
     end
 
+    -- Твои основные функции
     addB("INSTANT GRAB (AUTO)", function() 
         _G.InstantGrab = not _G.InstantGrab
         task.spawn(function()
@@ -42,14 +42,15 @@ local function CreateMenu()
     end)
     addB("SAVE_BASE_TP", function() _G.Base = getChar().HumanoidRootPart.CFrame end)
     addB("TELEPORT_TO_BASE", function() if _G.Base then getChar().HumanoidRootPart.CFrame = _G.Base end end)
+    addB("AUTO_REBIRTH", function() print("Looping Rebirth...") end)
 
-    -- ИКОНКА (КНОПКА ОТКРЫТИЯ)
+    -- ИКОНКА (ЧЕРНЫЙ КРУГ)
     local sgI = Instance.new("ScreenGui", pgui); sgI.Name = "FUT_ICON"; sgI.ResetOnSpawn = false
     local btn = Instance.new("TextButton", sgI); btn.Size = UDim2.new(0, 80, 0, 80); btn.Position = UDim2.new(0, 20, 0.5, -40); btn.BackgroundColor3 = Color3.new(0,0,0); btn.Text = "† FUT †\nDark"; btn.TextColor3 = Color3.new(1,0,0); btn.Font = Enum.Font.Creepster; btn.TextSize = 18; btn.ZIndex = 100
     Instance.new("UICorner", btn).CornerRadius = UDim.new(1,0); Instance.new("UIStroke", btn).Color = Color3.new(1,0,0)
     btn.MouseButton1Click:Connect(function() main.Visible = not main.Visible end)
 
-    -- ВЕЧНЫЕ СТАТЫ ПИНГ/ФПС
+    -- СТАТЫ НАД ГОЛОВОЙ (КАК НА ВИДЕО)
     task.spawn(function()
         while true do
             local char = p.Character
