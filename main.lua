@@ -1,143 +1,92 @@
--- [[ DARK HUB | DANYA & LIYA | OFFICIAL LOADER ]] --
-local Players = game:GetService("Players")
-local LPlayer = Players.LocalPlayer
-local CoreGui = game:GetService("CoreGui")
-local Camera = workspace.CurrentCamera
-local RunService = game:GetService("RunService")
-local TweenService = game:GetService("TweenService")
+-- [[ FUT BLOOD: O.G. VERSION | LOADED VIA GITHUB | BY DARK ]] --
+local p = game.Players.LocalPlayer
+local pgui = p:WaitForChild("PlayerGui")
+local ts = game:GetService("TweenService")
+local run = game:GetService("RunService")
 
--- Полная очистка перед стартом
-for _, v in pairs(CoreGui:GetChildren()) do
-    if v.Name == "DarkHub_Danya" or v.Name == "DL_LoadSystem" then v:Destroy() end
-end
+-- Жесткая чистка перед стартом (удаляем следы других хабов)
+local function clear(n) local o = pgui:FindFirstChild(n) if o then o:Destroy() end end
+for _, n in pairs({"FUT_GUI", "FUT_ICON", "FUT_STATS_HEAD", "FUT_GLITCH", "DL_HUB", "DL_ICON"}) do clear(n) end
 
-local ScreenGui = Instance.new("ScreenGui", CoreGui)
-ScreenGui.Name = "DarkHub_Danya"
+local function getChar() return p.Character or p.CharacterAdded:Wait() end
 
--- [[ 1. ТВОЙ ТЕХНИЧЕСКИЙ ЛОАДЕР ]] --
-local LoadFrame = Instance.new("Frame", ScreenGui)
-LoadFrame.Name = "DL_LoadSystem"
-LoadFrame.Size = UDim2.new(0, 420, 0, 160)
-LoadFrame.Position = UDim2.new(0.5, -210, 0.5, -80)
-LoadFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
-LoadFrame.BorderSizePixel = 2
-LoadFrame.BorderColor3 = Color3.fromRGB(255, 0, 0)
-Instance.new("UICorner", LoadFrame)
+-- --- [ ГЛАВНОЕ МЕНЮ ] --- --
+local function CreateMenu()
+    local sg = Instance.new("ScreenGui", pgui); sg.Name = "FUT_GUI"; sg.ResetOnSpawn = false
+    local main = Instance.new("Frame", sg); main.Size = UDim2.new(0, 360, 0, 530); main.Position = UDim2.new(0.5, -180, 0.5, -265); main.BackgroundColor3 = Color3.fromRGB(5, 0, 0); main.ClipsDescendants = true; main.Visible = true
+    Instance.new("UICorner", main); Instance.new("UIStroke", main).Color = Color3.fromRGB(255, 0, 0)
+    
+    -- Кровавый фон
+    local bg = Instance.new("ImageLabel", main); bg.Size = UDim2.new(1.6, 0, 1.6, 0); bg.Position = UDim2.new(-0.3, 0, -0.3, 0); bg.Image = "rbxassetid://132890001"; bg.ImageColor3 = Color3.fromRGB(120, 0, 0); bg.BackgroundTransparency = 0.6; bg.ZIndex = 1
 
-local Status = Instance.new("TextLabel", LoadFrame)
-Status.Size = UDim2.new(0.9, 0, 0.5, 0)
-Status.Position = UDim2.new(0.05, 0, 0.15, 0)
-Status.Text = "INITIALIZING D.L HUB..."
-Status.TextColor3 = Color3.fromRGB(200, 200, 200)
-Status.Font = Enum.Font.Code
-Status.TextSize = 13
-Status.BackgroundTransparency = 1
+    local header = Instance.new("TextLabel", main); header.Size = UDim2.new(1, 0, 0, 60); header.Position = UDim2.new(0,0,0,10); header.Text = "★ FUT BLOOD by(Dark) ★"; header.TextColor3 = Color3.new(1,0,0); header.Font = Enum.Font.Creepster; header.TextSize = 32; header.BackgroundTransparency = 1; header.ZIndex = 10
+    local userL = Instance.new("TextLabel", main); userL.Size = UDim2.new(1, 0, 0, 20); userL.Position = UDim2.new(0,0,0,65); userL.Text = "† USER: "..p.Name.." †"; userL.TextColor3 = Color3.new(0.6,0,0); userL.Font = Enum.Font.Code; userL.BackgroundTransparency = 1; userL.ZIndex = 10
 
-local BarBack = Instance.new("Frame", LoadFrame)
-BarBack.Size = UDim2.new(0.8, 0, 0, 8)
-BarBack.Position = UDim2.new(0.1, 0, 0.75, 0)
-BarBack.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-local BarFill = Instance.new("Frame", BarBack)
-BarFill.Size = UDim2.new(0, 0, 1, 0)
-BarFill.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-Instance.new("UICorner", BarFill)
+    local mainC = Instance.new("ScrollingFrame", main); mainC.Size = UDim2.new(1, -20, 1, -170); mainC.Position = UDim2.new(0, 10, 0, 145); mainC.BackgroundTransparency = 1; mainC.AutomaticCanvasSize = "Y"; mainC.ZIndex = 10; Instance.new("UIListLayout", mainC).Padding = UDim.new(0, 10)
 
--- [[ 2. ГЛАВНОЕ МЕНЮ (ХАБ) ]] --
-local Main = Instance.new("Frame", ScreenGui)
-Main.Size = UDim2.new(0, 430, 0, 600)
-Main.Position = UDim2.new(0.5, -215, 0.5, -300)
-Main.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
-Main.Visible = false
-Main.Active = true
-Main.Draggable = true
-Instance.new("UICorner", Main)
+    local function addB(name, cb)
+        local b = Instance.new("TextButton", mainC); b.Size = UDim2.new(1, 0, 0, 48); b.BackgroundColor3 = Color3.fromRGB(25, 0, 0); b.Text = "† "..name.." †"; b.TextColor3 = Color3.new(0.9,0,0); b.Font = Enum.Font.Code; b.ZIndex = 20; Instance.new("UICorner", b); Instance.new("UIStroke", b).Color = Color3.new(0.6,0,0)
+        b.MouseButton1Click:Connect(function() pcall(cb) end)
+    end
 
-local Icon = Instance.new("TextButton", ScreenGui)
-Icon.Size = UDim2.new(0, 60, 0, 60); Icon.Position = UDim2.new(0.05, 0, 0.15, 0); Icon.Text = "D.L"; Icon.BackgroundColor3 = Color3.fromRGB(255, 0, 0); Icon.Font = Enum.Font.GothamBold; Icon.Draggable = true; Instance.new("UICorner", Icon).CornerRadius = UDim.new(1, 0)
-Icon.MouseButton1Click:Connect(function() Main.Visible = not Main.Visible end)
+    addB("INSTANT GRAB (AUTO)", function() 
+        _G.InstantGrab = not _G.InstantGrab
+        task.spawn(function()
+            while _G.InstantGrab do
+                for _, v in pairs(workspace:GetDescendants()) do
+                    if v:IsA("ProximityPrompt") then v.HoldDuration = 0; if p:DistanceFromCharacter(v.Parent.Position) < 15 then fireproximityprompt(v) end end
+                end
+                task.wait(0.1)
+            end
+        end)
+    end)
+    addB("SAVE_BASE_TP", function() _G.Base = getChar().HumanoidRootPart.CFrame end)
+    addB("TELEPORT_TO_BASE", function() if _G.Base then getChar().HumanoidRootPart.CFrame = _G.Base end end)
 
-local Scroll = Instance.new("ScrollingFrame", Main)
-Scroll.Size = UDim2.new(1, -20, 1, -80); Scroll.Position = UDim2.new(0, 10, 0, 70); Scroll.BackgroundTransparency = 1; Scroll.CanvasSize = UDim2.new(0, 0, 18, 0)
-Instance.new("UIListLayout", Scroll).Padding = UDim.new(0, 10)
+    -- ИКОНКА (КНОПКА ОТКРЫТИЯ)
+    local sgI = Instance.new("ScreenGui", pgui); sgI.Name = "FUT_ICON"; sgI.ResetOnSpawn = false
+    local btn = Instance.new("TextButton", sgI); btn.Size = UDim2.new(0, 80, 0, 80); btn.Position = UDim2.new(0, 20, 0.5, -40); btn.BackgroundColor3 = Color3.new(0,0,0); btn.Text = "† FUT †\nDark"; btn.TextColor3 = Color3.new(1,0,0); btn.Font = Enum.Font.Creepster; btn.TextSize = 18; btn.ZIndex = 100
+    Instance.new("UICorner", btn).CornerRadius = UDim.new(1,0); Instance.new("UIStroke", btn).Color = Color3.new(1,0,0)
+    btn.MouseButton1Click:Connect(function() main.Visible = not main.Visible end)
 
-local function NewSec(t)
-    local l = Instance.new("TextLabel", Scroll); l.Size = UDim2.new(1, 0, 0, 35); l.Text = "--- " .. t .. " ---"; l.TextColor3 = Color3.fromRGB(255, 0, 0); l.BackgroundTransparency = 1; l.Font = Enum.Font.GothamBold
-end
-local function NewBtn(t, func)
-    local b = Instance.new("TextButton", Scroll); b.Size = UDim2.new(0.95, 0, 0, 45); b.BackgroundColor3 = Color3.fromRGB(25, 25, 25); b.Text = t; b.TextColor3 = Color3.fromRGB(255, 255, 255); b.Font = Enum.Font.GothamBold; Instance.new("UICorner", b)
-    b.MouseButton1Click:Connect(function() pcall(func) end)
-end
-
--- --- ВСЕ ТВОИ СКРИПТЫ ВНУТРИ --- --
-NewSec("LEGENDS (TOP)")
-NewBtn("💀 GUEST 666", function() loadstring(game:HttpGet("https://raw.githubusercontent.com/gObl00x/My-Scripts/refs/heads/main/Guest%20666.lua"))() end)
-NewBtn("👤 JOHN DOE FE", function() loadstring(game:HttpGet("https://rawscripts.net/raw/Client-Replication-John-doe-up-by-gojohdkaisenkt-34198"))() end)
-
-NewSec("🎯 AIMBOT SYSTEM")
-local AimEnabled = false; local AimRadius = 350
-local OnBtn = Instance.new("TextButton", Scroll); OnBtn.Size = UDim2.new(0.95, 0, 0, 45); OnBtn.Text = "ВКЛЮЧИТЬ АИМ"; OnBtn.TextColor3 = Color3.fromRGB(0, 255, 0); OnBtn.Font = Enum.Font.GothamBold; Instance.new("UICorner", OnBtn)
-local OffBtn = Instance.new("TextButton", Scroll); OffBtn.Size = UDim2.new(0.95, 0, 0, 45); OffBtn.Text = "ВЫКЛЮЧИТЬ АИМ"; OffBtn.TextColor3 = Color3.fromRGB(255, 0, 0); OffBtn.Font = Enum.Font.GothamBold; Instance.new("UICorner", OffBtn)
-local AimCircle = Instance.new("Frame", ScreenGui); AimCircle.Size = UDim2.new(0, AimRadius*2, 0, AimRadius*2); AimCircle.Position = UDim2.new(0.5, -AimRadius, 0.5, -AimRadius); AimCircle.BackgroundTransparency = 1; AimCircle.Visible = false
-local Stroke = Instance.new("UIStroke", AimCircle); Stroke.Thickness = 3; Stroke.Color = Color3.fromRGB(255, 0, 0); Stroke.Transparency = 0.5; Instance.new("UICorner", AimCircle).CornerRadius = UDim.new(1, 0)
-OnBtn.MouseButton1Click:Connect(function() AimEnabled = true AimCircle.Visible = true end)
-OffBtn.MouseButton1Click:Connect(function() AimEnabled = false AimCircle.Visible = false end)
-
-NewSec("😎 COOLKID SPECIAL")
-NewBtn("🔥 c00lkidd REBORN (DEB)", function()
-    print("Under Scripting")
-    setclipboard("https://c00lkidd.com our website")
-    loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-coolkid-gui-15453"))()
-end)
-
-NewSec("🔥 DANYA'S LIST 🔥")
-local d_list = {
-    {"🧩 Swing Obby", "https://raw.githubusercontent.com/gumanba/Scripts/main/SwingObbyforBrainrots"},
-    {"🌀 Mystrix Hub", "https://raw.githubusercontent.com/ummarxfarooq/mystrix-hub/refs/heads/main/loader"},
-    {"🌋 Escape Lava", "https://raw.githubusercontent.com/scriptyyz/roblox/refs/heads/main/EscapeRisingLavaForBrainrots.lua"},
-    {"🌊 Tsunami Galaxy", "https://raw.githubusercontent.com/osakaTP2/OsakaTP2/main/Escape%20tsunami%20for%20brainrotsGalaxy6.5"},
-    {"⚡ 1 Speed Escape", "https://raw.githubusercontent.com/gumanba/Scripts/main/1SpeedEscapeforBrainrots"},
-    {"🔪 Murderer VS Sheriff", "https://raw.githubusercontent.com/Rysted/scripts/main/MurderersVSSheriffs.lua"},
-    {"⭐ Ace Hub", "https://raw.githubusercontent.com/Totocoems/Ace/main/Ace"},
-    {"🚀 Speed Hub X", "https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua"},
-    {"📦 Lucky Blocks", "https://pastefy.app/6KRkp9XP/raw"},
-    {"☢️ Plutonium Loader", "https://raw.githubusercontent.com/PawsThePaw/Plutonium.AA/main/Plutonium.Loader.lua"}
-}
-for _, v in pairs(d_list) do
-    NewBtn(v[1], function() loadstring(game:HttpGet(v[2]))() end)
-end
-
--- Логика Аима и FOV 120
-Camera.FieldOfView = 120
-RunService.RenderStepped:Connect(function()
-    if AimEnabled then
-        local target = nil; local mag = AimRadius
-        for _, v in pairs(Players:GetPlayers()) do
-            if v ~= LPlayer and v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
-                local pos, onScreen = Camera:WorldToScreenPoint(v.Character.HumanoidRootPart.Position)
-                if onScreen then
-                    local dist = (Vector2.new(pos.X, pos.Y) - Vector2.new(Camera.ViewportSize.X/2, Camera.ViewportSize.Y/2)).Magnitude
-                    if dist < mag then mag = dist; target = v end
+    -- ВЕЧНЫЕ СТАТЫ ПИНГ/ФПС
+    task.spawn(function()
+        while true do
+            local char = p.Character
+            if char and char:FindFirstChild("Head") then
+                if not pgui:FindFirstChild("FUT_STATS_HEAD") then
+                    local bill = Instance.new("BillboardGui", pgui); bill.Name = "FUT_STATS_HEAD"; bill.Adornee = char.Head; bill.Size = UDim2.new(0, 250, 0, 50); bill.AlwaysOnTop = true; bill.ExtentsOffset = Vector3.new(0, 3.5, 0)
+                    local txt = Instance.new("TextLabel", bill); txt.Size = UDim2.new(1,0,1,0); txt.BackgroundTransparency = 1; txt.Font = Enum.Font.Creepster; txt.TextSize = 22
+                    task.spawn(function()
+                        while bill.Parent and char.Parent do
+                            txt.Text = "† FPS: "..math.floor(1/run.RenderStepped:Wait()).." | MS: "..math.floor(p:GetNetworkPing()*1000).." †"
+                            txt.TextColor3 = Color3.new(0,0,0):Lerp(Color3.fromRGB(200, 0, 0), (math.sin(tick() * 3) + 1) / 2)
+                            task.wait(0.1)
+                        end
+                    end)
                 end
             end
+            task.wait(2)
         end
-        if target then Camera.CFrame = CFrame.new(Camera.CFrame.Position, target.Character.HumanoidRootPart.Position) end
-    end
-end)
+    end)
+end
 
--- [[ 3. ЗАПУСК ЛОАДЕРА ]] --
-task.spawn(function()
-    local logs = {
-        "WARNING: Script not verified!",
-        "Injecting Legends...",
-        "loadstring(game:HttpGet('GitHub...'))()",
-        "D.L HUB READY!"
-    }
-    for i = 1, #logs do
-        Status.Text = logs[i]
-        BarFill:TweenSize(UDim2.new(i/#logs, 0, 1, 0), "Out", "Quad", 0.5)
-        task.wait(0.7)
-    end
-    task.wait(0.2)
-    LoadFrame:Destroy() -- Лоадер уходит
-    Main.Visible = true -- Меню появляется
-end)
+-- --- [ ГЛИТЧ-ЗАГРУЗЧИК ] --- --
+local function StartGlitchLoader()
+    local sg = Instance.new("ScreenGui", pgui); sg.Name = "FUT_GLITCH"
+    local f = Instance.new("Frame", sg); f.Size = UDim2.new(1, 0, 1, 0); f.BackgroundColor3 = Color3.new(0, 0, 0)
+    local mainT = Instance.new("TextLabel", f); mainT.Size = UDim2.new(1, 0, 0, 100); mainT.Position = UDim2.new(0, 0, 0.5, -50); mainT.TextColor3 = Color3.new(1, 0, 0); mainT.Font = Enum.Font.Creepster; mainT.TextSize = 50; mainT.BackgroundTransparency = 1
+
+    task.spawn(function()
+        for i = 0, 100 do
+            mainT.Text = "† BREACHING: "..i.."% †"
+            mainT.Position = UDim2.new(0, math.random(-10, 10), 0.5, -50 + math.random(-10, 10))
+            if i == 99 then mainT.Text = "† ERROR: 666% †"; task.wait(0.5) end
+            task.wait(0.03)
+        end
+        sg:Destroy()
+        CreateMenu()
+    end)
+end
+
+StartGlitchLoader()
