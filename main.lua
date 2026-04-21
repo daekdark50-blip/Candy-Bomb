@@ -1,7 +1,7 @@
--- [[ DARK PROJECT: МГНОВЕННЫЙ ЗАПУСК БЕЗ ХЛАМА ]]
+-- [[ DARK PROJECT: МГНОВЕННЫЙ ЗАПУСК БЕЗ ЗАГРУЗКИ ]]
 if not game:IsLoaded() then game.Loaded:Wait() end
 
--- 1. ТЕГ НАД ГОЛОВОЙ (DARK) - ВКЛЮЧАЕТСЯ СРАЗУ
+-- 1. ТЕГ НАД ГОЛОВОЙ (DARK)
 local function SetDarkTag()
     local p = game.Players.LocalPlayer
     local char = p.Character or p.CharacterAdded:Wait()
@@ -16,7 +16,7 @@ local function SetDarkTag()
     tl.Size = UDim2.new(1, 0, 1, 0)
     tl.BackgroundTransparency = 1
     tl.Text = "🌀 CREATOR: DARK 🌀"
-    tl.TextColor3 = Color3.new(1, 0, 0)
+    tl.TextColor3 = Color3.fromRGB(255, 0, 0)
     tl.TextSize = 25
     tl.Font = Enum.Font.GothamBold
     tl.TextStrokeTransparency = 0
@@ -27,8 +27,8 @@ game.Players.LocalPlayer.CharacterAdded:Connect(SetDarkTag)
 -- 2. СРАЗУ ЗАПУСКАЕМ RAYFIELD
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
-    Name = "🌑 DARK PROJECT v8.7",
-    LoadingTitle = "INSTANT LOAD",
+    Name = "🌑 DARK PROJECT v8.8",
+    LoadingTitle = "DARK SYSTEM READY",
     LoadingSubtitle = "by Dark 🌀",
     ConfigurationSaving = {Enabled = false},
     Theme = "Rogue"
@@ -38,6 +38,7 @@ local MainTab = Window:CreateTab("Overdrive", 4483362458)
 local RF_Hit = game:GetService("ReplicatedStorage").Packages.Knit.Services.EggSpawnerService.RF.RequestHitEgg
 local RF_Collect = game:GetService("ReplicatedStorage").Packages.Knit.Services.BaseService.RF.RequestPlatformCollect
 
+-- ТА САМАЯ МАШИНА
 local function GetAbsoluteTargets()
     local targets = {}
     local hrp = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
