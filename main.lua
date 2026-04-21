@@ -1,32 +1,7 @@
--- [[ DARK PROJECT: THE ULTIMATE OVERDRIVE ]]
+-- [[ DARK PROJECT: МГНОВЕННЫЙ ЗАПУСК БЕЗ ХЛАМА ]]
 if not game:IsLoaded() then game.Loaded:Wait() end
 
--- 1. ЭЛИТНАЯ МИНИМАЛИСТИЧНАЯ ЗАГРУЗКА (ФИКС ЛАГОВ)
-local loaderGui = Instance.new("ScreenGui", game:GetService("CoreGui"))
-local mainFrame = Instance.new("Frame", loaderGui)
-mainFrame.Size = UDim2.new(1, 0, 1, 0)
-mainFrame.BackgroundColor3 = Color3.fromRGB(5, 5, 5)
-mainFrame.BorderSizePixel = 0
-
-local barBg = Instance.new("Frame", mainFrame)
-barBg.Size = UDim2.new(0, 350, 0, 4)
-barBg.Position = UDim2.new(0.5, -175, 0.5, 0)
-barBg.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-
-local barFill = Instance.new("Frame", barBg)
-barFill.Size = UDim2.new(0, 0, 1, 0)
-barFill.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-
--- Плавная анимация без зависаний
-local ts = game:GetService("TweenService")
-local ti = TweenInfo.new(2, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
-ts:Create(barFill, ti, {Size = UDim2.new(1, 0, 1, 0)}):Play()
-
-task.delay(2.2, function()
-    loaderGui:Destroy()
-end)
-
--- 2. ТЕГ НАД ГОЛОВОЙ (ВИЗУАЛ DARK)
+-- 1. ТЕГ НАД ГОЛОВОЙ (DARK) - ВКЛЮЧАЕТСЯ СРАЗУ
 local function SetDarkTag()
     local p = game.Players.LocalPlayer
     local char = p.Character or p.CharacterAdded:Wait()
@@ -46,15 +21,16 @@ local function SetDarkTag()
     tl.Font = Enum.Font.GothamBold
     tl.TextStrokeTransparency = 0
 end
-SetDarkTag()
+task.spawn(SetDarkTag)
 game.Players.LocalPlayer.CharacterAdded:Connect(SetDarkTag)
 
--- 3. RAYFIELD И ФУНКЦИИ
+-- 2. СРАЗУ ЗАПУСКАЕМ RAYFIELD
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
-    Name = "🌑 DARK PROJECT v8.5",
-    LoadingTitle = " ",
-    LoadingSubtitle = " ",
+    Name = "🌑 DARK PROJECT v8.7",
+    LoadingTitle = "INSTANT LOAD",
+    LoadingSubtitle = "by Dark 🌀",
+    ConfigurationSaving = {Enabled = false},
     Theme = "Rogue"
 })
 
