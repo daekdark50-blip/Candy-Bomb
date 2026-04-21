@@ -1,7 +1,31 @@
--- [[ DARK PROJECT: МГНОВЕННЫЙ ЗАПУСК БЕЗ ЗАГРУЗКИ ]]
+-- [[ DARK PROJECT: THE ULTIMATE OVERDRIVE ]]
 if not game:IsLoaded() then game.Loaded:Wait() end
 
--- 1. ТЕГ НАД ГОЛОВОЙ (DARK)
+-- 1. ТА САМАЯ ЗАГРУЗКА (ФИКС ЛАГОВ)
+local loaderGui = Instance.new("ScreenGui", game:GetService("CoreGui"))
+local mainFrame = Instance.new("Frame", loaderGui)
+mainFrame.Size = UDim2.new(1, 0, 1, 0)
+mainFrame.BackgroundColor3 = Color3.fromRGB(5, 5, 5)
+mainFrame.BorderSizePixel = 0
+
+local barBg = Instance.new("Frame", mainFrame)
+barBg.Size = UDim2.new(0, 350, 0, 4)
+barBg.Position = UDim2.new(0.5, -175, 0.5, 0)
+barBg.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+
+local barFill = Instance.new("Frame", barBg)
+barFill.Size = UDim2.new(0, 0, 1, 0)
+barFill.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+
+-- Анимация
+local ts = game:GetService("TweenService")
+ts:Create(barFill, TweenInfo.new(2, Enum.EasingStyle.Quart), {Size = UDim2.new(1, 0, 1, 0)}):Play()
+
+task.delay(2.2, function()
+    loaderGui:Destroy()
+end)
+
+-- 2. ТЕГ НАД ГОЛОВОЙ (DARK)
 local function SetDarkTag()
     local p = game.Players.LocalPlayer
     local char = p.Character or p.CharacterAdded:Wait()
@@ -16,7 +40,7 @@ local function SetDarkTag()
     tl.Size = UDim2.new(1, 0, 1, 0)
     tl.BackgroundTransparency = 1
     tl.Text = "🌀 CREATOR: DARK 🌀"
-    tl.TextColor3 = Color3.fromRGB(255, 0, 0)
+    tl.TextColor3 = Color3.new(1, 0, 0)
     tl.TextSize = 25
     tl.Font = Enum.Font.GothamBold
     tl.TextStrokeTransparency = 0
@@ -24,13 +48,12 @@ end
 task.spawn(SetDarkTag)
 game.Players.LocalPlayer.CharacterAdded:Connect(SetDarkTag)
 
--- 2. СРАЗУ ЗАПУСКАЕМ RAYFIELD
+-- 3. RAYFIELD И ФУНКЦИИ
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
-    Name = "🌑 DARK PROJECT v8.8",
-    LoadingTitle = "DARK SYSTEM READY",
-    LoadingSubtitle = "by Dark 🌀",
-    ConfigurationSaving = {Enabled = false},
+    Name = "🌑 DARK PROJECT v8.9",
+    LoadingTitle = " ",
+    LoadingSubtitle = " ",
     Theme = "Rogue"
 })
 
@@ -38,7 +61,7 @@ local MainTab = Window:CreateTab("Overdrive", 4483362458)
 local RF_Hit = game:GetService("ReplicatedStorage").Packages.Knit.Services.EggSpawnerService.RF.RequestHitEgg
 local RF_Collect = game:GetService("ReplicatedStorage").Packages.Knit.Services.BaseService.RF.RequestPlatformCollect
 
--- ТА САМАЯ МАШИНА
+-- ЛОГИКА ТАРГЕТОВ
 local function GetAbsoluteTargets()
     local targets = {}
     local hrp = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
@@ -56,6 +79,7 @@ local function GetAbsoluteTargets()
     return targets
 end
 
+-- 1. МАШИНА
 MainTab:CreateToggle({
    Name = "🔥 Auto Hit Eggs (MACHINE)",
    CurrentValue = false,
@@ -71,6 +95,7 @@ MainTab:CreateToggle({
    end,
 })
 
+-- 2. МОЛОТ
 MainTab:CreateToggle({
    Name = "🔨 Auto Click Items (Hammer)",
    CurrentValue = false,
@@ -90,6 +115,7 @@ MainTab:CreateToggle({
    end,
 })
 
+-- 3. СБОР
 MainTab:CreateToggle({
    Name = "💰 Auto Collect Platforms",
    CurrentValue = false,
@@ -106,6 +132,18 @@ MainTab:CreateToggle({
    end,
 })
 
+-- 4. ТЕЛЕПОРТ НА БАЗУ (ВЕРНУЛ)
+MainTab:CreateButton({
+    Name = "🏠 Teleport to Base",
+    Callback = function() 
+        local hrp = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        if hrp then
+            hrp.CFrame = CFrame.new(0, 20, 0) -- Координаты базы (измени под свою, если надо)
+        end
+    end
+})
+
+-- 5. СКОРОСТЬ
 MainTab:CreateSlider({
    Name = "Speed", Range = {16, 250}, Increment = 1, CurrentValue = 16,
    Callback = function(V) game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = V end
