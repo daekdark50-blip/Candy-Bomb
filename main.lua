@@ -1,150 +1,130 @@
--- [[ DARK PROJECT: THE ULTIMATE OVERDRIVE ]]
-if not game:IsLoaded() then game.Loaded:Wait() end
+-- 1. ЛОАДЕР (ПОЛОСКА ЗАГРУЗКИ)
+local sg = Instance.new("ScreenGui", game.CoreGui)
+local loadFrame = Instance.new("Frame", sg)
+loadFrame.Size = UDim2.new(0, 280, 0, 90)
+loadFrame.Position = UDim2.new(0.5, -140, 0.5, -45)
+loadFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+Instance.new("UICorner", loadFrame)
+Instance.new("UIStroke", loadFrame).Color = Color3.fromRGB(255, 0, 0)
 
--- 1. ТА САМАЯ ЗАГРУЗКА (ФИКС ЛАГОВ)
-local loaderGui = Instance.new("ScreenGui", game:GetService("CoreGui"))
-local mainFrame = Instance.new("Frame", loaderGui)
-mainFrame.Size = UDim2.new(1, 0, 1, 0)
-mainFrame.BackgroundColor3 = Color3.fromRGB(5, 5, 5)
-mainFrame.BorderSizePixel = 0
+local loadText = Instance.new("TextLabel", loadFrame)
+loadText.Size = UDim2.new(1, 0, 0, 40)
+loadText.Text = "STARR ZERO HUB"
+loadText.TextColor3 = Color3.new(1, 1, 1)
+loadText.Font = Enum.Font.GothamBold
+loadText.BackgroundTransparency = 1
 
-local barBg = Instance.new("Frame", mainFrame)
-barBg.Size = UDim2.new(0, 350, 0, 4)
-barBg.Position = UDim2.new(0.5, -175, 0.5, 0)
-barBg.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+local barBg = Instance.new("Frame", loadFrame)
+barBg.Size = UDim2.new(0.8, 0, 0, 8)
+barBg.Position = UDim2.new(0.1, 0, 0.7, 0)
+barBg.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 
-local barFill = Instance.new("Frame", barBg)
-barFill.Size = UDim2.new(0, 0, 1, 0)
-barFill.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+local bar = Instance.new("Frame", barBg)
+bar.Size = UDim2.new(0, 0, 1, 0)
+bar.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
 
--- Анимация
-local ts = game:GetService("TweenService")
-ts:Create(barFill, TweenInfo.new(2, Enum.EasingStyle.Quart), {Size = UDim2.new(1, 0, 1, 0)}):Play()
-
-task.delay(2.2, function()
-    loaderGui:Destroy()
+-- Анимация загрузки
+task.spawn(function()
+    for i = 1, 100 do
+        bar.Size = UDim2.new(i/100, 0, 1, 0)
+        loadText.Text = "Loading: " .. i .. "%"
+        task.wait(0.01)
+    end
+    loadText.Text = "Done!"
+    task.wait(0.5)
+    sg:Destroy()
+    StartFarm() -- Запуск самой фермы
 end)
 
--- 2. ТЕГ НАД ГОЛОВОЙ (DARK)
-local function SetDarkTag()
-    local p = game.Players.LocalPlayer
-    local char = p.Character or p.CharacterAdded:Wait()
-    local head = char:WaitForChild("Head")
-    if head:FindFirstChild("DarkTag") then head.DarkTag:Destroy() end
-    local bg = Instance.new("BillboardGui", head)
-    bg.Name = "DarkTag"
-    bg.Size = UDim2.new(0, 200, 0, 50)
-    bg.AlwaysOnTop = true
-    bg.ExtentsOffset = Vector3.new(0, 3.5, 0)
-    local tl = Instance.new("TextLabel", bg)
-    tl.Size = UDim2.new(1, 0, 1, 0)
-    tl.BackgroundTransparency = 1
-    tl.Text = "🌀 CREATOR: DARK 🌀"
-    tl.TextColor3 = Color3.new(1, 0, 0)
-    tl.TextSize = 25
-    tl.Font = Enum.Font.GothamBold
-    tl.TextStrokeTransparency = 0
-end
-task.spawn(SetDarkTag)
-game.Players.LocalPlayer.CharacterAdded:Connect(SetDarkTag)
+-- 2. САМА ФЕРМА (БЕЗ ЛИШНИХ ВКЛАДОК)
+function StartFarm()
+    local Hub = Instance.new("ScreenGui", game.CoreGui)
+    local Main = Instance.new("Frame", Hub)
+    Main.Size = UDim2.new(0, 220, 0, 200)
+    Main.Position = UDim2.new(0.5, -110, 0.5, -100)
+    Main.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+    Instance.new("UICorner", Main)
+    Instance.new("UIStroke", Main).Color = Color3.fromRGB(255, 0, 0)
 
--- 3. RAYFIELD И ФУНКЦИИ
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-local Window = Rayfield:CreateWindow({
-    Name = "🌑 DARK PROJECT v8.9",
-    LoadingTitle = " ",
-    LoadingSubtitle = " ",
-    Theme = "Rogue"
-})
+    local Header = Instance.new("Frame", Main)
+    Header.Size = UDim2.new(1, 0, 0, 35)
+    Header.BackgroundColor3 = Color3.fromRGB(60, 0, 0)
+    Instance.new("UICorner", Header)
 
-local MainTab = Window:CreateTab("Overdrive", 4483362458)
-local RF_Hit = game:GetService("ReplicatedStorage").Packages.Knit.Services.EggSpawnerService.RF.RequestHitEgg
-local RF_Collect = game:GetService("ReplicatedStorage").Packages.Knit.Services.BaseService.RF.RequestPlatformCollect
+    local Title = Instance.new("TextLabel", Header)
+    Title.Size = UDim2.new(1, 0, 1, 0)
+    Title.Text = "KICK BLOCK | BY STARR ZERO"
+    Title.TextColor3 = Color3.new(1, 1, 1)
+    Title.Font = Enum.Font.GothamBold
+    Title.TextSize = 12
+    Title.BackgroundTransparency = 1
 
--- ЛОГИКА ТАРГЕТОВ
-local function GetAbsoluteTargets()
-    local targets = {}
-    local hrp = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-    if not hrp then return targets end
-    local area = workspace:GetPartBoundsInRadius(hrp.Position, 65)
-    for _, part in pairs(area) do
-        local model = part:FindFirstAncestorOfClass("Model")
-        if model and not table.find(targets, model.Name) then
-            if model.Parent.Name:find("Egg") or model.Parent.Name:find("Vault") or model.Parent.Name == "Eggs" then
-                table.insert(targets, model.Name)
+    local function AddBtn(name, y, callback)
+        local b = Instance.new("TextButton", Main)
+        b.Size = UDim2.new(0.9, 0, 0, 32)
+        b.Position = UDim2.new(0.05, 0, 0, y + 45)
+        b.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+        b.TextColor3 = Color3.new(1, 1, 1)
+        b.Text = name .. ": OFF"
+        b.Font = Enum.Font.GothamBold
+        Instance.new("UICorner", b)
+        local act = false
+        b.MouseButton1Click:Connect(function()
+            act = not act
+            b.Text = name .. ": " .. (act and "ON" or "OFF")
+            b.BackgroundColor3 = act and Color3.fromRGB(150, 0, 0) or Color3.fromRGB(30, 30, 30)
+            callback(act)
+        end)
+    end
+
+    -- Твои рабочие функции
+    AddBtn("GOD VACUUM", 5, function(s)
+        _G.GV = s
+        task.spawn(function()
+            while _G.GV do
+                local hrp = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                if hrp then
+                    for _, v in pairs(workspace:GetDescendants()) do
+                        if v:IsA("BasePart") and (v.Name:lower():find("coin") or v.Name:lower():find("pickup") or v.Name:lower():find("brainrot")) then
+                            v.CFrame = hrp.CFrame
+                            firetouchinterest(hrp, v, 0)
+                            firetouchinterest(hrp, v, 1)
+                        end
+                    end
+                end
+                task.wait(0.1)
             end
+        end)
+    end)
+
+    AddBtn("AUTO UPGRADE", 45, function(s)
+        _G.UG = s
+        task.spawn(function()
+            local net = game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("Packages"):WaitForChild("Network"):WaitForChild("rev_SPEED_UPGRADE")
+            while _G.UG do net:FireServer() task.wait(0.7) end
+        end)
+    end)
+
+    AddBtn("AUTO SELL", 85, function(s)
+        _G.AS = s
+        task.spawn(function()
+            local net = game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("Packages"):WaitForChild("Network"):WaitForChild("ref_B_SellAll")
+            while _G.AS do net:InvokeServer() task.wait(2) end
+        end)
+    end)
+
+    -- Перетаскивание
+    local dragToggle, dragStart, startPos
+    Header.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragToggle = true dragStart = input.Position startPos = Main.Position
         end
-        if #targets >= 100 then break end
-    end
-    return targets
+    end)
+    game:GetService("UserInputService").InputChanged:Connect(function(input)
+        if dragToggle and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+            local delta = input.Position - dragStart
+            Main.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+        end
+    end)
+    game:GetService("UserInputService").InputEnded:Connect(function() dragToggle = false end)
 end
-
--- 1. МАШИНА
-MainTab:CreateToggle({
-   Name = "🔥 Auto Hit Eggs (MACHINE)",
-   CurrentValue = false,
-   Callback = function(Value)
-       _G.Hit = Value
-       task.spawn(function()
-           while _G.Hit do
-               local list = GetAbsoluteTargets()
-               if #list > 0 then pcall(function() RF_Hit:InvokeServer(list) end) end
-               task.wait(0.04)
-           end
-       end)
-   end,
-})
-
--- 2. МОЛОТ
-MainTab:CreateToggle({
-   Name = "🔨 Auto Click Items (Hammer)",
-   CurrentValue = false,
-   Callback = function(Value)
-       _G.AutoClick = Value
-       task.spawn(function()
-           while _G.AutoClick do
-               local tool = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool")
-               if tool then
-                   tool:Activate()
-                   task.wait(0.01)
-                   tool:Deactivate()
-               end
-               task.wait(0.01)
-           end
-       end)
-   end,
-})
-
--- 3. СБОР
-MainTab:CreateToggle({
-   Name = "💰 Auto Collect Platforms",
-   CurrentValue = false,
-   Callback = function(Value)
-       _G.Coll = Value
-       task.spawn(function()
-           while _G.Coll do
-               for i = 1, 50 do task.spawn(function() pcall(function() RF_Collect:InvokeServer(i) end) end) end
-               local br = workspace:FindFirstChild("Brainrots")
-               if br then for _, v in pairs(br:GetChildren()) do pcall(function() RF_Collect:InvokeServer(v.Name) end) end end
-               task.wait(0.4)
-           end
-       end)
-   end,
-})
-
--- 4. ТЕЛЕПОРТ НА БАЗУ (ВЕРНУЛ)
-MainTab:CreateButton({
-    Name = "🏠 Teleport to Base",
-    Callback = function() 
-        local hrp = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-        if hrp then
-            hrp.CFrame = CFrame.new(0, 20, 0) -- Координаты базы (измени под свою, если надо)
-        end
-    end
-})
-
--- 5. СКОРОСТЬ
-MainTab:CreateSlider({
-   Name = "Speed", Range = {16, 250}, Increment = 1, CurrentValue = 16,
-   Callback = function(V) game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = V end
-})
