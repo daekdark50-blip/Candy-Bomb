@@ -1,7 +1,8 @@
+-- STAR ZERO RAW VERSION
 local Key = "STARZERO2"
 local SG = Instance.new("ScreenGui", game.CoreGui)
 
--- 1. СИСТЕМА КЛЮЧА (ДИЗАЙН)
+-- 1. СИСТЕМА КЛЮЧА
 local KeyFrame = Instance.new("Frame", SG)
 KeyFrame.Size = UDim2.new(0, 300, 0, 200)
 KeyFrame.Position = UDim2.new(0.5, -150, 0.5, -100)
@@ -48,7 +49,7 @@ TgBtn.Font = Enum.Font.GothamBold
 Instance.new("UICorner", TgBtn)
 TgBtn.MouseButton1Click:Connect(function() setclipboard("https://t.me/starzero_scripts") end)
 
--- 2. ФУНКЦИЯ ТВОЕГО ХАБА (ОРИГИНАЛ)
+-- 2. ФУНКЦИЯ ХАБА
 local function StartHub()
     local Hub = Instance.new("ScreenGui", game.CoreGui)
     Hub.Name = "ToraStarrZeroHub"
@@ -73,7 +74,6 @@ local function StartHub()
     Title.TextSize = 14
     Title.BackgroundTransparency = 1
 
-    -- Перетаскивание
     local dragToggle, dragStart, startPos
     Header.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
@@ -154,11 +154,11 @@ local function StartHub()
     end)
 end
 
--- 3. ПРОВЕРКА КЛЮЧА
+-- 3. ПРОВЕРКА
 CheckBtn.MouseButton1Click:Connect(function()
     if TextBox.Text == Key then
-        KeyFrame:Destroy() -- Закрываем окно ключа
-        StartHub() -- Открываем твой хаб
+        KeyFrame:Destroy()
+        StartHub()
     else
         CheckBtn.Text = "WRONG KEY!"
         task.wait(1)
