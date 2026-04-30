@@ -48,7 +48,7 @@ TgBtn.Font = Enum.Font.GothamBold
 Instance.new("UICorner", TgBtn)
 TgBtn.MouseButton1Click:Connect(function() setclipboard("https://t.me/starzero_scripts") end)
 
--- 2. ФУНКЦИЯ ТВОЕГО ХАБА
+-- 2. ОСНОВНОЙ ХАБ
 local function StartHub()
     local Hub = Instance.new("ScreenGui", game:GetService("CoreGui"))
     Hub.Name = "ToraStarrZeroHub"
@@ -58,10 +58,12 @@ local function StartHub()
     Main.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     Instance.new("UICorner", Main)
     Instance.new("UIStroke", Main).Color = Color3.fromRGB(255, 0, 0)
+
     local Header = Instance.new("Frame", Main)
     Header.Size = UDim2.new(1, 0, 0, 45)
     Header.BackgroundColor3 = Color3.fromRGB(80, 0, 0)
     Instance.new("UICorner", Header)
+
     local Title = Instance.new("TextLabel", Header)
     Title.Size = UDim2.new(1, 0, 1, 0)
     Title.Text = "Kick a lucky block\nBY STARR ZERO"
@@ -135,7 +137,7 @@ local function StartHub()
     end)
 end
 
--- 3. ПРОВЕРКА КЛЮЧА (ЛОГИКА)
+-- 3. ПРОВЕРКА КЛЮЧА
 CheckBtn.MouseButton1Click:Connect(function()
     if TextBox.Text == Key then
         KeyFrame:Destroy()
