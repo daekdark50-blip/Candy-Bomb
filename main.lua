@@ -1,5 +1,5 @@
 local Key = "STARZERO2"
-local SG = Instance.new("ScreenGui", game.CoreGui)
+local SG = Instance.new("ScreenGui", game:GetService("CoreGui"))
 
 -- 1. СИСТЕМА КЛЮЧА
 local KeyFrame = Instance.new("Frame", SG)
@@ -50,7 +50,7 @@ TgBtn.MouseButton1Click:Connect(function() setclipboard("https://t.me/starzero_s
 
 -- 2. ФУНКЦИЯ ТВОЕГО ХАБА
 local function StartHub()
-    local Hub = Instance.new("ScreenGui", game.CoreGui)
+    local Hub = Instance.new("ScreenGui", game:GetService("CoreGui"))
     Hub.Name = "ToraStarrZeroHub"
     local Main = Instance.new("Frame", Hub)
     Main.Size = UDim2.new(0, 240, 0, 220)
@@ -69,7 +69,7 @@ local function StartHub()
     Title.Font = Enum.Font.GothamBold
     Title.TextSize = 14
     Title.BackgroundTransparency = 1
-    
+
     local function AddBtn(name, y, callback)
         local b = Instance.new("TextButton", Main)
         b.Size = UDim2.new(0.9, 0, 0, 35)
@@ -80,5 +80,69 @@ local function StartHub()
         b.Font = Enum.Font.GothamBold
         Instance.new("UICorner", b)
         local active = false
-        b.MouseButton1
-        
+        b.MouseButton1Click:Connect(function()
+            active = not active
+            b.Text = name .. ": " .. (active and "ON" or "OFF")
+            b.BackgroundColor3 = active and Color3.fromRGB(200, 0, 0) or Color3.fromRGB(30, 30, 30)
+            callback(active)
+        end)
+    end
+
+    AddBtn("GOD BASE VACUUM", 5, function(state)
+        _G.GodVac = state
+        task.spawn(function()
+            while _G.GodVac do
+                local hrp = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                if hrp then
+                    for _, v in pairs(workspace:GetDescendants()) do
+                        if v:IsA("BasePart") and (v.Name:lower():find("coin") or v:FindFirstChild("TouchInterest")) then
+                            v.CFrame = hrp.CFrame
+                        end
+                    end
+                end
+                task.wait(0.1)
+            end
+        end)
+    end)
+    AddBtn("AUTO SELL ALL", 45, function(state)
+        _G.Sell = state
+        task.spawn(function()
+            local net = game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("Packages"):WaitForChild("Network"):WaitForChild("ref_B_SellAll")
+            while _G.Sell do net:InvokeServer() task.wait(1.5) end
+        end)
+    end)
+    AddBtn("AUTO UPGRADE", 85, function(state)
+        _G.Upgr = state
+        task.spawn(function()
+            local net = game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("Packages"):WaitForChild("Network"):WaitForChild("rev_SPEED_UPGRADE")
+            while _G.Upgr do net:FireServer() task.wait(0.7) end
+        end)
+    end)
+    AddBtn("PERFECT KICK", 125, function(state)
+        _G.Kick = state
+        task.spawn(function()
+            local net = game:GetService("ReplicatedStorage").Shared.Packages.Network
+            while _G.Kick do
+                local hrp = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                if hrp then
+                    hrp.CFrame = workspace.Areas.KickReady.CFrame + Vector3.new(0, 4.5, 0)
+                    net.rev_KickEvent:FireServer(1)
+                    net.rev_KickZman:FireServer()
+                end
+                task.wait(0.4)
+            end
+        end)
+    end)
+end
+
+-- 3. ПРОВЕРКА КЛЮЧА (ЛОГИКА)
+CheckBtn.MouseButton1Click:Connect(function()
+    if TextBox.Text == Key then
+        KeyFrame:Destroy()
+        StartHub()
+    else
+        CheckBtn.Text = "WRONG KEY!"
+        task.wait(1)
+        CheckBtn.Text = "CHECK KEY"
+    end
+end)
