@@ -1,4 +1,3 @@
--- STAR ZERO RAW VERSION
 local Key = "STARZERO2"
 local SG = Instance.new("ScreenGui", game.CoreGui)
 
@@ -8,7 +7,7 @@ KeyFrame.Size = UDim2.new(0, 300, 0, 200)
 KeyFrame.Position = UDim2.new(0.5, -150, 0.5, -100)
 KeyFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 KeyFrame.BorderSizePixel = 0
-local Corner = Instance.new("UICorner", KeyFrame)
+Instance.new("UICorner", KeyFrame)
 local Stroke = Instance.new("UIStroke", KeyFrame)
 Stroke.Color = Color3.fromRGB(255, 0, 0)
 Stroke.Thickness = 2
@@ -49,23 +48,20 @@ TgBtn.Font = Enum.Font.GothamBold
 Instance.new("UICorner", TgBtn)
 TgBtn.MouseButton1Click:Connect(function() setclipboard("https://t.me/starzero_scripts") end)
 
--- 2. ФУНКЦИЯ ХАБА
+-- 2. ФУНКЦИЯ ТВОЕГО ХАБА
 local function StartHub()
     local Hub = Instance.new("ScreenGui", game.CoreGui)
     Hub.Name = "ToraStarrZeroHub"
-
     local Main = Instance.new("Frame", Hub)
     Main.Size = UDim2.new(0, 240, 0, 220)
     Main.Position = UDim2.new(0.5, -120, 0.5, -110)
     Main.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     Instance.new("UICorner", Main)
     Instance.new("UIStroke", Main).Color = Color3.fromRGB(255, 0, 0)
-
     local Header = Instance.new("Frame", Main)
     Header.Size = UDim2.new(1, 0, 0, 45)
     Header.BackgroundColor3 = Color3.fromRGB(80, 0, 0)
     Instance.new("UICorner", Header)
-
     local Title = Instance.new("TextLabel", Header)
     Title.Size = UDim2.new(1, 0, 1, 0)
     Title.Text = "Kick a lucky block\nBY STARR ZERO"
@@ -73,21 +69,7 @@ local function StartHub()
     Title.Font = Enum.Font.GothamBold
     Title.TextSize = 14
     Title.BackgroundTransparency = 1
-
-    local dragToggle, dragStart, startPos
-    Header.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            dragToggle = true dragStart = input.Position startPos = Main.Position
-        end
-    end)
-    game:GetService("UserInputService").InputChanged:Connect(function(input)
-        if dragToggle and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
-            local delta = input.Position - dragStart
-            Main.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-        end
-    end)
-    game:GetService("UserInputService").InputEnded:Connect(function() dragToggle = false end)
-
+    
     local function AddBtn(name, y, callback)
         local b = Instance.new("TextButton", Main)
         b.Size = UDim2.new(0.9, 0, 0, 35)
@@ -98,70 +80,5 @@ local function StartHub()
         b.Font = Enum.Font.GothamBold
         Instance.new("UICorner", b)
         local active = false
-        b.MouseButton1Click:Connect(function()
-            active = not active
-            b.Text = name .. ": " .. (active and "ON" or "OFF")
-            b.BackgroundColor3 = active and Color3.fromRGB(200, 0, 0) or Color3.fromRGB(30, 30, 30)
-            callback(active)
-        end)
-    end
-
-    AddBtn("GOD BASE VACUUM", 5, function(state)
-        _G.GodVac = state
-        task.spawn(function()
-            while _G.GodVac do
-                local char = game.Players.LocalPlayer.Character
-                local hrp = char and char:FindFirstChild("HumanoidRootPart")
-                if hrp then
-                    for _, v in pairs(workspace:GetDescendants()) do
-                        if v:IsA("BasePart") and (v.Name:lower():find("coin") or v:FindFirstChild("TouchInterest")) then
-                            v.CFrame = hrp.CFrame
-                        end
-                    end
-                end
-                task.wait(0.1)
-            end
-        end)
-    end)
-    AddBtn("AUTO SELL ALL", 45, function(state)
-        _G.Sell = state
-        task.spawn(function()
-            local net = game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("Packages"):WaitForChild("Network"):WaitForChild("ref_B_SellAll")
-            while _G.Sell do net:InvokeServer() task.wait(1.5) end
-        end)
-    end)
-    AddBtn("AUTO UPGRADE", 85, function(state)
-        _G.Upgr = state
-        task.spawn(function()
-            local net = game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("Packages"):WaitForChild("Network"):WaitForChild("rev_SPEED_UPGRADE")
-            while _G.Upgr do net:FireServer() task.wait(0.7) end
-        end)
-    end)
-    AddBtn("PERFECT KICK", 125, function(state)
-        _G.Kick = state
-        task.spawn(function()
-            local net = game:GetService("ReplicatedStorage").Shared.Packages.Network
-            while _G.Kick do
-                local hrp = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-                if hrp then
-                    hrp.CFrame = workspace.Areas.KickReady.CFrame + Vector3.new(0, 4.5, 0)
-                    net.rev_KickEvent:FireServer(1)
-                    net.rev_KickZman:FireServer()
-                end
-                task.wait(0.4)
-            end
-        end)
-    end)
-end
-
--- 3. ПРОВЕРКА
-CheckBtn.MouseButton1Click:Connect(function()
-    if TextBox.Text == Key then
-        KeyFrame:Destroy()
-        StartHub()
-    else
-        CheckBtn.Text = "WRONG KEY!"
-        task.wait(1)
-        CheckBtn.Text = "CHECK KEY"
-    end
-end)
+        b.MouseButton1
+        
