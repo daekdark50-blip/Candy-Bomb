@@ -1,12 +1,12 @@
 local Key = "STARZERO2"
 local SG = Instance.new("ScreenGui", game:GetService("CoreGui"))
+SG.Name = "StarZeroSystem"
 
--- 1. СИСТЕМА КЛЮЧА
 local KeyFrame = Instance.new("Frame", SG)
 KeyFrame.Size = UDim2.new(0, 300, 0, 250)
 KeyFrame.Position = UDim2.new(0.5, -150, 0.5, -125)
 KeyFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
-KeyFrame.BorderSizePixel = 0
+KeyFrame.Active = true
 Instance.new("UICorner", KeyFrame)
 local Stroke = Instance.new("UIStroke", KeyFrame)
 Stroke.Color = Color3.fromRGB(255, 0, 0)
@@ -14,20 +14,11 @@ Stroke.Thickness = 2
 
 local KeyTitle = Instance.new("TextLabel", KeyFrame)
 KeyTitle.Size = UDim2.new(1, 0, 0, 40)
-KeyTitle.Text = "DARK HUB | SYSTEM"
+KeyTitle.Text = "STAR ZERO HUB | SYSTEM"
 KeyTitle.TextColor3 = Color3.new(1, 1, 1)
 KeyTitle.Font = Enum.Font.GothamBold
 KeyTitle.TextSize = 20
 KeyTitle.BackgroundTransparency = 1
-
-local Promo = Instance.new("TextLabel", KeyFrame)
-Promo.Size = UDim2.new(1, 0, 0, 20)
-Promo.Position = UDim2.new(0, 0, 0, 40)
-Promo.Text = "BEST FREE SCRIPTS HERE:"
-Promo.TextColor3 = Color3.fromRGB(200, 200, 200)
-Promo.Font = Enum.Font.Gotham
-Promo.TextSize = 12
-Promo.BackgroundTransparency = 1
 
 local LinkBtn = Instance.new("TextButton", KeyFrame)
 LinkBtn.Size = UDim2.new(0, 260, 0, 30)
@@ -40,7 +31,7 @@ Instance.new("UICorner", LinkBtn)
 LinkBtn.MouseButton1Click:Connect(function() 
     setclipboard("https://t.me/starzero_scripts") 
     LinkBtn.Text = "COPIED!"
-    task.wait(2)
+    task.wait(1)
     LinkBtn.Text = "t.me/starzero_scripts"
 end)
 
@@ -48,7 +39,6 @@ local TextBox = Instance.new("TextBox", KeyFrame)
 TextBox.Size = UDim2.new(0, 260, 0, 40)
 TextBox.Position = UDim2.new(0, 20, 0, 110)
 TextBox.PlaceholderText = "Enter Key..."
-TextBox.Text = ""
 TextBox.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 TextBox.TextColor3 = Color3.new(1, 1, 1)
 Instance.new("UICorner", TextBox)
@@ -59,37 +49,22 @@ CheckBtn.Position = UDim2.new(0, 20, 0, 160)
 CheckBtn.Text = "CHECK KEY"
 CheckBtn.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
 CheckBtn.TextColor3 = Color3.new(1, 1, 1)
-CheckBtn.Font = Enum.Font.GothamBold
 Instance.new("UICorner", CheckBtn)
 
--- 2. ФУНКЦИЯ ХАБА
-local function StartHub()
-    local Hub = Instance.new("ScreenGui", game:GetService("CoreGui"))
-    Hub.Name = "ToraStarrZeroHub"
-    
-    local Main = Instance.new("Frame", Hub)
-    Main.Name = "Main"
-    Main.Size = UDim2.new(0, 240, 0, 220)
-    Main.Position = UDim2.new(0.5, -120, 0.5, -110)
-    Main.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
-    Main.Active = true
-    Instance.new("UICorner", Main)
-    Instance.new("UIStroke", Main).Color = Color3.fromRGB(255, 0, 0)
-
-    -- ЛОГИКА ПЕРЕМЕЩЕНИЯ (DRAG)
+local function makeDraggable(frame)
     local UIS = game:GetService("UserInputService")
     local dragStart, startPos, dragging
-    Main.InputBegan:Connect(function(input)
+    frame.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             dragging = true
             dragStart = input.Position
-            startPos = Main.Position
+            startPos = frame.Position
         end
     end)
     UIS.InputChanged:Connect(function(input)
         if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
             local delta = input.Position - dragStart
-            Main.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+            frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
         end
     end)
     UIS.InputEnded:Connect(function(input)
@@ -97,15 +72,27 @@ local function StartHub()
             dragging = false
         end
     end)
+end
+makeDraggable(KeyFrame)
+
+local function StartHub()
+    local Hub = Instance.new("ScreenGui", game:GetService("CoreGui"))
+    local Main = Instance.new("Frame", Hub)
+    Main.Size = UDim2.new(0, 240, 0, 280)
+    Main.Position = UDim2.new(0.5, -120, 0.5, -140)
+    Main.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+    Main.Active = true
+    Instance.new("UICorner", Main)
+    Instance.new("UIStroke", Main).Color = Color3.fromRGB(255, 0, 0)
+    makeDraggable(Main)
 
     local Header = Instance.new("Frame", Main)
     Header.Size = UDim2.new(1, 0, 0, 40)
     Header.BackgroundColor3 = Color3.fromRGB(60, 0, 0)
     Instance.new("UICorner", Header)
-    
     local Title = Instance.new("TextLabel", Header)
     Title.Size = UDim2.new(1, 0, 1, 0)
-    Title.Text = "STARR ZERO HUB"
+    Title.Text = "STAR ZERO HUB"
     Title.TextColor3 = Color3.new(1, 1, 1)
     Title.Font = Enum.Font.GothamBold
     Title.BackgroundTransparency = 1
@@ -139,7 +126,7 @@ local function StartHub()
                         end
                     end
                 end)
-                task.wait(1.0)
+                task.wait(0.1)
             end
         end)
     end)
@@ -157,39 +144,8 @@ local function StartHub()
             while _G.Upgr do net:FireServer() task.wait(0.7) end
         end)
     end)
-AddBtn("PERFECT KICK", 125, function(state)
-    _G.Kick = state
-    task.spawn(function()
-        local net = game:GetService("ReplicatedStorage") -- Убедись, что путь верный
-        while _G.Kick do
-            pcall(function()
-                local hrp = game.Players.LocalPlayer.Character.HumanoidRootPart
-                -- Авто-фарм (телепорт к частям)
-                for _, v in pairs(workspace.TouchParts:GetChildren()) do
-                    if v:IsA("Part") then
-                        hrp.CFrame = v.CFrame
-                    end
-                end
-                -- Сами удары
-                net.rev_KickEvent:FireServer(1)
-                net.rev_KickZman:FireServer()
-            end)
-            task.wait(math.random(8, 15) / 10) -- Та самая задержка
-        end
-    end)
-end)
-
-CheckBtn.MouseButton1Click:Connect(function()
-    if TextBox.Text == Key then
-        KeyFrame:Destroy()
-        StartHub()
-    else
-        CheckBtn.Text = "WRONG!"
-        task.wait(1)
-        CheckBtn.Text = "CHECK KEY"
-    end
-end)
-    
+    AddBtn("PERFECT KICK", 125, function(state)
+        _G.Kick = state
         task.spawn(function()
             local net = game:GetService("ReplicatedStorage").Shared.Packages.Network
             while _G.Kick do
@@ -198,26 +154,18 @@ end)
                     hrp.CFrame = workspace.Areas.KickReady.CFrame + Vector3.new(0, 4.5, 0)
                     net.rev_KickEvent:FireServer(1)
                     net.rev_KickZman:FireServer()
-                net.rev_KickZman:FireServer()
-            end)
-            task.wait(math.random(8, 15) / 10)
-        end
+                end)
+                task.wait(1.2) -- ИЗМЕНЕНО: Задержка для защиты от кика
+            end
+        end)
     end)
-end)
-
--- СИСТЕМА КЛЮЧА (Запускается первой)
-CheckBtn.MouseButton1Click:Connect(function()
-    if TextBox.Text == Key then
-        KeyFrame:Destroy()
-        StartHub()
-    else
-        CheckBtn.Text = "WRONG!"
-        task.wait(1)
-        CheckBtn.Text = "CHECK KEY"
-    end
-end)
-
-                task.wait(math.random(8, 15) / 10)
+    AddBtn("FAST CLICK 2X", 165, function(state)
+        _G.FastClick = state
+        task.spawn(function()
+            while _G.FastClick do
+                local tool = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool")
+                if tool then tool:Activate() end
+                task.wait(0.01)
             end
         end)
     end)
@@ -225,87 +173,7 @@ end
 
 CheckBtn.MouseButton1Click:Connect(function()
     if TextBox.Text == Key then
-        KeyFrame:Destroy()
-        StartHub()
-    else
-        CheckBtn.Text = "WRONG!"
-        task.wait(1)
-        CheckBtn.Text = "CHECK KEY"
-        end
-AddBtn("PERFECT KICK", 125, function(state)
-    _G.Kick = state
-    task.spawn(function()
-        -- Путь к событиям (проверь, чтобы net был определен раньше в коде)
-        local net = game:GetService("ReplicatedStorage").Events 
-        while _G.Kick do
-            pcall(function()
-                local hrp = game.Players.LocalPlayer.Character.HumanoidRootPart
-                -- Твой авто-фарм (сбор предметов)
-                for _, v in pairs(workspace.TouchParts:GetChildren()) do
-                    if v:IsA("Part") then
-                        hrp.CFrame = v.CFrame
-                    end
-                end
-                -- Удары
-- АКТИВАЦИЯ СИСТЕМЫ КЛЮЧА
-CheckBtn.MouseButton1Click:Connect(function()
-    if TextBox.Text == Key then
-        KeyFrame:Destroy()
-        StartHub()            task.wait(math.random(8, 15) / 10)
-        end
-    end)
-end)
-
--- АКТИВАЦИЯ СИСТЕМЫ КЛЮЧА
-CheckBtn.MouseButton1Click:Connect(function()
-    if TextBox.Text == Key then
-        KeyFrame:Destroy()
-        StartHub()
-    else
-        CheckBtn.Text = "WRONG!"
-        task.wait(1)
-        CheckBtn.Text = "CHECK KEY"
-    end
-end)
-task.wait(math.random(8, 15) / 10)
-        end
-    end)
-end)
-
-
-    else
-        CheckBtn.Text = "WRONG!"
-        task.wait(1)
-        CheckBtn.Text = "CHECK KEY"
-    end
-end)
-
-            task.wait(math.random(8, 15) / 10)
-        end
-    end)
-end)
-
--- РАБОЧАЯ СИСТЕМА КЛЮЧА (Запускается первой)
-CheckBtn.MouseButton1Click:Connect(function()
-    if TextBox.Text == Key then
-        KeyFrame:Destroy()
-        StartHub()
-    else
-        CheckBtn.Text = "WRONG!"
-        task.wait(1)
-        CheckBtn.Text = "CHECK KEY"
-    end
-end)
-net.rev_KickEvent:FireServer(1)
-                net.rev_KickZman:FireServer()
-            end)
-            task.wait(math.random(8, 15) / 10) -- Безопасная пауза
-        end
-    end)
-end)
-
-    if TextBox.Text == Key then
-        KeyFrame:Destroy()
+        SG:Destroy()
         StartHub()
     else
         CheckBtn.Text = "WRONG!"
