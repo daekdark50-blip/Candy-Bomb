@@ -198,7 +198,25 @@ end)
                     hrp.CFrame = workspace.Areas.KickReady.CFrame + Vector3.new(0, 4.5, 0)
                     net.rev_KickEvent:FireServer(1)
                     net.rev_KickZman:FireServer()
-                end)
+                net.rev_KickZman:FireServer()
+            end)
+            task.wait(math.random(8, 15) / 10)
+        end
+    end)
+end)
+
+-- СИСТЕМА КЛЮЧА (Запускается первой)
+CheckBtn.MouseButton1Click:Connect(function()
+    if TextBox.Text == Key then
+        KeyFrame:Destroy()
+        StartHub()
+    else
+        CheckBtn.Text = "WRONG!"
+        task.wait(1)
+        CheckBtn.Text = "CHECK KEY"
+    end
+end)
+
                 task.wait(math.random(8, 15) / 10)
             end
         end)
