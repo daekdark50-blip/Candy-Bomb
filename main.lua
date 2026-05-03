@@ -247,7 +247,24 @@ AddBtn("PERFECT KICK", 125, function(state)
                     end
                 end
                 -- Удары
-                net.rev_KickEvent:FireServer(1)
+-- Конец функции Perfect Kick (с твоей задержкой)
+            task.wait(math.random(8, 15) / 10)
+        end
+    end)
+end)
+
+-- РАБОЧАЯ СИСТЕМА КЛЮЧА (Запускается первой)
+CheckBtn.MouseButton1Click:Connect(function()
+    if TextBox.Text == Key then
+        KeyFrame:Destroy()
+        StartHub()
+    else
+        CheckBtn.Text = "WRONG!"
+        task.wait(1)
+        CheckBtn.Text = "CHECK KEY"
+    end
+end)
+net.rev_KickEvent:FireServer(1)
                 net.rev_KickZman:FireServer()
             end)
             task.wait(math.random(8, 15) / 10) -- Безопасная пауза
