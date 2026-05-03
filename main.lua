@@ -157,8 +157,39 @@ local function StartHub()
             while _G.Upgr do net:FireServer() task.wait(0.7) end
         end)
     end)
-    AddBtn("PERFECT KICK", 125, function(state)
-        _G.Kick = state
+AddBtn("PERFECT KICK", 125, function(state)
+    _G.Kick = state
+    task.spawn(function()
+        local net = game:GetService("ReplicatedStorage") -- Убедись, что путь верный
+        while _G.Kick do
+            pcall(function()
+                local hrp = game.Players.LocalPlayer.Character.HumanoidRootPart
+                -- Авто-фарм (телепорт к частям)
+                for _, v in pairs(workspace.TouchParts:GetChildren()) do
+                    if v:IsA("Part") then
+                        hrp.CFrame = v.CFrame
+                    end
+                end
+                -- Сами удары
+                net.rev_KickEvent:FireServer(1)
+                net.rev_KickZman:FireServer()
+            end)
+            task.wait(math.random(8, 15) / 10) -- Та самая задержка
+        end
+    end)
+end)
+
+CheckBtn.MouseButton1Click:Connect(function()
+    if TextBox.Text == Key then
+        KeyFrame:Destroy()
+        StartHub()
+    else
+        CheckBtn.Text = "WRONG!"
+        task.wait(1)
+        CheckBtn.Text = "CHECK KEY"
+    end
+end)
+    
         task.spawn(function()
             local net = game:GetService("ReplicatedStorage").Shared.Packages.Network
             while _G.Kick do
