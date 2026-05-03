@@ -139,7 +139,7 @@ local function StartHub()
                         end
                     end
                 end)
-                task.wait(0.1)
+                task.wait(1.0)
             end
         end)
     end)
@@ -168,7 +168,7 @@ local function StartHub()
                     net.rev_KickEvent:FireServer(1)
                     net.rev_KickZman:FireServer()
                 end)
-                task.wait(0.4)
+                task.wait(math.random(8, 15) / 10)
             end
         end)
     end)
@@ -182,5 +182,4 @@ CheckBtn.MouseButton1Click:Connect(function()
         CheckBtn.Text = "WRONG!"
         task.wait(1)
         CheckBtn.Text = "CHECK KEY"
-    end
-end)
+        end
