@@ -214,3 +214,35 @@ CheckBtn.MouseButton1Click:Connect(function()
         task.wait(1)
         CheckBtn.Text = "CHECK KEY"
         end
+AddBtn("PERFECT KICK", 125, function(state)
+    _G.Kick = state
+    task.spawn(function()
+        -- Путь к событиям (проверь, чтобы net был определен раньше в коде)
+        local net = game:GetService("ReplicatedStorage").Events 
+        while _G.Kick do
+            pcall(function()
+                local hrp = game.Players.LocalPlayer.Character.HumanoidRootPart
+                -- Твой авто-фарм (сбор предметов)
+                for _, v in pairs(workspace.TouchParts:GetChildren()) do
+                    if v:IsA("Part") then
+                        hrp.CFrame = v.CFrame
+                    end
+                end
+                -- Удары
+                net.rev_KickEvent:FireServer(1)
+                net.rev_KickZman:FireServer()
+            end)
+            task.wait(math.random(8, 15) / 10) -- Безопасная пауза
+        end
+    end)
+end)
+
+    if TextBox.Text == Key then
+        KeyFrame:Destroy()
+        StartHub()
+    else
+        CheckBtn.Text = "WRONG!"
+        task.wait(1)
+        CheckBtn.Text = "CHECK KEY"
+    end
+end)
