@@ -247,7 +247,39 @@ AddBtn("PERFECT KICK", 125, function(state)
                     end
                 end
                 -- Удары
--- Конец функции Perfect Kick (с твоей задержкой)
+- АКТИВАЦИЯ СИСТЕМЫ КЛЮЧА
+CheckBtn.MouseButton1Click:Connect(function()
+    if TextBox.Text == Key then
+        KeyFrame:Destroy()
+        StartHub()            task.wait(math.random(8, 15) / 10)
+        end
+    end)
+end)
+
+-- АКТИВАЦИЯ СИСТЕМЫ КЛЮЧА
+CheckBtn.MouseButton1Click:Connect(function()
+    if TextBox.Text == Key then
+        KeyFrame:Destroy()
+        StartHub()
+    else
+        CheckBtn.Text = "WRONG!"
+        task.wait(1)
+        CheckBtn.Text = "CHECK KEY"
+    end
+end)
+task.wait(math.random(8, 15) / 10)
+        end
+    end)
+end)
+
+
+    else
+        CheckBtn.Text = "WRONG!"
+        task.wait(1)
+        CheckBtn.Text = "CHECK KEY"
+    end
+end)
+
             task.wait(math.random(8, 15) / 10)
         end
     end)
